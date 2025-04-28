@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbjfhvgmhlrhx"]
+
+[ext_resource type="Script" uid="uid://cnjy7iousj4sr" path="res://addons/godot graph visualizer/tool_button/tool_button.gd" id="1_skaud"]
+
+[node name="ToolButton" type="Button"]
+script = ExtResource("1_skaud")

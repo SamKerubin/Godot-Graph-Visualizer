@@ -10,6 +10,15 @@ config_version=5
 
 [application]
 
-config/name="Nuevo Proyecto de Juego"
+config/name="Godot Graph Visualizer"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
+
+[debug]
+
+gdscript/warnings/untyped_declaration=2
+gdscript/warnings/inferred_declaration=2
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot graph visualizer/plugin.cfg")
