@@ -14,6 +14,10 @@ config/name="Godot Graph Visualizer"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+FileScanner="*res://addons/godot graph visualizer/project_scanners/file_scanner.gd"
+
 [debug]
 
 gdscript/warnings/untyped_declaration=2
