@@ -23,4 +23,3 @@ split_offset = 800
 
 [node name="GraphEdit" type="GraphEdit" parent="HSplitContainer"]
 layout_mode = 2
-scroll_offset = Vector2(-570, 0)
