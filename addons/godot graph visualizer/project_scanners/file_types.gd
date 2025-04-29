@@ -6,7 +6,7 @@ enum FileType {
 	SCENE_FILE,
 	SCRIPT_FILE,
 	RESOURCE_FILE,
-	TEXT_FILE
+	UNKNOWN_FILE
 }
 
 static func get_type_of_file(file_path: String) -> FileType:
@@ -21,4 +21,4 @@ static func get_type_of_file(file_path: String) -> FileType:
 	if file_path.ends_with(".tres") or file_path.ends_with(".res"):
 		return FileType.RESOURCE_FILE
 
-	return FileType.TEXT_FILE
+	return FileType.UNKNOWN_FILE

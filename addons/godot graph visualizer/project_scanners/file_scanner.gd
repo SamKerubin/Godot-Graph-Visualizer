@@ -1,7 +1,7 @@
 @tool
 extends Node
 
-func scan_files_in_directory(path: String) -> Dictionary[FileTypes.FileType, Array]:
+func _scan_files_in_directory(path: String) -> Dictionary[FileTypes.FileType, Array]:
 	var dir: DirAccess = DirAccess.open(path)
 	
 	var files: Dictionary[FileTypes.FileType, Array] = {}
@@ -20,14 +20,18 @@ func scan_files_in_directory(path: String) -> Dictionary[FileTypes.FileType, Arr
 		var file_path: String = path.path_join(file_name)
 		
 		if dir.current_is_dir():
-			files.merge(scan_files_in_directory(file_path), true)
+			files.merge(_scan_files_in_directory(file_path), true)
 		else:
 			var file_type: FileTypes.FileType = FileTypes.get_type_of_file(file_path)
-			if files.has(file_type):
-				files.get(file_type).append(file_path)
-			else:
-				files.set(file_type, [file_path])
+			if file_type == FileTypes.FileType.UNKNOWN_FILE:
+				file_name = dir.get_next()
+				continue
+
+			files[file_type] = files.get(file_type, []) + [file_path]
 
 		file_name = dir.get_next()
 
 	return files
+
+func get_files_by_type(type: FileTypes.FileType) -> Array[String]:
+	return _scan_files_in_directory("res://").get(type, [])
