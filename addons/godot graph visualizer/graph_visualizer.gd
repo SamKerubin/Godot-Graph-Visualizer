@@ -2,10 +2,10 @@
 extends EditorPlugin
 
 const MAIN_PANEL: PackedScene = preload("uid://c4h2pps361nfk")
-const ICON: Texture2D = preload("res://icon.png")
+const ICON: Texture2D = preload("res://addons/icon.png")
 const PLUGIN_NAME: String = "Visualize Project"
 
-var main_panel_instance : Main
+var main_panel_instance
 
 func _enter_tree() -> void:
 	add_autoload_singleton("FileScanner", "res://addons/godot graph visualizer/project_scanners/file_scanner.gd")

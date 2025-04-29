@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ResourceGraphNodeResource" load_steps=2 format=3 uid="uid://d0u18gdv7jg68"]
+
+[ext_resource type="Script" uid="uid://dbk88c5r8tcav" path="res://addons/godot graph visualizer/graph_nodes/node_resources/resource_graph_node_resource.gd" id="1_nj160"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_nj160")
+metadata/_custom_type_script = "uid://dbk88c5r8tcav"
