@@ -1,10 +1,10 @@
 @tool
 extends Node
 
-func scan_files_in_directory(path: String) -> Dictionary[String, Array]:
+func scan_files_in_directory(path: String) -> Dictionary[FileTypes.FileType, Array]:
 	var dir: DirAccess = DirAccess.open(path)
 	
-	var files: Dictionary[String, Array] = {}
+	var files: Dictionary[FileTypes.FileType, Array] = {}
 
 	if not dir:
 		push_error("Error: Directory \'%s\' does not exist or have been removed from the main directory" % path)
