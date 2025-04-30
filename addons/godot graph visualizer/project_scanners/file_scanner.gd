@@ -1,9 +1,13 @@
 @tool
 extends Node
+## [b]A singleton to scan files inside a godot project[/b][br]
 
+## [b]Do not call this function[/b][br][br]
+## This function returns all the files in a directory[br]
+## See [method get_files_by_type]
 func _scan_files_in_directory(path: String) -> Dictionary[FileTypes.FileType, Array]:
 	var dir: DirAccess = DirAccess.open(path)
-	
+
 	var files: Dictionary[FileTypes.FileType, Array] = {}
 
 	if not dir:
@@ -23,7 +27,8 @@ func _scan_files_in_directory(path: String) -> Dictionary[FileTypes.FileType, Ar
 			files.merge(_scan_files_in_directory(file_path), true)
 		else:
 			var file_type: FileTypes.FileType = FileTypes.get_type_of_file(file_path)
-			if file_type == FileTypes.FileType.UNKNOWN_FILE:
+			if file_type == FileTypes.FileType.UNKNOWN_FILE \
+				or file_type == FileTypes.FileType.NON_EXISTING_FILE:
 				file_name = dir.get_next()
 				continue
 
@@ -33,5 +38,7 @@ func _scan_files_in_directory(path: String) -> Dictionary[FileTypes.FileType, Ar
 
 	return files
 
+## returns files with certain extensions[br]
+## See [enum FileTypes.FileType]
 func get_files_by_type(type: FileTypes.FileType) -> Array[String]:
 	return _scan_files_in_directory("res://").get(type, [])

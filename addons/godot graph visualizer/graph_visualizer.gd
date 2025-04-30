@@ -9,7 +9,7 @@ var main_panel_instance
 
 func _enter_tree() -> void:
 	add_autoload_singleton("FileScanner", "res://addons/godot graph visualizer/project_scanners/file_scanner.gd")
-	
+
 	main_panel_instance = MAIN_PANEL.instantiate()
 	print("instance: ", main_panel_instance)
 

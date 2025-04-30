@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 FileScanner="*res://addons/godot graph visualizer/project_scanners/file_scanner.gd"
+GraphNodeManager="*res://addons/godot graph visualizer/graph_nodes/graph_node_manager.gd"
 
 [debug]
 
