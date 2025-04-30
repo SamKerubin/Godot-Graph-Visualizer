@@ -10,6 +10,7 @@ func _ready() -> void:
 	button.pressed.connect(_button_pressed.bind(node))
 
 func _button_pressed(node: BaseGraphNode) -> void:
-	node.show_data()
+	#node.show_data()
+	print(FileScanner.get_files_by_type(FileTypes.FileType.SCRIPT_FILE))
 
 func save() -> void: pass

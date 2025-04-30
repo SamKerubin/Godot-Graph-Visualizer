@@ -1,5 +1,6 @@
 @tool
 extends Node
+## @experimental: This singleton may be up to changes
 ## [b]A singleton to scan files inside a godot project[/b][br]
 
 ## [b]Do not call this function[/b][br][br]
@@ -24,11 +25,14 @@ func _scan_files_in_directory(path: String) -> Dictionary[FileTypes.FileType, Ar
 		var file_path: String = path.path_join(file_name)
 		
 		if dir.current_is_dir():
-			files.merge(_scan_files_in_directory(file_path), true)
+			#var in_addon: bool = file_path.begins_with("res://addons")
+
+			var sub_files: Dictionary[FileTypes.FileType, Array] = _scan_files_in_directory(file_path)
+			for sf: FileTypes.FileType in sub_files.keys():
+				files[sf] = files.get(sf, []) + sub_files[sf]
 		else:
 			var file_type: FileTypes.FileType = FileTypes.get_type_of_file(file_path)
-			if file_type == FileTypes.FileType.UNKNOWN_FILE \
-				or file_type == FileTypes.FileType.NON_EXISTING_FILE:
+			if file_type == FileTypes.FileType.NON_EXISTING_FILE:
 				file_name = dir.get_next()
 				continue
 
@@ -40,5 +44,5 @@ func _scan_files_in_directory(path: String) -> Dictionary[FileTypes.FileType, Ar
 
 ## returns files with certain extensions[br]
 ## See [enum FileTypes.FileType]
-func get_files_by_type(type: FileTypes.FileType) -> Array[String]:
+func get_files_by_type(type: FileTypes.FileType) -> Array:
 	return _scan_files_in_directory("res://").get(type, [])
