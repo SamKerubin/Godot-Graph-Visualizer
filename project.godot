@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 FileScanner="*res://addons/godot graph visualizer/project_scanners/file_scanner.gd"
+ProjectScriptReader="*res://addons/godot graph visualizer/project_scanners/script_scanner/project_script_reader.gd"
 
 [debug]
 
