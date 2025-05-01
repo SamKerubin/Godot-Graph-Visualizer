@@ -3,8 +3,8 @@ extends Node
 ## @experimental: This class is being used to test
 class_name ScriptParser
 
-const PRELOAD_RERERENCE: String = "preload\\(\\s*(\"(?:(?:uid|res)://[^\"]+\"|\\s+(%s))\\s*\\)"
-const LOAD_REFERENCE: String = "load\\(\\s*(\"(?:(?:uid|res)://[^\"]+\"|\\s+(%s))\\s*\\)"
+const PRELOAD_RERERENCE: String = "preload\\(\\s*(?:(\"(?:uid|res)://[^\"]+\")|\\w+)\\)"
+const LOAD_REFERENCE: String = "load\\(\\s*(?:(\"(?:uid|res)://[^\"]+\")|\\w+)\\)"
 const INSTANTIATE_REFERENCE: String = \
 	"(?:(?:load|preload)\\(\\s*\"(?:(?:uid|res)://[^\"]+)\"\\s*\\)|\\b\\w+)\\.instantiate\\(\\)"
 const NEW_RESOURCE_REFERENCE: String = "\\b(\\w+)\\.new\\(\\)"
