@@ -9,10 +9,12 @@ var main_panel_instance: Control
 
 func _enter_tree() -> void:
 	add_autoload_singleton("FileScanner", "res://addons/godot graph visualizer/project_scanners/file_scanner.gd")
+	add_autoload_singleton("GlobalScopeManager", "res://addons/godot graph visualizer/project_scanners/global_scope_manager.gd")
+
+	await get_tree().process_frame
 
 	main_panel_instance = MAIN_PANEL.instantiate()
 	print("instance: ", main_panel_instance)
-
 	get_editor_interface().get_editor_main_screen().add_child(main_panel_instance)
 	main_panel_instance.visible = false
 

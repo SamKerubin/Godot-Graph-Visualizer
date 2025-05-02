@@ -4,18 +4,21 @@ extends Control
 
 @onready var grid_container: GridContainer = $GridContainer
 
-
-func _ready() -> void:
-	create_nodes()
+func _enter_tree() -> void:
+	GlobalScopeManager.script_scope_manager.files_read.connect(_on_files_read)
+	GlobalScopeManager.initialize_all_scopes()
 
 func _button_pressed(node: BaseGraphNode) -> void:
 	node.show_data()
-	print()
+
+func _on_files_read() -> void:
+	create_nodes()
 
 func create_nodes() -> void:
-	for path: String in FileScanner.get_files_by_type(FileTypes.FileType.SCRIPT_FILE):
+	for res: BaseGraphNodeResource in GlobalScopeManager.script_scope_manager._script_references:
 		var node = BaseGraphNode.new()
-		node.node_data.initialize(path)
+		node.node_data = res
+		node.node_scopes = GlobalScopeManager.script_scope_manager._script_references[res]
 		var button: Button = Button.new()
 		button.text = node.node_data.get_node_name()
 		button.size = Vector2(100, 100)

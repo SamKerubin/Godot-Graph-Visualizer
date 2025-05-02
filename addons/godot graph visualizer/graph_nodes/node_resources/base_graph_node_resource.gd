@@ -9,16 +9,30 @@ class_name BaseGraphNodeResource
 @export var _uid: String = "uid://<invalid>"
 @export var _uid_int: int = ResourceUID.INVALID_ID
 
-func _set_node_uid(path: String) -> bool:
-	var uid_int: int = ResourceLoader.get_resource_uid(path)
-	if uid_int == ResourceUID.INVALID_ID: return false
+var initialized: bool = false
+
+func _init(path_or_uid: String) -> void:
+	initialize(path_or_uid)
+
+func _set_node_uid(path_or_uid: String) -> bool:
+	var uid_int: int
+
+	if path_or_uid.begins_with("uid://"):
+		uid_int = ResourceUID.text_to_id(path_or_uid)
+	else:
+		uid_int = ResourceLoader.get_resource_uid(path_or_uid)
+
+	if uid_int == ResourceUID.INVALID_ID:
+		return false
 
 	_uid_int = uid_int
 	_uid = ResourceUID.id_to_text(uid_int)
-
 	return true
 
 func initialize(node_path: String) -> void:
+	if initialized: return
+
+	initialized = true
 	if not ResourceLoader.exists(node_path):
 		push_error("Error: Path \'%s\' not found or does not exists" % node_path)
 		return
