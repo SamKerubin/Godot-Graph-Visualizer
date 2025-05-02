@@ -1,6 +1,6 @@
 @tool
 extends Resource
-class_name ScriptScopeReference
+class_name ScriptPropertyReference
 
 var _class_name: String = ""
 var _script_vars: Dictionary[String, String] = {}

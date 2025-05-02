@@ -9,7 +9,7 @@ var main_panel_instance: Control
 
 func _enter_tree() -> void:
 	add_autoload_singleton("FileScanner", "res://addons/godot graph visualizer/project_scanners/file_scanner.gd")
-	add_autoload_singleton("GlobalScopeManager", "res://addons/godot graph visualizer/project_scanners/global_scope_manager.gd")
+	add_autoload_singleton("GlobalPropertyManager", "res://addons/godot graph visualizer/project_scanners/global_scope_manager.gd")
 
 	await get_tree().process_frame
 

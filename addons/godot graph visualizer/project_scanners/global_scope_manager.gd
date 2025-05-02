@@ -1,10 +1,10 @@
 @tool
 extends Node
 
-signal scopes_initialized
+signal managers_initialized
 
-var script_scope_manager: ScriptScopeManager = ScriptScopeManager.new()
+var script_property_manager: ScriptPropetyManager = ScriptPropetyManager.new()
 
 func initialize_all_scopes() -> void:
-	script_scope_manager.search_scopes_in_all_scripts()
-	scopes_initialized.emit()
+	script_property_manager.search_scopes_in_all_scripts()
+	managers_initialized.emit()

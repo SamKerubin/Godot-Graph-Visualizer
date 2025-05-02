@@ -1,6 +1,6 @@
 @tool
 extends FileReaderManager
-class_name ScriptScopeManager
+class_name ScriptPropetyManager
 
 signal files_read
 
@@ -8,7 +8,7 @@ const CLASS_DECLARATION_REFERENCE: String = r"^class_name\s+(\w+)"
 const VARIABLE_DECLARATION_REFERENCE: String = \
 	r"(var|const)\s+(\w+)(?::\s*(?:[\w.]+(?:\s*\[\s*[\w\s,]+\s*\])?))?\s*(?:(?::?=)\s*(.+))?"
 
-var _script_references: Dictionary[BaseGraphNodeResource, ScriptScopeReference] = {}
+var _script_properties: Dictionary[BaseGraphNodeResource, ScriptPropertyReference] = {}
 
 var _class_regex: RegEx = RegEx.new()
 var _variable_regex: RegEx = RegEx.new()
@@ -28,13 +28,13 @@ func _read_file(path: String) -> void:
 		if line:
 			if line.begins_with("#"): continue
 
-			var result: ScriptScopeReference = _search_in_line(line, path)
+			var result: ScriptPropertyReference = _search_in_line(line, path)
 			var graph_resource: BaseGraphNodeResource = _find_script_with_path(path)
 			if result: _store_line(result, graph_resource)
 
 	script.close()
 
-func _search_in_line(line: String, path: String) -> ScriptScopeReference:
+func _search_in_line(line: String, path: String) -> ScriptPropertyReference:
 	var c_name: String = ""
 	var class_match: RegExMatch = _class_regex.search(line)
 	if class_match: c_name = class_match.get_string(1)
@@ -51,9 +51,9 @@ func _search_in_line(line: String, path: String) -> ScriptScopeReference:
 
 	var graph_resource: BaseGraphNodeResource = _find_script_with_path(path)
 
-	var scope_reference: ScriptScopeReference = ScriptScopeReference.new() \
-		if not _script_references.has(graph_resource) \
-		else  _script_references[graph_resource]
+	var scope_reference: ScriptPropertyReference = ScriptPropertyReference.new() \
+		if not _script_properties.has(graph_resource) \
+		else  _script_properties[graph_resource]
 
 	if c_name != "": scope_reference.set_class_name(c_name)
 
@@ -62,16 +62,16 @@ func _search_in_line(line: String, path: String) -> ScriptScopeReference:
 
 	return scope_reference
 
-func _store_line(scope_reference: ScriptScopeReference, graph_resource: BaseGraphNodeResource) -> void:
-	_script_references[graph_resource] = scope_reference
+func _store_line(scope_reference: ScriptPropertyReference, graph_resource: BaseGraphNodeResource) -> void:
+	_script_properties[graph_resource] = scope_reference
 
 func _find_script_with_path(path: String) -> BaseGraphNodeResource:
-	for scr: BaseGraphNodeResource in _script_references:
+	for scr: BaseGraphNodeResource in _script_properties:
 		if scr.get_node_path() == path or scr.get_uid_text() == path:
 			return scr
 
 	var new_resource = BaseGraphNodeResource.new(path)
-	_script_references[new_resource] = ScriptScopeReference.new()
+	_script_properties[new_resource] = ScriptPropertyReference.new()
 
 	return new_resource
 
@@ -84,21 +84,21 @@ func search_scopes_in_all_scripts() -> void:
 
 func find_var_from(path: String, var_name: String) -> String:
 	var script: BaseGraphNodeResource = _find_script_with_path(path)
-	return _script_references[script].get_var(var_name)
+	return _script_properties[script].get_var(var_name)
 
 func find_const_from(path: String, const_name: String) -> String:
 	var script: BaseGraphNodeResource = _find_script_with_path(path)
-	return _script_references[script].get_const(const_name)
+	return _script_properties[script].get_const(const_name)
 
 func find_var_from_class(c_name: String, var_name: String) -> String:
-	for r: ScriptScopeReference in _script_references.values():
+	for r: ScriptPropertyReference in _script_properties.values():
 		if r.get_class_name() == c_name:
 			return r.get_var(var_name)
 
 	return ""
 
 func find_const_from_class(c_name: String, const_name: String) -> String:
-	for r: ScriptScopeReference in _script_references.values():
+	for r: ScriptPropertyReference in _script_properties.values():
 		if r.get_class_name() == c_name:
 			return r.get_const(const_name)
 

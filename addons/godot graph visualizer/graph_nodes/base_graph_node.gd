@@ -5,7 +5,7 @@ extends Node
 class_name BaseGraphNode
 
 @export var node_data: BaseGraphNodeResource
-@export var node_scopes: ScriptScopeReference
+@export var node_property: ScriptPropertyReference
 
 func show_data() -> void:
 	print(node_data.get_node_name())
@@ -13,8 +13,8 @@ func show_data() -> void:
 	print(node_data.get_uid_text())
 	print(node_data.get_uid_int())
 	
-	for k: String in node_scopes._script_vars:
-		print("var %s = %s" % [k, node_scopes.get_var(k)])
+	for k: String in node_property._script_vars:
+		print("var %s = %s" % [k, node_property.get_var(k)])
 	
-	for k: String in node_scopes._script_consts:
-		print("const %s = %s" % [k, node_scopes.get_const(k)])
+	for k: String in node_property._script_consts:
+		print("const %s = %s" % [k, node_property.get_const(k)])
