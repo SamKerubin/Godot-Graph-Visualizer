@@ -5,11 +5,10 @@ const MAIN_PANEL: PackedScene = preload("uid://c4h2pps361nfk")
 const ICON: Texture2D = preload("res://addons/icon.png")
 const PLUGIN_NAME: String = "Visualize Project"
 
-var main_panel_instance
+var main_panel_instance: Control
 
 func _enter_tree() -> void:
 	add_autoload_singleton("FileScanner", "res://addons/godot graph visualizer/project_scanners/file_scanner.gd")
-	add_autoload_singleton("ProjectScriptReader", "res://addons/godot graph visualizer/project_scanners/script_scanner/project_script_reader.gd")
 
 	main_panel_instance = MAIN_PANEL.instantiate()
 	print("instance: ", main_panel_instance)

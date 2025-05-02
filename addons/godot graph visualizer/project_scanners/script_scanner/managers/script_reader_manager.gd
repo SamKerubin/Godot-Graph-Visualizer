@@ -1,5 +1,6 @@
 @tool
 extends Node
+class_name ScriptReaderManager
 
 signal line_reached(line: String, from_file: String)
 
