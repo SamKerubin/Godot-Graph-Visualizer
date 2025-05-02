@@ -2,8 +2,6 @@
 extends FileReaderManager
 class_name ScriptPropetyManager
 
-signal files_read
-
 const CLASS_DECLARATION_REFERENCE: String = r"^class_name\s+(\w+)"
 const VARIABLE_DECLARATION_REFERENCE: String = \
 	r"(var|const)\s+(\w+)(?::\s*(?:[\w.]+(?:\s*\[\s*[\w\s,]+\s*\])?))?\s*(?:(?::?=)\s*(.+))?"
@@ -79,8 +77,6 @@ func search_scopes_in_all_scripts() -> void:
 	var scripts: Array = FileScanner.get_files_by_type(FileTypes.FileType.SCRIPT_FILE)
 	for scr: String in scripts:
 		_read_file(scr)
-
-	files_read.emit()
 
 func find_var_from(path: String, var_name: String) -> String:
 	var script: BaseGraphNodeResource = _find_script_with_path(path)

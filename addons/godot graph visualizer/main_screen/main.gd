@@ -5,20 +5,20 @@ extends Control
 @onready var grid_container: GridContainer = $GridContainer
 
 func _enter_tree() -> void:
-	GlobalScopeManager.script_scope_manager.files_read.connect(_on_files_read)
-	GlobalScopeManager.initialize_all_scopes()
+	GlobalPropertyManager.managers_initialized.connect(_on_managers_initialized)
+	GlobalPropertyManager.initialize_all_scopes()
 
 func _button_pressed(node: BaseGraphNode) -> void:
 	node.show_data()
 
-func _on_files_read() -> void:
+func _on_managers_initialized() -> void:
 	create_nodes()
 
 func create_nodes() -> void:
-	for res: BaseGraphNodeResource in GlobalScopeManager.script_scope_manager._script_references:
+	for res: BaseGraphNodeResource in GlobalPropertyManager.script_property_manager._script_properties:
 		var node = BaseGraphNode.new()
 		node.node_data = res
-		node.node_scopes = GlobalScopeManager.script_scope_manager._script_references[res]
+		node.node_property = GlobalPropertyManager.script_property_manager._script_properties[res]
 		var button: Button = Button.new()
 		button.text = node.node_data.get_node_name()
 		button.size = Vector2(100, 100)
