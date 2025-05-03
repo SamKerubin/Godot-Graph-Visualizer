@@ -4,6 +4,10 @@ extends Control
 
 @onready var grid_container: GridContainer = $GridContainer
 
+# Hiii, if you are reading this, i may be taking a break
+# I will be back very soon, dont worry... I just need to make a great plan for what is coming now
+# For now... See ya! :3
+
 func _enter_tree() -> void:
 	GlobalPropertyManager.managers_initialized.connect(_on_managers_initialized)
 	GlobalPropertyManager.initialize_all_scopes()

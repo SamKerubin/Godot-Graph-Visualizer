@@ -14,7 +14,9 @@ func show_data() -> void:
 	print(node_data.get_uid_int())
 	
 	for k: String in node_property._script_vars:
-		print("var %s = %s" % [k, node_property.get_var(k)])
-	
+		var value: String = node_property.get_var(k)
+		print("var %s = %s" % [k, value if value != "" else "null"])
+
 	for k: String in node_property._script_consts:
-		print("const %s = %s" % [k, node_property.get_const(k)])
+		var value: String = node_property.get_const(k)
+		print("const %s = %s" % [k, value if value != "" else "null"])

@@ -1,5 +1,5 @@
 @tool
-extends Node
+extends FileReaderManager
 ## @experimental: This class is being used to test
 class_name ScriptParser
 

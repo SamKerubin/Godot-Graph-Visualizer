@@ -4,4 +4,4 @@ extends BaseGraphNode
 ## future changes 
 class_name SceneGraphNode
 
-@export var scene_data: SceneGraphNodeResource = load("uid://cqhy5psxexec4")
+@export var scene_data: SceneGraphNodeResource
