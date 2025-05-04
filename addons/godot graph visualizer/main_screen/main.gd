@@ -8,10 +8,6 @@ extends Control
 # I will be back very soon, dont worry... I just need to make a great plan for what is coming now
 # For now... See ya! :3
 
-func _enter_tree() -> void:
-	GlobalPropertyManager.managers_initialized.connect(_on_managers_initialized)
-	GlobalPropertyManager.initialize_all_scopes()
-
 func _button_pressed(node: BaseGraphNode) -> void:
 	node.show_data()
 
@@ -24,7 +20,7 @@ func create_nodes() -> void:
 		node.node_data = res
 		node.node_property = GlobalPropertyManager.script_property_manager._script_properties[res]
 		var button: Button = Button.new()
-		button.text = node.node_data.get_node_name()
+		button.text = node.node_data.get_node_name().to_pascal_case()
 		button.size = Vector2(100, 100)
 		grid_container.add_child(button)
 		button.pressed.connect(_button_pressed.bind(node))

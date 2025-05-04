@@ -27,7 +27,11 @@ func _read_file(path: String) -> void:
 			if line.begins_with("#"): continue
 
 			var result: ScriptPropertyReference = _search_in_line(line, path)
-			var graph_resource: BaseGraphNodeResource = _find_script_with_path(path)
+			var graph_resource: BaseGraphNodeResource = find_script_with_path(path)
+			if not graph_resource:
+				graph_resource = BaseGraphNodeResource.new(path)
+				_script_properties[graph_resource] = ScriptPropertyReference.new()
+			
 			if result: _store_line(result, graph_resource)
 
 	script.close()
@@ -47,7 +51,7 @@ func _search_in_line(line: String, path: String) -> ScriptPropertyReference:
 		value_name = var_match.get_string(2)
 		value = var_match.get_string(3)
 
-	var graph_resource: BaseGraphNodeResource = _find_script_with_path(path)
+	var graph_resource: BaseGraphNodeResource = find_script_with_path(path)
 
 	var scope_reference: ScriptPropertyReference = ScriptPropertyReference.new() \
 		if not _script_properties.has(graph_resource) \
@@ -63,27 +67,35 @@ func _search_in_line(line: String, path: String) -> ScriptPropertyReference:
 func _store_line(scope_reference: ScriptPropertyReference, graph_resource: BaseGraphNodeResource) -> void:
 	_script_properties[graph_resource] = scope_reference
 
-func _find_script_with_path(path: String) -> BaseGraphNodeResource:
-	for scr: BaseGraphNodeResource in _script_properties:
-		if scr.get_node_path() == path or scr.get_uid_text() == path:
-			return scr
-
-	var new_resource = BaseGraphNodeResource.new(path)
-	_script_properties[new_resource] = ScriptPropertyReference.new()
-
-	return new_resource
-
-func search_scopes_in_all_scripts() -> void:
+func search_properties_in_all_scripts() -> void:
 	var scripts: Array = FileScanner.get_files_by_type(FileTypes.FileType.SCRIPT_FILE)
 	for scr: String in scripts:
 		_read_file(scr)
 
+func find_script_with_path(path: String) -> BaseGraphNodeResource:
+	for scr: BaseGraphNodeResource in _script_properties:
+		if scr.get_node_path() == path or scr.get_uid_text() == path:
+			return scr
+
+	return null
+
+func find_script_with_class(c_name: String) -> BaseGraphNodeResource:
+	for scr: BaseGraphNodeResource in _script_properties:
+		if _script_properties[scr].get_class_name() == c_name:
+			return scr
+
+	return null
+
 func find_var_from(path: String, var_name: String) -> String:
-	var script: BaseGraphNodeResource = _find_script_with_path(path)
+	var script: BaseGraphNodeResource = find_script_with_path(path)
+	if not script: return ""
+
 	return _script_properties[script].get_var(var_name)
 
 func find_const_from(path: String, const_name: String) -> String:
-	var script: BaseGraphNodeResource = _find_script_with_path(path)
+	var script: BaseGraphNodeResource = find_script_with_path(path)
+	if not script: return ""
+
 	return _script_properties[script].get_const(const_name)
 
 func find_var_from_class(c_name: String, var_name: String) -> String:
