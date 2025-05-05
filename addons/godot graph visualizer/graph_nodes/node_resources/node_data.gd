@@ -2,7 +2,7 @@
 extends Resource
 ##@experimental: This class is currently under development, stay tunned with the constants updates to see
 ## future changes 
-class_name BaseGraphNodeResource
+class_name NodeData
 
 @export var _node_name: String
 @export var _node_path: String
@@ -33,6 +33,7 @@ func initialize(node_path: String) -> void:
 	if initialized: return
 
 	initialized = true
+
 	if not ResourceLoader.exists(node_path):
 		push_error("Error: Path \'%s\' not found or does not exists" % node_path)
 		return
@@ -55,3 +56,11 @@ func get_uid_text() -> String:
 
 func get_uid_int() -> int:
 	return _uid_int
+
+func serialize() -> Dictionary:
+	return {
+		"node_name": get_node_name(),
+		"node_path": get_node_path(),
+		"uid_text": get_uid_text(),
+		"uid_int": get_uid_int()
+	}

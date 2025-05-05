@@ -15,10 +15,9 @@ func _on_managers_initialized() -> void:
 	create_nodes()
 
 func create_nodes() -> void:
-	for res: BaseGraphNodeResource in GlobalPropertyManager.script_property_manager._script_properties:
-		var node = BaseGraphNode.new()
+	for res: ScriptData in GlobalPropertyManager.script_property_manager._script_properties:
+		var node = ScriptGraphNode.new()
 		node.node_data = res
-		node.node_property = GlobalPropertyManager.script_property_manager._script_properties[res]
 		var button: Button = Button.new()
 		button.text = node.node_data.get_node_name().to_pascal_case()
 		button.size = Vector2(100, 100)

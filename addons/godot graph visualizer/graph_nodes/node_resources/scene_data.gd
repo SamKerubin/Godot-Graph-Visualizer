@@ -1,7 +1,5 @@
 @tool
-extends BaseGraphNode
+extends NodeData
 ##@experimental: This class is currently under development, stay tunned with the constants updates to see
 ## future changes 
-class_name ResourceGraphNode
-
-@export var resource_data: ResourceGraphNodeResource
+class_name SceneData

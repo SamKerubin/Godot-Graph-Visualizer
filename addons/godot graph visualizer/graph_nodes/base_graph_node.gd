@@ -4,19 +4,13 @@ extends Node
 ## future changes 
 class_name BaseGraphNode
 
-@export var node_data: BaseGraphNodeResource
-@export var node_property: ScriptPropertyReference
+@export var node_data: NodeData
 
 func show_data() -> void:
-	print(node_data.get_node_name())
-	print(node_data.get_node_path())
-	print(node_data.get_uid_text())
-	print(node_data.get_uid_int())
-	
-	for k: String in node_property._script_vars:
-		var value: String = node_property.get_var(k)
-		print("var %s = %s" % [k, value if value != "" else "null"])
-
-	for k: String in node_property._script_consts:
-		var value: String = node_property.get_const(k)
-		print("const %s = %s" % [k, value if value != "" else "null"])
+	var data: Dictionary = node_data.serialize()
+	for k: Variant in data:
+		if typeof(data[k]) == TYPE_DICTIONARY:
+			for v: String in data[k]:
+				print("%s %s = %s" % [k, v, data[k][v]])
+		else:
+			print(k, ": ",data[k])
