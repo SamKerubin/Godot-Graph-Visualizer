@@ -33,19 +33,12 @@ func _read_file(path: String) -> void:
 	script.close()
 
 func _search_in_line(line: String, path: String) -> ScriptData:
-	var c_name: String = ""
-	var class_match: RegExMatch = _class_regex.search(line)
-	if class_match: c_name = class_match.get_string(1)
-
-	var type: String = ""
-	var value_name: String = ""
-	var value: String = ""
-
-	var var_match: RegExMatch = _variable_regex.search(line)
-	if var_match:
-		type = var_match.get_string(1)
-		value_name = var_match.get_string(2)
-		value = var_match.get_string(3)
+	var c_name: String = _match_class(line)
+	
+	var property_match: Array[String] = _match_property(line)
+	var type: String = property_match[0]
+	var value_name: String = property_match[1]
+	var value: String = property_match[2]
 
 	var script_data: ScriptData = find_script_with_path(path)
 	if not script_data: script_data = ScriptData.new(path)
@@ -61,6 +54,23 @@ func _store_line(script: ScriptData) -> void:
 	if _script_properties.has(script): return
 
 	_script_properties.append(script)
+
+func _match_class(line: String) -> String:
+	var matches: RegExMatch = _class_regex.search(line)
+	if matches: return matches.get_string(1)
+
+	return ""
+
+func _match_property(line: String) -> Array[String]:
+	var matches: RegExMatch = _variable_regex.search(line)
+	if matches: 
+		return [
+			matches.get_string(1), 
+			matches.get_string(2), 
+			matches.get_string(3)
+		]
+
+	return ["", "", ""]
 
 func search_properties_in_all_scripts() -> void:
 	var scripts: Array = FileScanner.get_files_by_type(FileTypes.FileType.SCRIPT_FILE)
