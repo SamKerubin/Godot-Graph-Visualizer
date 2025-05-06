@@ -42,7 +42,7 @@ func get_const(c: String) -> String:
 func get_class_name() -> String:
 	return _class_name
 
-func get_properties() -> Dictionary[String, Variant]:
+func get_properties() -> Dictionary:
 	return {
 		"class_name": get_class_name(),
 		"var": _script_vars,

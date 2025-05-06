@@ -1,6 +1,7 @@
 @tool
 extends FileReaderManager
-class_name ScriptPropetyManager
+
+signal initialize
 
 const CLASS_DECLARATION_REFERENCE: String = r"^class_name\s+(\w+)"
 const VARIABLE_DECLARATION_REFERENCE: String = \
@@ -77,6 +78,8 @@ func search_properties_in_all_scripts() -> void:
 	for scr: String in scripts:
 		_read_file(scr)
 
+	initialize.emit()
+
 func find_script_with_path(path: String) -> ScriptData:
 	for scr: ScriptData in _script_properties:
 		if scr.get_node_path() == path or scr.get_uid_text() == path:
@@ -116,3 +119,6 @@ func find_const_from_class(c_name: String, const_name: String) -> String:
 			return c.get_const(const_name)
 
 	return ""
+
+func get_script_properties() -> Array[ScriptData]:
+	return _script_properties
