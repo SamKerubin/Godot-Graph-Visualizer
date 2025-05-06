@@ -6,6 +6,8 @@ signal initialize
 const SCRIPT_REFERENCE: String = ""
 const INSTANCE_REFERENCE: String = ""
 
+const TEMP_FILE_PATH: String = "user://temp_file.tscn"
+
 var _scene_properties: Array[SceneData]
 
 var _script_regex: RegEx = RegEx.new()
@@ -34,11 +36,11 @@ func _parse_binary_file(path: String) -> String:
 
 	var binary_scene: PackedScene = ResourceLoader.load(path, "PackedScene")
 
-	if ResourceSaver.save(binary_scene, "users://temp_scene.tscn", ResourceSaver.FLAG_CHANGE_PATH) != OK:
+	if ResourceSaver.save(binary_scene, TEMP_FILE_PATH, ResourceSaver.FLAG_CHANGE_PATH) != OK:
 		push_error("Error: Unable to save file \'%s\' as a .tscn archive" % path)
 		return ""
 
-	return "user://temp_scene.tscn"
+	return TEMP_FILE_PATH
 
 func search_properties_in_all_scenes() -> void:
 	var scenes: Array = FileScanner.get_files_by_type(FileTypes.FileType.SCENE_FILE)
@@ -46,3 +48,6 @@ func search_properties_in_all_scenes() -> void:
 		_read_file(scn)
 
 	initialize.emit()
+
+func get_scenes_properties() -> Array[SceneData]:
+	return _scene_properties

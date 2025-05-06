@@ -120,5 +120,5 @@ func find_const_from_class(c_name: String, const_name: String) -> String:
 
 	return ""
 
-func get_script_properties() -> Array[ScriptData]:
+func get_scripts_properties() -> Array[ScriptData]:
 	return _script_properties
