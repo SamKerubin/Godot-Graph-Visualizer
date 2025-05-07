@@ -12,7 +12,23 @@ Well... Im trying to make a project visualizer for your projects in godot!
 
 What does that exactly means?
 
-All your files, scenes, scripts, even resources will be displayed at the editor in a graph-way
+All your scenes files will display in a graph-way
+
+Every node of the graph will have certain data:
+
+- name
+- path
+- uid
+- properties
+- references
+
+With all that, the plugin will display N nodes (N = scene files in project) and show visual relationship between these nodes
+
+But... It needs to open the scene as node, so it can iterate over their properties
+
+So... For now, please dont open something REALLY BIG if you dont want to crash Godot...
+
+(Of course, im going to find a way to do it more clear and simple)
 
 ## Oh, ok cool... But why?
 
@@ -20,13 +36,13 @@ Simple :D I thought that this will be something really helpful for anyone having
 
 *Why?*
 
-Because this plugin allows you to see **ALL** files relations... For example: you have 2 scenes: A.tscn and B.tscn, B.tscn have a reference as a preload to A.tscn:
+Because this plugin allows you to see **ALL** scenes relations... For example: you have 2 scenes: A.tscn and B.tscn, B.tscn have a reference as a preload to A.tscn:
 
 > ***var scene_a = preload("res://A.tscn")***
 
 This plugin will allow you to see that reference in the editor, making it so much easier to see any relation between scenes, scripts or resources
 
-This feature also applies to ".new()" or ".instantiate()" methods
+This feature also applies to ".instantiate()" method
 
 ## Why is it helpful?
 
