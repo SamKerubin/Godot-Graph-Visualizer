@@ -47,9 +47,10 @@ func _search_instances(scn: Node) -> Array[SceneData]:
 	var instances: Array[SceneData] = []
 	for child: Node in scn.get_children():
 		if child is Node:
-			print(child.get_path())
 			if child.scene_file_path != "":
-				instances.append(child)
+				var new_scene: SceneData = find_scene_with_path(child.scene_file_path)
+				if not new_scene: new_scene = SceneData.new(child.scene_file_path)
+				instances.append(new_scene)
 
 			instances += _search_instances(child)
 
