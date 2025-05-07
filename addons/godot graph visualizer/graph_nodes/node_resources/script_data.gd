@@ -14,9 +14,6 @@ func _init(path_or_uid: String) -> void:
 func get_properties() -> ScriptPropertyReference:
 	return _script_properties
 
-func set_properties(new_properties: ScriptPropertyReference) -> void:
-	_script_properties = new_properties
-
 func serialize() -> Dictionary:
 	var script_data: Dictionary = super.serialize()
 	script_data.merge(_script_properties.get_properties())

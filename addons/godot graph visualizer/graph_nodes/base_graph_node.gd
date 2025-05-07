@@ -9,8 +9,4 @@ class_name BaseGraphNode
 func show_data() -> void:
 	var data: Dictionary = node_data.serialize()
 	for k: Variant in data:
-		if typeof(data[k]) == TYPE_DICTIONARY:
-			for v: String in data[k]:
-				print("%s %s = %s" % [k, v, data[k][v]])
-		else:
-			print(k, ": ",data[k])
+		print("%s: %s" , [k, data[k]])

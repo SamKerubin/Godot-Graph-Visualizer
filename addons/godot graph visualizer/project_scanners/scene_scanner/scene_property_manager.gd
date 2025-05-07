@@ -1,53 +1,78 @@
 @tool
-extends FileReaderManager
+extends Node
 
 signal initialize
-
-const SCRIPT_REFERENCE: String = ""
-const INSTANCE_REFERENCE: String = ""
 
 const TEMP_FILE_PATH: String = "user://temp_file.tscn"
 
 var _scene_properties: Array[SceneData]
 
-var _script_regex: RegEx = RegEx.new()
-var _instance_regex: RegEx = RegEx.new()
-
-func _init() -> void:
-	_script_regex.compile(SCRIPT_REFERENCE)
-	_instance_regex.compile(INSTANCE_REFERENCE)
-
-func _read_file(path: String) -> void:
-	path = _parse_binary_file(path)
-	if not path: return
-
-	var scene: FileAccess = FileAccess.open(path, FileAccess.READ)
-	if not scene:
-		push_error("Error: Unable to open file \'%s\'" % path)
+func _check_scene(path: String) -> void:
+	if not ResourceLoader.exists(path):
+		push_error("Error: Invalid path \'%s\'" % path)
 		return
-	
-	while scene.eof_reached():
-		var line: String = scene.get_line()
 
-	scene.close()
+	var scn: PackedScene = ResourceLoader.load(path, "PackedScene")
 
-func _parse_binary_file(path: String) -> String:
-	if path.get_extension() == "tscn": return path
+	var scn_root: Node = scn.instantiate()
 
-	var binary_scene: PackedScene = ResourceLoader.load(path, "PackedScene")
+	var scene_data: SceneData = _search_in_scene(scn_root, path)
+	if scene_data: _store_line(scene_data)
 
-	if ResourceSaver.save(binary_scene, TEMP_FILE_PATH, ResourceSaver.FLAG_CHANGE_PATH) != OK:
-		push_error("Error: Unable to save file \'%s\' as a .tscn archive" % path)
-		return ""
+	scn_root.free()
 
-	return TEMP_FILE_PATH
+func _search_in_scene(scn: Node, path: String) -> SceneData:
+	var scene_data: SceneData = find_scene_with_path(path)
+	if not scene_data: scene_data = SceneData.new(path)
+
+	var script_data: ScriptData = _search_attached_script(scn)
+	if script_data: scene_data.get_properties().set_attached_script(script_data)
+
+	var instances: Array[SceneData] = _search_instances(scn)
+	for inst: SceneData in instances:
+		scene_data.get_properties().add_instance(inst)
+
+	return scene_data
+
+func _search_attached_script(scn: Node) -> ScriptData:
+	var script: Script = scn.get_script()
+	if not script: return null
+
+	var script_data_path: String = script.resource_path
+	var script_data: ScriptData = ScriptPropertyManager.find_script_with_path(script_data_path)
+
+	return script_data
+
+func _search_instances(scn: Node) -> Array[SceneData]:
+	var instances: Array[SceneData] = []
+	for child: Node in scn.get_children():
+		if child is Node:
+			print(child.get_path())
+			if child.scene_file_path != "":
+				instances.append(child)
+
+			instances += _search_instances(child)
+
+	return instances
+
+func _store_line(scene: SceneData) -> void:
+	if _scene_properties.has(scene): return
+
+	_scene_properties.append(scene)
 
 func search_properties_in_all_scenes() -> void:
 	var scenes: Array = FileScanner.get_files_by_type(FileTypes.FileType.SCENE_FILE)
 	for scn: String in scenes:
-		_read_file(scn)
+		_check_scene(scn)
 
 	initialize.emit()
+
+func find_scene_with_path(path: String) -> SceneData:
+	for scn: SceneData in _scene_properties:
+		if scn.get_node_path() == path or scn.get_uid_text() == path:
+			return scn
+
+	return null
 
 func get_scenes_properties() -> Array[SceneData]:
 	return _scene_properties

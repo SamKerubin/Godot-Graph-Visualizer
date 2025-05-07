@@ -1,3 +1,3 @@
 @tool
-extends FileReaderManager
+extends Resource
 class_name SceneParser

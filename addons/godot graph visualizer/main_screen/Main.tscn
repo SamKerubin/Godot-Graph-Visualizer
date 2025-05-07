@@ -17,6 +17,18 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -636.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 4
+
+[node name="GridContainer2" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 637.0
+offset_right = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 columns = 4

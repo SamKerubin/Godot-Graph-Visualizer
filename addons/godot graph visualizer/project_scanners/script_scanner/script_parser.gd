@@ -1,5 +1,5 @@
 @tool
-extends FileReaderManager
+extends Resource
 ## @experimental: This class is being used to test
 class_name ScriptParser
 

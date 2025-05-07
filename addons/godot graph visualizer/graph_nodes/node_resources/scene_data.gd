@@ -13,9 +13,6 @@ func _init(path_or_uid: String) -> void:
 func get_properties() -> ScenePropertyReference:
 	return _scene_properties
 
-func set_properties(new_properties: ScenePropertyReference) -> void:
-	_scene_properties = new_properties
-
 func serialize() -> Dictionary:
 	var scene_data: Dictionary = super.serialize()
 	scene_data.merge(_scene_properties.get_properties())

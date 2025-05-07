@@ -20,9 +20,9 @@ func _enter_tree() -> void:
 
 	ScriptPropertyManager.initialize.connect(main_panel_instance._on_script_manager_initialized)
 	ScriptPropertyManager.search_properties_in_all_scripts()
-#
+
 	ScenePropertyManager.initialize.connect(main_panel_instance._on_scene_manager_initialized)
-	ScenePropertyManager.search_properties_in_all_scenes()
+	ScenePropertyManager.search_properties_in_all_scenes.call_deferred()
 
 	main_panel_instance.visible = false
 

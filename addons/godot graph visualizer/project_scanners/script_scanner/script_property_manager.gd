@@ -1,5 +1,5 @@
 @tool
-extends FileReaderManager
+extends Node
 
 signal initialize
 
@@ -17,6 +17,10 @@ func _init() -> void:
 	_variable_regex.compile(VARIABLE_DECLARATION_REFERENCE)
 
 func _read_file(path: String) -> void:
+	if not ResourceLoader.exists(path):
+		push_error("Error: Invalid path \'%s\'" % path)
+		return
+
 	var script: FileAccess = FileAccess.open(path, FileAccess.READ)
 	if not script:
 		push_error("Error: Unable to open script \'%s\'" % path)
