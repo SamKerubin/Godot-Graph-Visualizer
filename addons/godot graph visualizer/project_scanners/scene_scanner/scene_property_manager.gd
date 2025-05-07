@@ -3,8 +3,6 @@ extends Node
 
 signal initialize
 
-const TEMP_FILE_PATH: String = "user://temp_file.tscn"
-
 var _scene_properties: Array[SceneData]
 
 func _check_scene(path: String) -> void:
@@ -17,7 +15,7 @@ func _check_scene(path: String) -> void:
 	var scn_root: Node = scn.instantiate()
 
 	var scene_data: SceneData = _search_in_scene(scn_root, path)
-	if scene_data: _store_line(scene_data)
+	if scene_data: _update_scene_property(scene_data)
 
 	scn_root.free()
 
@@ -28,9 +26,7 @@ func _search_in_scene(scn: Node, path: String) -> SceneData:
 	var script_data: ScriptData = _search_attached_script(scn)
 	if script_data: scene_data.get_properties().set_attached_script(script_data)
 
-	var instances: Array[SceneData] = _search_instances(scn)
-	for inst: SceneData in instances:
-		scene_data.get_properties().add_instance(inst)
+	_search_instances(scene_data, scn, path)
 
 	return scene_data
 
@@ -38,28 +34,32 @@ func _search_attached_script(scn: Node) -> ScriptData:
 	var script: Script = scn.get_script()
 	if not script: return null
 
-	var script_data_path: String = script.resource_path
+	var script_data_path: String = script.resource_path	
 	var script_data: ScriptData = ScriptPropertyManager.find_script_with_path(script_data_path)
 
 	return script_data
 
-func _search_instances(scn: Node) -> Array[SceneData]:
-	var instances: Array[SceneData] = []
+func _search_instances(scene_data: SceneData, scn: Node, path: String) -> void:
 	for child: Node in scn.get_children():
 		if child is Node:
 			if child.scene_file_path != "":
 				var new_scene: SceneData = find_scene_with_path(child.scene_file_path)
 				if not new_scene: new_scene = SceneData.new(child.scene_file_path)
-				instances.append(new_scene)
+				
+				print("instance: ", child.name, " from: ", scene_data.get_node_name())
+				var parent_scene_data: SceneData = scene_data
+				parent_scene_data.get_properties().add_instance(new_scene)
+				_update_scene_property(parent_scene_data)
 
-			instances += _search_instances(child)
+				_search_instances(new_scene, child, child.scene_file_path)
 
-	return instances
+func _update_scene_property(scene_data: SceneData) -> void:
+	if not _scene_properties.has(scene_data):
+		_scene_properties.append(scene_data)
+		return
 
-func _store_line(scene: SceneData) -> void:
-	if _scene_properties.has(scene): return
-
-	_scene_properties.append(scene)
+	var scene_index: int = _scene_properties.find(scene_data)
+	_scene_properties.set(scene_index, scene_data)
 
 func search_properties_in_all_scenes() -> void:
 	var scenes: Array = FileScanner.get_files_by_type(FileTypes.FileType.SCENE_FILE)
