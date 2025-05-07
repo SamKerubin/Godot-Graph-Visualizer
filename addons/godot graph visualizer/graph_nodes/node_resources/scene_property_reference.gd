@@ -2,11 +2,19 @@
 extends Resource
 class_name ScenePropertyReference
 
-var _scene_instances: Array[SceneData]
+var _scene_instances: Dictionary[SceneData, int]
 var _attached_script: ScriptData
 
 func add_instance(instance: SceneData) -> void:
-	_scene_instances.append(instance)
+	if _scene_instances.has(instance):
+		var actual_instances: int = _scene_instances.get(instance)
+		actual_instances += 1
+
+		_scene_instances.set(instance, actual_instances)
+
+		return
+
+	_scene_instances[instance] = 1
 
 func set_attached_script(attached_script: ScriptData) -> bool:
 	if _attached_script:
@@ -30,7 +38,10 @@ func get_attached_script() -> ScriptData:
 func get_properties() -> Dictionary:
 	var instances_serialized: Array[Dictionary] = []
 	for inst: SceneData in _scene_instances:
-		instances_serialized.append(inst.serialize())
+		instances_serialized.append({ 
+			"node": inst.serialize(), 
+			"times_instantiated": _scene_instances[inst] 
+		})
 
 	return {
 		"attached_script": get_attached_script().serialize() if get_attached_script() else {},

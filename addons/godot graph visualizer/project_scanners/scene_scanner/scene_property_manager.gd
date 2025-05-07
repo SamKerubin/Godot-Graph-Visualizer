@@ -6,6 +6,8 @@ signal initialize
 var _scene_properties: Array[SceneData]
 
 func _check_scene(path: String) -> void:
+	if find_scene_with_path(path): return
+
 	if not ResourceLoader.exists(path):
 		push_error("Error: Invalid path \'%s\'" % path)
 		return
@@ -17,6 +19,8 @@ func _check_scene(path: String) -> void:
 	var scene_data: SceneData = _search_in_scene(scn_root, path)
 	if scene_data: _update_scene_property(scene_data)
 
+	_search_instances(scene_data, scn_root)
+
 	scn_root.free()
 
 func _search_in_scene(scn: Node, path: String) -> SceneData:
@@ -26,32 +30,30 @@ func _search_in_scene(scn: Node, path: String) -> SceneData:
 	var script_data: ScriptData = _search_attached_script(scn)
 	if script_data: scene_data.get_properties().set_attached_script(script_data)
 
-	_search_instances(scene_data, scn, path)
-
 	return scene_data
 
 func _search_attached_script(scn: Node) -> ScriptData:
 	var script: Script = scn.get_script()
 	if not script: return null
 
-	var script_data_path: String = script.resource_path	
+	var script_data_path: String = script.resource_path
 	var script_data: ScriptData = ScriptPropertyManager.find_script_with_path(script_data_path)
 
 	return script_data
 
-func _search_instances(scene_data: SceneData, scn: Node, path: String) -> void:
-	for child: Node in scn.get_children():
-		if child is Node:
-			if child.scene_file_path != "":
-				var new_scene: SceneData = find_scene_with_path(child.scene_file_path)
-				if not new_scene: new_scene = SceneData.new(child.scene_file_path)
-				
-				print("instance: ", child.name, " from: ", scene_data.get_node_name())
-				var parent_scene_data: SceneData = scene_data
-				parent_scene_data.get_properties().add_instance(new_scene)
-				_update_scene_property(parent_scene_data)
+func _search_instances(scene_data: SceneData, scn: Node) -> void:
+	if scn.get_children().is_empty(): return
+	print(scn ,": ", scn.get_children())
 
-				_search_instances(new_scene, child, child.scene_file_path)
+	for child: Node in scn.get_children():
+		if child.scene_file_path != "":
+			var new_scene: SceneData = find_scene_with_path(child.scene_file_path)
+			if not new_scene: new_scene = SceneData.new(child.scene_file_path)
+
+			scene_data.get_properties().add_instance(new_scene)
+			_update_scene_property(new_scene)
+
+			_search_instances(new_scene, child)
 
 func _update_scene_property(scene_data: SceneData) -> void:
 	if not _scene_properties.has(scene_data):
