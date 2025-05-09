@@ -4,7 +4,7 @@ extends NodeData
 ## future changes 
 class_name SceneData
 
-@export var _scene_properties: ScenePropertyReference
+var _scene_properties: ScenePropertyReference
 
 func _init(path_or_uid: String) -> void:
 	_scene_properties = ScenePropertyReference.new()

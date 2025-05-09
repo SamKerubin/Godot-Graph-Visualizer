@@ -4,10 +4,10 @@ extends Resource
 ## future changes 
 class_name NodeData
 
-@export var _node_name: String
-@export var _node_path: String
-@export var _uid: String = "uid://<invalid>"
-@export var _uid_int: int = ResourceUID.INVALID_ID
+var _node_name: String
+var _node_path: String
+var _uid: String = "uid://<invalid>"
+var _uid_int: int = ResourceUID.INVALID_ID
 
 var initialized: bool = false
 

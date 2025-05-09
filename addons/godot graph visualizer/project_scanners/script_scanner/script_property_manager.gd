@@ -30,16 +30,19 @@ func _read_file(path: String) -> void:
 		var line: String = script.get_line()
 		if line:
 			if line.begins_with("#"): continue
+			while line.ends_with("\\"):
+				line = line.replace("\\", "")
+				line += script.get_line().replace("\t", "")
 
 			var result: ScriptData = _search_in_line(line, path)
-			
+
 			if result: _store_line(result)
 
 	script.close()
 
 func _search_in_line(line: String, path: String) -> ScriptData:
 	var c_name: String = _match_class(line)
-	
+
 	var property_match: Array[String] = _match_property(line)
 	var type: String = property_match[0]
 	var value_name: String = property_match[1]
@@ -68,10 +71,10 @@ func _match_class(line: String) -> String:
 
 func _match_property(line: String) -> Array[String]:
 	var matches: RegExMatch = _variable_regex.search(line)
-	if matches: 
+	if matches:
 		return [
-			matches.get_string(1), 
-			matches.get_string(2), 
+			matches.get_string(1),
+			matches.get_string(2),
 			matches.get_string(3)
 		]
 

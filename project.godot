@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 FileScanner="*res://addons/godot graph visualizer/project_scanners/file_scanner.gd"
 ScriptPropertyManager="*res://addons/godot graph visualizer/project_scanners/script_scanner/script_property_manager.gd"
 ScenePropertyManager="*res://addons/godot graph visualizer/project_scanners/scene_scanner/scene_property_manager.gd"
+ScriptParserManager="*res://addons/godot graph visualizer/project_scanners/script_scanner/script_parser_manager.gd"
 
 [debug]
 

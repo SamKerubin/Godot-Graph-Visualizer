@@ -43,7 +43,6 @@ func _search_attached_script(scn: Node) -> ScriptData:
 
 func _search_instances(scene_data: SceneData, scn: Node) -> void:
 	if scn.get_children().is_empty(): return
-	print(scn ,": ", scn.get_children())
 
 	for child: Node in scn.get_children():
 		if child.scene_file_path != "":
@@ -54,6 +53,9 @@ func _search_instances(scene_data: SceneData, scn: Node) -> void:
 			_update_scene_property(new_scene)
 
 			_search_instances(new_scene, child)
+			continue
+
+		_search_instances(scene_data, child)
 
 func _update_scene_property(scene_data: SceneData) -> void:
 	if not _scene_properties.has(scene_data):

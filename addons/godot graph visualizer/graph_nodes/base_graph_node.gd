@@ -4,7 +4,7 @@ extends Node
 ## future changes 
 class_name BaseGraphNode
 
-@export var node_data: NodeData
+var node_data: NodeData
 
 func show_data() -> void:
 	var data: Dictionary = node_data.serialize()

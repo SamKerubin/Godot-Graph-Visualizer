@@ -4,8 +4,8 @@ extends NodeData
 ## future changes 
 class_name ScriptData
 
-@export var _script_properties: ScriptPropertyReference
-@export var _active_scenes: Array[SceneData]
+var _script_properties: ScriptPropertyReference
+var _active_scenes: Array[SceneData]
 
 func _init(path_or_uid: String) -> void:
 	_script_properties = ScriptPropertyReference.new()

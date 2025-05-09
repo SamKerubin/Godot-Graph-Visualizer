@@ -11,6 +11,7 @@ func _enter_tree() -> void:
 	add_autoload_singleton("FileScanner", "res://addons/godot graph visualizer/project_scanners/file_scanner.gd")
 	add_autoload_singleton("ScriptPropertyManager", "res://addons/godot graph visualizer/project_scanners/script_scanner/script_property_manager.gd")
 	add_autoload_singleton("ScenePropertyManager", "res://addons/godot graph visualizer/project_scanners/scene_scanner/scene_property_manager.gd")
+	add_autoload_singleton("ScriptParserManager", "res://addons/godot graph visualizer/project_scanners/script_scanner/script_parser_manager.gd")
 
 	await get_tree().process_frame
 

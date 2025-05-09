@@ -6,15 +6,7 @@ var _scene_instances: Dictionary[SceneData, int]
 var _attached_script: ScriptData
 
 func add_instance(instance: SceneData) -> void:
-	if _scene_instances.has(instance):
-		var actual_instances: int = _scene_instances.get(instance)
-		actual_instances += 1
-
-		_scene_instances.set(instance, actual_instances)
-
-		return
-
-	_scene_instances[instance] = 1
+	_scene_instances[instance] = _scene_instances.get(instance, 0) + 1
 
 func set_attached_script(attached_script: ScriptData) -> bool:
 	if _attached_script:
@@ -22,7 +14,7 @@ func set_attached_script(attached_script: ScriptData) -> bool:
 		return false
 
 	_attached_script = attached_script
-
+ 
 	return true
 
 func get_instance_with_path(path: String) -> SceneData:
