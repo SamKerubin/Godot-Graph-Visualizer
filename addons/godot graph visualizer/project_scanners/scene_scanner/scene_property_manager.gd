@@ -5,6 +5,7 @@ signal initialize
 
 var _scene_properties: Array[SceneData]
 
+#region Scene Reading
 func _check_scene(path: String) -> void:
 	if find_scene_with_path(path): return
 
@@ -71,7 +72,9 @@ func search_properties_in_all_scenes() -> void:
 		_check_scene(scn)
 
 	initialize.emit()
+#endregion
 
+#region Get Scene Property
 func find_scene_with_path(path: String) -> SceneData:
 	for scn: SceneData in _scene_properties:
 		if scn.get_node_path() == path or scn.get_uid_text() == path:
@@ -81,3 +84,4 @@ func find_scene_with_path(path: String) -> SceneData:
 
 func get_scenes_properties() -> Array[SceneData]:
 	return _scene_properties
+#endregion

@@ -5,6 +5,7 @@ class_name ScenePropertyReference
 var _scene_instances: Dictionary[SceneData, int]
 var _attached_script: ScriptData
 
+#region Setters
 func add_instance(instance: SceneData) -> void:
 	_scene_instances[instance] = _scene_instances.get(instance, 0) + 1
 
@@ -16,7 +17,9 @@ func set_attached_script(attached_script: ScriptData) -> bool:
 	_attached_script = attached_script
  
 	return true
+#endregion
 
+#region Getters
 func get_instance_with_path(path: String) -> SceneData:
 	for scn: SceneData in _scene_instances:
 		if scn.get_node_path() == path or scn.get_uid_text() == path:
@@ -39,3 +42,4 @@ func get_properties() -> Dictionary:
 		"attached_script": get_attached_script().serialize() if get_attached_script() else {},
 		"instance": instances_serialized
 	}
+#endregion

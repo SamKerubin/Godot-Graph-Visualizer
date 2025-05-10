@@ -45,6 +45,7 @@ func initialize(node_path: String) -> void:
 	_node_path = node_path
 	_node_name = node_path.get_file().get_basename()
 
+#region Getters
 func get_node_name() -> String:
 	return _node_name
 
@@ -64,3 +65,4 @@ func serialize() -> Dictionary:
 		"uid_text": get_uid_text(),
 		"uid_int": get_uid_int()
 	}
+#endregion

@@ -12,10 +12,11 @@ var _script_properties: Array[ScriptData]
 var _class_regex: RegEx = RegEx.new()
 var _variable_regex: RegEx = RegEx.new()
 
-func _init() -> void:
+func _ready() -> void:
 	_class_regex.compile(CLASS_DECLARATION_REFERENCE)
 	_variable_regex.compile(VARIABLE_DECLARATION_REFERENCE)
 
+#region Reading Scripts
 func _read_file(path: String) -> void:
 	if not ResourceLoader.exists(path):
 		push_error("Error: Invalid path \'%s\'" % path)
@@ -29,7 +30,9 @@ func _read_file(path: String) -> void:
 	while not script.eof_reached():
 		var line: String = script.get_line()
 		if line:
-			if line.begins_with("#"): continue
+			if line.contains("#"):
+				line = line.get_slice("#", 0)
+
 			while line.ends_with("\\"):
 				line = line.replace("\\", "")
 				line += script.get_line().replace("\t", "")
@@ -86,7 +89,9 @@ func search_properties_in_all_scripts() -> void:
 		_read_file(scr)
 
 	initialize.emit()
+#endregion
 
+#region Get Script Property
 func find_script_with_path(path: String) -> ScriptData:
 	for scr: ScriptData in _script_properties:
 		if scr.get_node_path() == path or scr.get_uid_text() == path:
@@ -96,7 +101,7 @@ func find_script_with_path(path: String) -> ScriptData:
 
 func find_script_with_class(c_name: String) -> ScriptData:
 	for scr: ScriptData in _script_properties:
-		if scr.get_node_path() == c_name:
+		if scr.get_properties().get_class_name() == c_name:
 			return scr
 
 	return null
@@ -129,3 +134,4 @@ func find_const_from_class(c_name: String, const_name: String) -> String:
 
 func get_scripts_properties() -> Array[ScriptData]:
 	return _script_properties
+#endregion

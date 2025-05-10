@@ -6,6 +6,7 @@ var _class_name: String = ""
 var _script_vars: Dictionary[String, String] = {}
 var _script_consts: Dictionary[String, String] = {}
 
+#region Add Property
 func add_var(var_name: String, value: String) -> bool:
 	if _script_vars.has(var_name):
 		push_error("Error: Already declarated var \'%s\'" % var_name)
@@ -23,7 +24,9 @@ func add_const(const_name: String, value: String) -> bool:
 	_script_consts[const_name] = value
 
 	return true
+#endregion
 
+#region Get Property
 func set_class_name(c_name: String) -> bool:
 	if _class_name != "":
 		push_error("Error: Already declarated a class_name \'%s\'" % c_name)
@@ -48,3 +51,4 @@ func get_properties() -> Dictionary:
 		"var": _script_vars,
 		"const": _script_consts
 	}
+#endregion

@@ -11,6 +11,7 @@ func _init(path_or_uid: String) -> void:
 	_script_properties = ScriptPropertyReference.new()
 	super._init(path_or_uid)
 
+#region Getters
 func get_properties() -> ScriptPropertyReference:
 	return _script_properties
 
@@ -19,3 +20,4 @@ func serialize() -> Dictionary:
 	script_data.merge(_script_properties.get_properties())
 
 	return script_data
+#endregion
