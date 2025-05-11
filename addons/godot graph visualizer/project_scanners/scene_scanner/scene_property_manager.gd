@@ -38,7 +38,7 @@ func _search_attached_script(scn: Node) -> ScriptData:
 	if not script: return null
 
 	var script_data_path: String = script.resource_path
-	var script_data: ScriptData = ScriptPropertyManager.find_script_with_path(script_data_path)
+	var script_data: ScriptData = ScriptParserManager.find_script_with_path(script_data_path)
 
 	return script_data
 

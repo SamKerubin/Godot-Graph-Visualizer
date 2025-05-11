@@ -45,6 +45,12 @@ func get_const(c: String) -> String:
 func get_class_name() -> String:
 	return _class_name
 
+func get_vars() -> Dictionary[String, String]:
+	return _script_vars
+
+func get_consts() -> Dictionary[String, String]:
+	return _script_consts
+
 func get_properties() -> Dictionary:
 	return {
 		"class_name": get_class_name(),

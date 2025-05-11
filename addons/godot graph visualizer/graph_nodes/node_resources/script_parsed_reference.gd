@@ -4,29 +4,23 @@ class_name ScriptParsedReference
 
 var script_data: ScriptData
 
-var _load_reference: Dictionary[SceneData, int]
-var _preload_reference: Dictionary[SceneData, int]
-var _instance_refenrence: Dictionary[SceneData, int]
+var _load_reference: Dictionary[String, int]
+var _preload_reference: Dictionary[String, int]
+var _instance_refenrence: Dictionary[String, int]
 
-func add_load(scene: SceneData) -> void:
-	_load_reference[scene] = _load_reference.get(scene, 0) + 1
+func add_load(path: String) -> void:
+	_load_reference[path] = _load_reference.get(path, 0) + 1
 
-func add_preload(scene: SceneData) -> void:
-	_preload_reference[scene] = _load_reference.get(scene, 0) + 1
+func add_preload(path: String) -> void:
+	_preload_reference[path] = _load_reference.get(path, 0) + 1
 
-func add_instance(scene: SceneData) -> void:
-	_instance_refenrence[scene] = _instance_refenrence.get(scene, 0) + 1
+func add_instance(path: String) -> void:
+	_instance_refenrence[path] = _instance_refenrence.get(path, 0) + 1
 
 func get_parsed_properties() -> Dictionary:
-	var load_serialized: Dictionary[String, int] = {}
-	var preload_serialized: Dictionary[String, int] = {}
-	var instance_serialized: Dictionary[String, int] = {}
-
-	for scn: SceneData in _load_reference:
-		load_serialized.set(scn.get_node_path(), _load_reference[scn])
 
 	return {
-		"load": load_serialized,
-		"preload": preload_serialized,
-		"instance": instance_serialized
+		"load": _load_reference,
+		"preload": _preload_reference,
+		"instance": _instance_refenrence
 	}

@@ -1,13 +1,14 @@
 @tool
-extends Node
+extends Resource
+class_name ScriptPropertyManager
 
-signal initialize
+signal property_created(path: String, property: ScriptPropertyReference)
 
 const CLASS_DECLARATION_REFERENCE: String = r"^class_name\s+(\w+)"
 const VARIABLE_DECLARATION_REFERENCE: String = \
 	r"(var|const)\s+(\w+)(?::\s*(?:[\w.]+(?:\s*\[\s*[\w\s,]+\s*\])?))?\s*(?:(?::?=)\s*(.+))?"
 
-var _script_properties: Array[ScriptData]
+var _script_properties: Dictionary[String, ScriptPropertyReference]
 
 var _class_regex: RegEx = RegEx.new()
 var _variable_regex: RegEx = RegEx.new()
@@ -37,13 +38,13 @@ func _read_file(path: String) -> void:
 				line = line.replace("\\", "")
 				line += script.get_line().replace("\t", "")
 
-			var result: ScriptData = _search_in_line(line, path)
+			var result: ScriptPropertyReference = _search_in_line(line, path)
 
-			if result: _store_line(result)
+			if result: _store_line(path, result)
 
 	script.close()
 
-func _search_in_line(line: String, path: String) -> ScriptData:
+func _search_in_line(line: String, path: String) -> ScriptPropertyReference:
 	var c_name: String = _match_class(line)
 
 	var property_match: Array[String] = _match_property(line)
@@ -51,20 +52,21 @@ func _search_in_line(line: String, path: String) -> ScriptData:
 	var value_name: String = property_match[1]
 	var value: String = property_match[2]
 
-	var script_data: ScriptData = find_script_with_path(path)
-	if not script_data: script_data = ScriptData.new(path)
+	var script_property: ScriptPropertyReference = ScriptPropertyReference.new()
 
-	if c_name != "": script_data.get_properties().set_class_name(c_name)
+	if c_name != "": script_property.set_class_name(c_name)
 
-	if type == "var": script_data.get_properties().add_var(value_name, value)
-	elif type == "const": script_data.get_properties().add_const(value_name, value)
+	if type == "var": script_property.add_var(value_name, value)
+	elif type == "const": script_property.add_const(value_name, value)
 
-	return script_data
+	property_created.emit(path, script_property)
 
-func _store_line(script: ScriptData) -> void:
-	if _script_properties.has(script): return
+	return script_property
 
-	_script_properties.append(script)
+func _store_line(path: String, script: ScriptPropertyReference) -> void:
+	if _script_properties.has(path): return
+
+	_script_properties.set(path, script)
 
 func _match_class(line: String) -> String:
 	var matches: RegExMatch = _class_regex.search(line)
@@ -87,51 +89,9 @@ func search_properties_in_all_scripts() -> void:
 	var scripts: Array = FileScanner.get_files_by_type(FileTypes.FileType.SCRIPT_FILE)
 	for scr: String in scripts:
 		_read_file(scr)
-
-	initialize.emit()
 #endregion
 
 #region Get Script Property
-func find_script_with_path(path: String) -> ScriptData:
-	for scr: ScriptData in _script_properties:
-		if scr.get_node_path() == path or scr.get_uid_text() == path:
-			return scr
-
-	return null
-
-func find_script_with_class(c_name: String) -> ScriptData:
-	for scr: ScriptData in _script_properties:
-		if scr.get_properties().get_class_name() == c_name:
-			return scr
-
-	return null
-
-func find_var_from(path: String, var_name: String) -> String:
-	var script: ScriptData = find_script_with_path(path)
-	if not script: return ""
-
-	return script.get_properties().get_var(var_name)
-
-func find_const_from(path: String, const_name: String) -> String:
-	var script: ScriptData = find_script_with_path(path)
-	if not script: return ""
-
-	return script.get_properties().get_const(const_name)
-
-func find_var_from_class(c_name: String, var_name: String) -> String:
-	for v: ScriptData in _script_properties:
-		if v.get_properties().get_class_name() == c_name:
-			return v.get_var(var_name)
-
-	return ""
-
-func find_const_from_class(c_name: String, const_name: String) -> String:
-	for c: ScriptData in _script_properties:
-		if c.get_properties().get_class_name() == c_name:
-			return c.get_const(const_name)
-
-	return ""
-
-func get_scripts_properties() -> Array[ScriptData]:
+func get_script_properties() -> Dictionary[String, ScriptPropertyReference]:
 	return _script_properties
 #endregion

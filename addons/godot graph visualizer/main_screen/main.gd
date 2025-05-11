@@ -8,14 +8,14 @@ extends Control
 func _button_pressed(node: BaseGraphNode) -> void:
 	node.show_data()
 
-func _on_script_manager_initialized() -> void:
-	create_script_nodes()
-
 func _on_scene_manager_initialized() -> void:
 	create_scene_nodes()
 
+func _on_scripts_parsed() -> void: 
+	create_script_nodes()
+
 func create_script_nodes() -> void:
-	for scr: ScriptData in ScriptPropertyManager.get_scripts_properties():
+	for scr: ScriptData in ScriptParserManager.get_parsed_scripts():
 		var node = ScriptGraphNode.new()
 		node.node_data = scr
 		var button: Button = Button.new()

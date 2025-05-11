@@ -7,8 +7,4 @@ class_name ScriptGraphNode
 func show_data() -> void:
 	var data: Dictionary = node_data.serialize()
 	for k: String in data:
-		if typeof(data[k]) == TYPE_DICTIONARY:
-			for v: String in data[k]:
-				print("\t%s %s = %s" % [k, v, data[k][v]])
-		else:
-			print(k, ": ",data[k])
+		print(k + ": " + data[k])
