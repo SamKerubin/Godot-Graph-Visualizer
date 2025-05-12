@@ -40,7 +40,7 @@ func _parse_script(script_path: String) -> void:
 		var instance: String = matches[2]
 		print("type ", type, " path " , path, " instance ", instance)
 
-		if not instance == "null":
+		if instance != "null":
 
 			parsed_script.add_instance(path)
 
