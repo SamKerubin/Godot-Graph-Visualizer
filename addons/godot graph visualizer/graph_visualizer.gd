@@ -24,7 +24,6 @@ func _enter_tree() -> void:
 	ScenePropertyManager.initialize.connect(main_panel_instance._on_scene_manager_initialized)
 	ScenePropertyManager.search_properties_in_all_scenes.call_deferred()
 
-
 	main_panel_instance.visible = false
 
 	_make_visible(false)

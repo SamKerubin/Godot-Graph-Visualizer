@@ -7,4 +7,4 @@ class_name ScriptGraphNode
 func show_data() -> void:
 	var data: Dictionary = node_data.serialize()
 	for k: String in data:
-		print(k + ": " + data[k])
+		print(k , ": ", data[k])

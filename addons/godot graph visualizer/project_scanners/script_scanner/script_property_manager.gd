@@ -2,20 +2,20 @@
 extends Resource
 class_name ScriptPropertyManager
 
-signal property_created(path: String, property: ScriptPropertyReference)
-
 const CLASS_DECLARATION_REFERENCE: String = r"^class_name\s+(\w+)"
-const VARIABLE_DECLARATION_REFERENCE: String = \
-	r"(var|const)\s+(\w+)(?::\s*(?:[\w.]+(?:\s*\[\s*[\w\s,]+\s*\])?))?\s*(?:(?::?=)\s*(.+))?"
+const VARIABLE_DECLARATION_REFERENCE: String = r"(var|const)\s+(\w+)(?::\s*(?:[\w.]+(?:\s*[\s*[\w\s,]+\s*\])?))?\s*(?:(?::?=)\s*(.+))?"
 
 var _script_properties: Dictionary[String, ScriptPropertyReference]
 
 var _class_regex: RegEx = RegEx.new()
 var _variable_regex: RegEx = RegEx.new()
 
-func _ready() -> void:
-	_class_regex.compile(CLASS_DECLARATION_REFERENCE)
-	_variable_regex.compile(VARIABLE_DECLARATION_REFERENCE)
+func _init() -> void:
+	if _class_regex.compile(CLASS_DECLARATION_REFERENCE) != OK:
+		push_error("Error: Failed to compile class declaration regex")
+
+	if _variable_regex.compile(VARIABLE_DECLARATION_REFERENCE) != OK:
+		push_error("Error: Failed to compile variable declaration regex")
 
 #region Reading Scripts
 func _read_file(path: String) -> void:
@@ -28,6 +28,7 @@ func _read_file(path: String) -> void:
 		push_error("Error: Unable to open script \'%s\'" % path)
 		return
 
+	var result: ScriptPropertyReference = ScriptPropertyReference.new()
 	while not script.eof_reached():
 		var line: String = script.get_line()
 		if line:
@@ -38,13 +39,13 @@ func _read_file(path: String) -> void:
 				line = line.replace("\\", "")
 				line += script.get_line().replace("\t", "")
 
-			var result: ScriptPropertyReference = _search_in_line(line, path)
+			result = _search_in_line(line, result)
 
-			if result: _store_line(path, result)
+	if result: _store_line(path, result)
 
 	script.close()
 
-func _search_in_line(line: String, path: String) -> ScriptPropertyReference:
+func _search_in_line(line: String, script_property: ScriptPropertyReference) -> ScriptPropertyReference:
 	var c_name: String = _match_class(line)
 
 	var property_match: Array[String] = _match_property(line)
@@ -52,14 +53,10 @@ func _search_in_line(line: String, path: String) -> ScriptPropertyReference:
 	var value_name: String = property_match[1]
 	var value: String = property_match[2]
 
-	var script_property: ScriptPropertyReference = ScriptPropertyReference.new()
-
 	if c_name != "": script_property.set_class_name(c_name)
 
 	if type == "var": script_property.add_var(value_name, value)
 	elif type == "const": script_property.add_const(value_name, value)
-
-	property_created.emit(path, script_property)
 
 	return script_property
 
@@ -83,7 +80,7 @@ func _match_property(line: String) -> Array[String]:
 			matches.get_string(3)
 		]
 
-	return ["", "", ""]
+	return ["null", "null", "null"]
 
 func search_properties_in_all_scripts() -> void:
 	var scripts: Array = FileScanner.get_files_by_type(FileTypes.FileType.SCRIPT_FILE)
@@ -92,6 +89,15 @@ func search_properties_in_all_scripts() -> void:
 #endregion
 
 #region Get Script Property
+func find_script_property_with_path(path: String) -> ScriptPropertyReference:
+	return _script_properties[path]
+
+func find_script_property_with_class(c_name: String) -> ScriptPropertyReference:
+	for prop: ScriptPropertyReference in _script_properties.values():
+		if prop.get_class_name() == c_name: return prop
+	
+	return null
+
 func get_script_properties() -> Dictionary[String, ScriptPropertyReference]:
 	return _script_properties
 #endregion
