@@ -7,6 +7,4 @@ class_name BaseGraphNode
 var node_data: NodeData
 
 func show_data() -> void:
-	var data: Dictionary = node_data.serialize()
-	for k: Variant in data:
-		print("%s: %s" , [k, data[k]])
+	print(JSON.stringify(node_data.serialize(), "\t"))

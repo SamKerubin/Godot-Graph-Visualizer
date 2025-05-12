@@ -18,6 +18,7 @@ func create_script_nodes() -> void:
 	for scr: ScriptData in ScriptParserManager.get_parsed_scripts():
 		var node = ScriptGraphNode.new()
 		node.node_data = scr
+
 		var button: Button = Button.new()
 		button.text = node.node_data.get_node_name().to_pascal_case()
 		button.size = Vector2(100, 100)

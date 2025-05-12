@@ -8,8 +8,8 @@ var _script_consts: Dictionary[String, String] = {}
 
 #region Add Property
 func add_var(var_name: String, value: String) -> bool:
-	if _script_vars.has(var_name):
-		push_error("Error: Already declarated var \'%s\'" % var_name)
+	if _script_vars.has(var_name) or _script_consts.has(var_name):
+		push_error("Error: Already declarated property \'%s\'" % var_name)
 		return false
 
 	_script_vars[var_name] = value
@@ -17,8 +17,8 @@ func add_var(var_name: String, value: String) -> bool:
 	return true
 
 func add_const(const_name: String, value: String) -> bool:
-	if _script_consts.has(const_name):
-		push_error("Error: Already declarated const \'%s\'" % const_name)
+	if _script_consts.has(const_name) or _script_vars.has(const_name):
+		push_error("Error: Already declarated property \'%s\'" % const_name)
 		return false
 
 	_script_consts[const_name] = value

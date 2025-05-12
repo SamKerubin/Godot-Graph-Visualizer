@@ -12,10 +12,6 @@ func _init(path_or_uid: String) -> void:
 	super._init(path_or_uid)
 
 func set_parsed_properties(parsed_properties: ScriptParsedReference) -> void:
-	if _script_parsed_properties:
-		push_error("Error: Already setted a parsed reference to script \'%s\'" % get_node_name())
-		return
-
 	_script_parsed_properties = parsed_properties
 
 #region Getters

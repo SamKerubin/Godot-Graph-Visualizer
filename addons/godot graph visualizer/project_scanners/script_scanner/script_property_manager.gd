@@ -89,9 +89,6 @@ func search_properties_in_all_scripts() -> void:
 #endregion
 
 #region Get Script Property
-func find_script_property_with_path(path: String) -> ScriptPropertyReference:
-	return _script_properties[path]
-
 func find_script_property_with_class(c_name: String) -> ScriptPropertyReference:
 	for prop: ScriptPropertyReference in _script_properties.values():
 		if prop.get_class_name() == c_name: return prop

@@ -5,7 +5,7 @@ signal initialize
 
 const SCENE_REFERENCE: String = \
 	r"(?:(preload|load)\(\s*(\"(?:res|user|uid)://[^\"]*\"|[a-zA-Z_]\w*)\s*\)|" \
-	+ r"([a-zA-Z_]\w*))(\.instantiate\(\))?"
+	+ r"([a-zA-Z_]\w*))(\.instantiate\(\)$)?"
 
 var _scene_reference_regex: RegEx = RegEx.new()
 
@@ -20,11 +20,9 @@ func _ready() -> void:
 	_script_properties = ScriptPropertyManager.new()
 
 #region Script Parsing
-func _parse_script(script_path: String) -> void:
+func _parse_script(script_path: String, script_properties: ScriptPropertyReference) -> void:
 	var script: ScriptData = ScriptData.new(script_path)
 	var parsed_script: ScriptParsedReference = ScriptParsedReference.new()
-	var script_properties: ScriptPropertyReference = _script_properties \
-								.find_script_property_with_path(script_path)
 
 	var script_vars: Dictionary[String, String] = script_properties.get_vars()
 	var script_consts: Dictionary[String, String] = script_properties.get_consts()
@@ -38,27 +36,23 @@ func _parse_script(script_path: String) -> void:
 		var type: String = matches[0]
 		var path: String = matches[1]
 		var instance: String = matches[2]
-		print("type ", type, " path " , path, " instance ", instance)
 
-		if instance != "null":
-
+		if instance != "" and instance != "null":
 			parsed_script.add_instance(path)
 
 			continue
-
-		if type == "load": parsed_script.add_load(path)
-		elif type == "preload": parsed_script.add_preload(path)
-
-	_store_parsed_script(script, parsed_script)
-
-func _store_parsed_script(script: ScriptData, parsed_script: ScriptParsedReference) -> void:
-	if _parsed_scripts.has(script): return
+		if type == "load" and path != "null": parsed_script.add_load(path)
+		elif type == "preload" and path != "null": parsed_script.add_preload(path)
 
 	script.set_parsed_properties(parsed_script)
+	_store_parsed_script(script)
+
+func _store_parsed_script(script: ScriptData) -> void:
+	if _parsed_scripts.has(script): return
+
 	_parsed_scripts.append(script)
 
 func _match_property(property: String, script: ScriptPropertyReference) -> Array[String]:
-	print(property)
 	var matches: RegExMatch = _scene_reference_regex.search(property)
 	if not matches: return ["null", "null", "null"]
 
@@ -104,7 +98,6 @@ func _find_value(val: String, source: ScriptPropertyReference) -> String:
 
 			current_source = _script_properties.find_script_property_with_class(actual_value)
 			if not current_source:
-				push_error("Error: Unable to parse value \'%s\', value might not exist" % actual_value)
 				return ""
 
 			continue
@@ -122,7 +115,7 @@ func _find_value(val: String, source: ScriptPropertyReference) -> String:
 func parse_all_scripts() -> void:
 	_script_properties.search_properties_in_all_scripts()
 	for scr: String in _script_properties.get_script_properties():
-		_parse_script(scr)
+		_parse_script(scr, _script_properties.get_script_properties()[scr])
 
 	initialize.emit()
 #endregion

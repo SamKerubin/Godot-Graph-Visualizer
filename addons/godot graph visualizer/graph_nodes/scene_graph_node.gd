@@ -5,7 +5,4 @@ extends BaseGraphNode
 class_name SceneGraphNode
 
 func show_data() -> void:
-	var data: Dictionary = node_data.serialize()
-	for k: String in data:
-		
-		print("%s: %s" % [k, JSON.stringify(data[k], "\t")])
+	print(JSON.stringify(node_data.serialize(), "\t"))
