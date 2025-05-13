@@ -39,6 +39,11 @@ func _read_file(path: String) -> void:
 				line = line.replace("\\", "")
 				line += script.get_line().replace("\t", "")
 
+			""" This crashes the editor, modify later """
+			#if line.ends_with("[") or line.ends_with("{"):
+				#while line.count("]", 0, line.length() - 1) != 1 or line.count("}", 0, line.length() - 1) != 1:
+					#line += script.get_line().replace("\t", "")
+
 			result = _search_in_line(line, result)
 
 	if result: _store_line(path, result)

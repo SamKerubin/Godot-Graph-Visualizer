@@ -65,8 +65,6 @@ func _match_property(property: String, script: ScriptPropertyReference) -> Array
 		path = path.substr(1, path.length() - 2)
 
 	if not type_var.is_empty() and type.is_empty():
-		type = type_var
-
 		var resolved_value: String = _find_value(type_var, script)
 		if resolved_value.is_empty(): return ["null", "null", "null"]
 
@@ -89,11 +87,21 @@ func _find_value(val: String, source: ScriptPropertyReference) -> String:
 			var current_var: String = current_source.get_var(actual_value)
 			var current_const: String = current_source.get_const(actual_value)
 			if not current_var.is_empty():
-				current_source = str_to_var(current_var)
+				var current_value: Variant = str_to_var(current_var)
+				if not current_value:
+					current_source = str(current_var)
+				else:
+					current_source = current_value
+
 				continue
 
 			elif not current_const.is_empty():
-				current_source = str_to_var(current_const)
+				var current_value: Variant = str_to_var(current_const)
+				if not current_value:
+					current_source = str(current_const)
+				else:
+					current_source = current_value
+
 				continue
 
 			current_source = _script_properties.find_script_property_with_class(actual_value)
