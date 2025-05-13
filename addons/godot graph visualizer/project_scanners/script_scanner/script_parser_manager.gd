@@ -102,15 +102,15 @@ func _find_value(val: String, source: ScriptPropertyReference) -> String:
 
 			continue
 
-		elif typeof(current_source) == TYPE_DICTIONARY:
+		elif current_source is Dictionary:
 			current_source = current_source.get(actual_value, "")
 
-		elif typeof(current_source) == TYPE_STRING:
+		elif current_source is String:
 			return current_source
 
 		else: return ""
 
-	return ""
+	return current_source if current_source is String else ""
 
 func parse_all_scripts() -> void:
 	_script_properties.search_properties_in_all_scripts()
