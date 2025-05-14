@@ -5,7 +5,6 @@ extends NodeData
 class_name ScriptData
 
 var _script_parsed_properties: ScriptParsedReference
-var _active_scenes: Array[SceneData]
 
 func _init(path_or_uid: String) -> void:
 	_script_parsed_properties = ScriptParsedReference.new()

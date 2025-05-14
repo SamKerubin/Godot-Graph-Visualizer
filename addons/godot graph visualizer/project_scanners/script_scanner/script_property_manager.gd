@@ -88,6 +88,7 @@ func _match_property(line: String) -> Array[String]:
 	return ["null", "null", "null"]
 
 func search_properties_in_all_scripts() -> void:
+	_script_properties.clear()
 	var scripts: Array = FileScanner.get_files_by_type(FileTypes.FileType.SCRIPT_FILE)
 	for scr: String in scripts:
 		_read_file(scr)

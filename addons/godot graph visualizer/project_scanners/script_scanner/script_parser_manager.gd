@@ -121,6 +121,7 @@ func _find_value(val: String, source: ScriptPropertyReference) -> String:
 	return current_source if current_source is String else ""
 
 func parse_all_scripts() -> void:
+	_parsed_scripts.clear()
 	_script_properties.search_properties_in_all_scripts()
 	for scr: String in _script_properties.get_script_properties():
 		_parse_script(scr, _script_properties.get_script_properties()[scr])

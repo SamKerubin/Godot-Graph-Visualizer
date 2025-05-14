@@ -67,6 +67,7 @@ func _update_scene_property(scene_data: SceneData) -> void:
 	_scene_properties.set(scene_index, scene_data)
 
 func search_properties_in_all_scenes() -> void:
+	_scene_properties.clear()
 	var scenes: Array = FileScanner.get_files_by_type(FileTypes.FileType.SCENE_FILE)
 	for scn: String in scenes:
 		_check_scene(scn)

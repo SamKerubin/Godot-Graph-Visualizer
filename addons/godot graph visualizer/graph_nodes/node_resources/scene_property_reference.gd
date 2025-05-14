@@ -31,15 +31,12 @@ func get_attached_script() -> ScriptData:
 	return _attached_script
 
 func get_properties() -> Dictionary:
-	var instances_serialized: Array[Dictionary] = []
+	var instances_serialized: Dictionary[String, int] = {}
 	for inst: SceneData in _scene_instances:
-		instances_serialized.append({ 
-			"node": inst.serialize(), 
-			"times_instantiated": _scene_instances[inst] 
-		})
+		instances_serialized.set(inst.get_node_path(), _scene_instances[inst])
 
 	return {
-		"attached_script": get_attached_script().serialize() if get_attached_script() else {},
+		"attached_script": get_attached_script().serialize() if _attached_script else {},
 		"instance": instances_serialized
 	}
 #endregion
