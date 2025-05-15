@@ -11,11 +11,15 @@ func _ready() -> void:
 
 func _create_nodes() -> void:
 	for scn: SceneData in scenes:
-		var scene_node: GraphElement = SCENE_NODE.instantiate()
+		var scene_node: GraphNode = SCENE_NODE.instantiate()
 		add_child(scene_node)
-		print(size)
+
 		scene_node.position = Vector2(100, 200)
-		print("size ", scene_node.size)
-		print(scene_node.position)
 
 		scene_node.initialize(scn)
+
+func _find_child_with_path(path: String) -> GraphNode:
+	for child: GraphNode in get_children():
+		if child.path == path: return child
+
+	return null

@@ -6,6 +6,8 @@ const SCENE_HOVER_DATA: PackedScene = preload("uid://njqdp8wnedqf")
 
 var scene_data: SceneData
 
+var path: String
+
 var preload_references: Dictionary
 var load_references: Dictionary
 var instance_references: Dictionary
@@ -15,7 +17,6 @@ var scene_hover_data: Control
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_double_click():
-		selected = false
 		EditorInterface.open_scene_from_path(scene_data.get_node_path())
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		scene_node_data = SCENE_NODE_DATA.instantiate()
@@ -31,7 +32,8 @@ func _on_mouse_exited() -> void:
 func initialize(scene_data: SceneData) -> void:
 	self.scene_data = scene_data
 
-	title = scene_data.get_node_name().to_snake_case().replace("_", " ").capitalize()
+	title = scene_data.get_node_name().to_snake_case().capitalize()
+	path = scene_data.get_node_path()
 
 	var serialized_data: Dictionary = scene_data.serialize()
 	var script_serialized_data: Dictionary = serialized_data.get("attached_script", {})
