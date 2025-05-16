@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://blskxydlm08w" path="res://addons/godot graph visualizer/graphs/custom_graph/custom_graph_nodes/scene_node.gd" id="1_ytesf"]
 
-[node name="SceneNode" type="GraphNode"]
-anchors_preset = -1
+[node name="SceneNode" type="Control"]
+layout_mode = 3
 anchor_left = 0.001
 anchor_top = 0.002
 anchor_right = 0.217
@@ -16,6 +16,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ytesf")
 metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

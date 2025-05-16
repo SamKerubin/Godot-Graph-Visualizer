@@ -1,5 +1,5 @@
 @tool
-extends Node
+extends Resource
 ## [b] A class made to hold the different godot native file extensions [/b][br]
 ## Use [method get_type_if_file] to get the type of any file in your project[br]
 ## @experimental: This class may be up to changes
