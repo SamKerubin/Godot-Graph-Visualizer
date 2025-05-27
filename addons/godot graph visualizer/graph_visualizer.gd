@@ -17,7 +17,7 @@ func _enter_tree() -> void:
 	main_panel_instance = MAIN_PANEL.instantiate()
 	print("instance: ", main_panel_instance)
 	get_editor_interface().get_editor_main_screen().add_child(main_panel_instance)
-	
+
 	ScriptParserManager.initialize.connect(main_panel_instance._on_scripts_parsed)
 	ScriptParserManager.parse_all_scripts()
 

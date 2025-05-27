@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c4h2pps361nfk"]
 
 [ext_resource type="Script" uid="uid://cpbiysh4eu32b" path="res://addons/godot graph visualizer/main_screen/main.gd" id="1_ohb5f"]
-[ext_resource type="Script" uid="uid://b546afnkhlaac" path="res://addons/godot graph visualizer/graphs/main_graph.gd" id="2_fpftl"]
+[ext_resource type="Script" uid="uid://jafcocmk2ynu" path="res://addons/godot graph visualizer/graphs/custom_graph/main_graph.gd" id="2_fpftl"]
 
 [node name="Main" type="Panel"]
 anchors_preset = 15
@@ -22,31 +22,22 @@ grow_horizontal = 2
 grow_vertical = 2
 split_offset = 800
 
-[node name="GraphEdit" type="GraphEdit" parent="HSplitContainer"]
-layout_mode = 2
-show_grid = false
-zoom_min = 0.01
-minimap_enabled = false
-script = ExtResource("2_fpftl")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer"]
+[node name="SideMenu" type="VBoxContainer" parent="HSplitContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="HSplitContainer/VBoxContainer"]
+[node name="ExcludeTools" type="Button" parent="HSplitContainer/SideMenu"]
 layout_mode = 2
 text = "Exclude Tool Scripts "
 
-[connection signal="mouse_entered" from="HSplitContainer/GraphEdit/SceneNode" to="HSplitContainer/GraphEdit/SceneNode" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="HSplitContainer/GraphEdit/SceneNode" to="HSplitContainer/GraphEdit/SceneNode" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="HSplitContainer/GraphEdit/@GraphNode@21852" to="HSplitContainer/GraphEdit/@GraphNode@21852" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="HSplitContainer/GraphEdit/@GraphNode@21852" to="HSplitContainer/GraphEdit/@GraphNode@21852" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="HSplitContainer/GraphEdit/@GraphNode@21855" to="HSplitContainer/GraphEdit/@GraphNode@21855" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="HSplitContainer/GraphEdit/@GraphNode@21855" to="HSplitContainer/GraphEdit/@GraphNode@21855" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="HSplitContainer/GraphEdit/@GraphNode@21858" to="HSplitContainer/GraphEdit/@GraphNode@21858" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="HSplitContainer/GraphEdit/@GraphNode@21858" to="HSplitContainer/GraphEdit/@GraphNode@21858" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="HSplitContainer/GraphEdit/@GraphNode@21861" to="HSplitContainer/GraphEdit/@GraphNode@21861" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="HSplitContainer/GraphEdit/@GraphNode@21861" to="HSplitContainer/GraphEdit/@GraphNode@21861" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="HSplitContainer/GraphEdit/@GraphNode@21864" to="HSplitContainer/GraphEdit/@GraphNode@21864" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="HSplitContainer/GraphEdit/@GraphNode@21864" to="HSplitContainer/GraphEdit/@GraphNode@21864" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="HSplitContainer/GraphEdit/@GraphNode@21867" to="HSplitContainer/GraphEdit/@GraphNode@21867" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="HSplitContainer/GraphEdit/@GraphNode@21867" to="HSplitContainer/GraphEdit/@GraphNode@21867" method="_on_mouse_exited"]
+[node name="ChangeType" type="HBoxContainer" parent="HSplitContainer/SideMenu"]
+layout_mode = 2
+
+[node name="PackedScenes" type="Button" parent="HSplitContainer/SideMenu/ChangeType"]
+layout_mode = 2
+
+[node name="Instance" type="Button" parent="HSplitContainer/SideMenu/ChangeType"]
+layout_mode = 2
+
+[node name="MainGraph" type="GraphEdit" parent="HSplitContainer"]
+layout_mode = 2
+script = ExtResource("2_fpftl")

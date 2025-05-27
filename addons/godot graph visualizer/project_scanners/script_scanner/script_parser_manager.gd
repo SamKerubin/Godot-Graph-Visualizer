@@ -41,8 +41,8 @@ func _parse_script(script_path: String, script_properties: ScriptPropertyReferen
 			parsed_script.add_instance(path)
 
 			continue
-		if type == "load" and path != "null": parsed_script.add_load(path)
-		elif type == "preload" and path != "null": parsed_script.add_preload(path)
+
+		if (type == "load" or type == "preload") and path != "null": parsed_script.add_packedscene(path)
 
 	script.set_parsed_properties(parsed_script)
 	_store_parsed_script(script)
