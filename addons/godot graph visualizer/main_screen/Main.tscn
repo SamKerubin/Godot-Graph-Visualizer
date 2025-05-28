@@ -29,6 +29,7 @@ split_offset = 350
 dragging_enabled = false
 
 [node name="Options" type="Panel" parent="VSplitContainer/HSplitContainer"]
+visible = false
 layout_mode = 2
 
 [node name="VSplitContainer" type="VSplitContainer" parent="VSplitContainer/HSplitContainer/Options"]
@@ -191,6 +192,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="InstanceNodesColor" type="ColorPickerButton" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "                 "
 
@@ -205,6 +207,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PackedSceneNodesColor" type="ColorPickerButton" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "                 "
 
@@ -217,6 +220,7 @@ layout_mode = 2
 text = "Instance Nodes Connection"
 
 [node name="InstanceNodesConnectionColor" type="ColorPickerButton" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer3"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "                 "
 
@@ -229,6 +233,7 @@ layout_mode = 2
 text = "PackedScene Nodes Connection"
 
 [node name="PackedSceneNodesConnectionColor" type="ColorPickerButton" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer4"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "                 "
 
@@ -242,7 +247,16 @@ flat = true
 [node name="MainGraph" parent="VSplitContainer/HSplitContainer" instance=ExtResource("2_fpftl")]
 layout_mode = 2
 
+[node name="OpenOptionMenu" type="Button" parent="VSplitContainer/HSplitContainer/MainGraph"]
+layout_mode = 0
+offset_left = 1.0
+offset_right = 24.0
+offset_bottom = 31.0
+text = "->"
+flat = true
+
 [node name="GraphInfo" type="Panel" parent="VSplitContainer"]
+visible = false
 self_modulate = Color(0.61339, 0.61339, 0.61339, 1)
 layout_mode = 2
 
@@ -258,7 +272,6 @@ offset_left = -13.808
 offset_top = -15.6
 offset_right = 13.192
 offset_bottom = 15.4
-disabled = true
 text = "x"
 
 [node name="Message" type="Label" parent="VSplitContainer/GraphInfo"]
@@ -285,3 +298,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 allow_reselect = true
+
+[connection signal="pressed" from="VSplitContainer/HSplitContainer/Options/CloseOptionMenu" to="." method="_on_close_option_menu_pressed"]
+[connection signal="pressed" from="VSplitContainer/HSplitContainer/MainGraph/OpenOptionMenu" to="." method="_on_open_option_menu_pressed"]

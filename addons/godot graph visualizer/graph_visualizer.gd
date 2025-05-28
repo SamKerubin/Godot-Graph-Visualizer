@@ -8,21 +8,16 @@ const PLUGIN_NAME: String = "Visualize Project"
 var main_panel_instance: Control
 
 func _enter_tree() -> void:
-	add_autoload_singleton("FileScanner", "res://addons/godot graph visualizer/project_scanners/file_scanner.gd")
-	add_autoload_singleton("ScenePropertyManager", "res://addons/godot graph visualizer/project_scanners/scene_scanner/scene_property_manager.gd")
-	add_autoload_singleton("ScriptParserManager", "res://addons/godot graph visualizer/project_scanners/script_scanner/script_parser_manager.gd")
-
-	await get_tree().process_frame
-
 	main_panel_instance = MAIN_PANEL.instantiate()
-	print("instance: ", main_panel_instance)
+	if not main_panel_instance:
+		push_error(
+			"Error: Couldnt load plugin, if the error persists, please contact me:\n\t" \
+			+ "GitHub: @SamKerubin\n\tEmail: samuelkiller2013@gmail.com"
+		)
+
+		return
+
 	get_editor_interface().get_editor_main_screen().add_child(main_panel_instance)
-
-	ScriptParserManager.initialize.connect(main_panel_instance._on_scripts_parsed)
-	ScriptParserManager.parse_all_scripts()
-
-	ScenePropertyManager.initialize.connect(main_panel_instance._on_scene_manager_initialized)
-	ScenePropertyManager.search_properties_in_all_scenes.call_deferred()
 
 	main_panel_instance.visible = false
 

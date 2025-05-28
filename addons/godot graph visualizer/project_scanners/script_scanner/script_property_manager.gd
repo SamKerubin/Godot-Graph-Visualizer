@@ -5,17 +5,21 @@ class_name ScriptPropertyManager
 const CLASS_DECLARATION_REFERENCE: String = r"^class_name\s+(\w+)"
 const VARIABLE_DECLARATION_REFERENCE: String = r"(var|const)\s+(\w+)(?::\s*(?:[\w.]+(?:\s*[\s*[\w\s,]+\s*\])?))?\s*(?:(?::?=)\s*(.+))?"
 
+var _script_files: Array = []
+
 var _script_properties: Dictionary[String, ScriptPropertyReference]
 
 var _class_regex: RegEx = RegEx.new()
 var _variable_regex: RegEx = RegEx.new()
 
-func _init() -> void:
+func _init(script_files: Array) -> void:
 	if _class_regex.compile(CLASS_DECLARATION_REFERENCE) != OK:
 		push_error("Error: Failed to compile class declaration regex")
 
 	if _variable_regex.compile(VARIABLE_DECLARATION_REFERENCE) != OK:
 		push_error("Error: Failed to compile variable declaration regex")
+
+	_script_files = script_files
 
 #region Reading Scripts
 func _read_file(path: String) -> void:
@@ -89,7 +93,7 @@ func _match_property(line: String) -> Array[String]:
 
 func search_properties_in_all_scripts() -> void:
 	_script_properties.clear()
-	var scripts: Array = FileScanner.get_files_by_type(FileTypes.FileType.SCRIPT_FILE)
+	var scripts: Array = _script_files
 	for scr: String in scripts:
 		_read_file(scr)
 #endregion

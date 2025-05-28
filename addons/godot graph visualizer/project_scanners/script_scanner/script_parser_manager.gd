@@ -1,7 +1,6 @@
 @tool
-extends Node
-
-signal initialize
+extends Resource
+class_name ScriptParserManager
 
 const SCENE_REFERENCE: String = \
 	r"(?:(preload|load)\(\s*(\"(?:res|user|uid)://[^\"]*\"|[a-zA-Z_]\w*)\s*\)|" \
@@ -13,11 +12,11 @@ var _parsed_scripts: Array[ScriptData]
 
 var _script_properties: ScriptPropertyManager
 
-func _ready() -> void:
+func _init(script_files: Array) -> void:
 	if _scene_reference_regex.compile(SCENE_REFERENCE) != OK:
 		push_error("Error: Failed to compile scene reference regex")
 
-	_script_properties = ScriptPropertyManager.new()
+	_script_properties = ScriptPropertyManager.new(script_files)
 
 #region Script Parsing
 func _parse_script(script_path: String, script_properties: ScriptPropertyReference) -> void:
@@ -125,8 +124,6 @@ func parse_all_scripts() -> void:
 	_script_properties.search_properties_in_all_scripts()
 	for scr: String in _script_properties.get_script_properties():
 		_parse_script(scr, _script_properties.get_script_properties()[scr])
-
-	initialize.emit()
 #endregion
 
 func find_script_with_path(path: String) -> ScriptData:

@@ -14,12 +14,6 @@ config/name="Godot Graph Visualizer"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="uid://6rjqmon425st"
 
-[autoload]
-
-FileScanner="*res://addons/godot graph visualizer/project_scanners/file_scanner.gd"
-ScenePropertyManager="*res://addons/godot graph visualizer/project_scanners/scene_scanner/scene_property_manager.gd"
-ScriptParserManager="*res://addons/godot graph visualizer/project_scanners/script_scanner/script_parser_manager.gd"
-
 [debug]
 
 gdscript/warnings/untyped_declaration=2

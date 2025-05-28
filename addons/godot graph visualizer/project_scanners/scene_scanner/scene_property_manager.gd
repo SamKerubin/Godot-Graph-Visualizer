@@ -1,9 +1,16 @@
 @tool
-extends Node
+extends Resource
+class_name ScenePropertyManager
 
-signal initialize
+var _script_parser_manager: ScriptParserManager
 
 var _scene_properties: Array[SceneData]
+
+var _scene_files: Array = []
+
+func _init(script_files: Array, scene_files: Array) -> void:
+	_script_parser_manager = ScriptParserManager.new(script_files)
+	_scene_files = scene_files
 
 #region Scene Reading
 func _check_scene(path: String) -> void:
@@ -38,7 +45,7 @@ func _search_attached_script(scn: Node) -> ScriptData:
 	if not script: return null
 
 	var script_data_path: String = script.resource_path
-	var script_data: ScriptData = ScriptParserManager.find_script_with_path(script_data_path)
+	var script_data: ScriptData = _script_parser_manager.find_script_with_path(script_data_path)
 
 	return script_data
 
@@ -68,11 +75,9 @@ func _update_scene_property(scene_data: SceneData) -> void:
 
 func search_properties_in_all_scenes() -> void:
 	_scene_properties.clear()
-	var scenes: Array = FileScanner.get_files_by_type(FileTypes.FileType.SCENE_FILE)
-	for scn: String in scenes:
+	_script_parser_manager.parse_all_scripts()
+	for scn: String in _scene_files:
 		_check_scene(scn)
-
-	initialize.emit()
 #endregion
 
 #region Get Scene Property
@@ -85,4 +90,7 @@ func find_scene_with_path(path: String) -> SceneData:
 
 func get_scenes_properties() -> Array[SceneData]:
 	return _scene_properties
+
+func get_parsed_scripts() -> ScriptParserManager:
+	return _script_parser_manager
 #endregion

@@ -1,12 +1,12 @@
 @tool
-extends Node
+extends Resource
+class_name FileScanner
 ## @experimental: This singleton may be up to changes
-## [b]A singleton to scan files inside a godot project[/b][br]
+## [b]A class to scan files inside a godot project[/b][br]
 
-## [b]Do not call this function[/b][br][br]
-## This function returns all the files in a directory[br]
-## See [method get_files_by_type]
-func _scan_files_in_directory(path: String) -> Dictionary[FileTypes.FileType, Array]:
+var files: Dictionary[FileTypes.FileType, Array] = {}
+
+func scan_files_in_directory(path: String) -> Dictionary[FileTypes.FileType, Array]:
 	var dir: DirAccess = DirAccess.open(path)
 
 	var files: Dictionary[FileTypes.FileType, Array] = {}
@@ -27,7 +27,7 @@ func _scan_files_in_directory(path: String) -> Dictionary[FileTypes.FileType, Ar
 		if dir.current_is_dir():
 			#var in_addon: bool = file_path.begins_with("res://addons")
 
-			var sub_files: Dictionary[FileTypes.FileType, Array] = _scan_files_in_directory(file_path)
+			var sub_files: Dictionary[FileTypes.FileType, Array] = scan_files_in_directory(file_path)
 			for sf: FileTypes.FileType in sub_files.keys():
 				files[sf] = files.get(sf, []) + sub_files[sf]
 		else:
@@ -45,4 +45,4 @@ func _scan_files_in_directory(path: String) -> Dictionary[FileTypes.FileType, Ar
 ## returns files with certain extensions[br]
 ## See [enum FileTypes.FileType]
 func get_files_by_type(type: FileTypes.FileType) -> Array:
-	return _scan_files_in_directory("res://").get(type, [])
+	return files.get(type, [])

@@ -2,16 +2,24 @@
 extends Control
 ## @experimental: This class is currently being used to perform tests
 
-func _on_scene_manager_initialized() -> void:
-	create_scene_nodes()
+@onready var options: Panel = $VSplitContainer/HSplitContainer/Options
+@onready var graph_info: Panel = $VSplitContainer/GraphInfo
+@onready var close_option_menu: Button = $VSplitContainer/HSplitContainer/Options/CloseOptionMenu
+@onready var open_option_menu: Button = $VSplitContainer/HSplitContainer/MainGraph/OpenOptionMenu
 
-func _on_scripts_parsed() -> void: 
-	create_script_nodes()
+@onready var instance_nodes_color: ColorPickerButton = %InstanceNodesColor
+@onready var packed_scene_nodes_color: ColorPickerButton = %PackedSceneNodesColor
+@onready var instance_nodes_connection_color: ColorPickerButton = %InstanceNodesConnectionColor
+@onready var packed_scene_nodes_connection_color: ColorPickerButton = %PackedSceneNodesConnectionColor
 
-func create_script_nodes() -> void:
-	pass
+func _on_close_option_menu_pressed() -> void:
+	options.visible = false
+	graph_info.visible = false
+	open_option_menu.visible = true
 
-func create_scene_nodes() -> void: 
-	pass
+func _on_open_option_menu_pressed() -> void:
+	options.visible = true
+	graph_info.visible = true
+	open_option_menu.visible = false
 
 func save() -> void: pass
