@@ -128,7 +128,7 @@ func parse_all_scripts() -> void:
 
 func find_script_with_path(path: String) -> ScriptData:
 	for scr: ScriptData in  _parsed_scripts:
-		if scr.get_node_path() == path or scr.get_uid_text() == path:
+		if scr.get_node_path() == path:
 			return scr
 
 	return null

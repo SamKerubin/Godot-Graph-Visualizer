@@ -6,8 +6,6 @@ class_name NodeData
 
 var _node_name: String
 var _node_path: String
-var _uid: String = "uid://<invalid>"
-var _uid_int: int = ResourceUID.INVALID_ID
 
 var initialized: bool = false
 
@@ -25,8 +23,8 @@ func _set_node_uid(path_or_uid: String) -> bool:
 	if uid_int == ResourceUID.INVALID_ID:
 		return false
 
-	_uid_int = uid_int
-	_uid = ResourceUID.id_to_text(uid_int)
+	_node_path = ResourceUID.get_id_path(uid_int)
+
 	return true
 
 func initialize(node_path: String) -> void:
@@ -42,7 +40,6 @@ func initialize(node_path: String) -> void:
 		push_error("Error: Unnable to create resource from file \'%s\'" % node_path)
 		return
 
-	_node_path = node_path
 	_node_name = node_path.get_file().get_basename()
 
 #region Getters
@@ -52,17 +49,9 @@ func get_node_name() -> String:
 func get_node_path() -> String:
 	return _node_path
 
-func get_uid_text() -> String:
-	return _uid
-
-func get_uid_int() -> int:
-	return _uid_int
-
 func serialize() -> Dictionary:
 	return {
 		"node_name": get_node_name(),
-		"node_path": get_node_path(),
-		"uid_text": get_uid_text(),
-		"uid_int": get_uid_int()
+		"node_path": get_node_path()
 	}
 #endregion

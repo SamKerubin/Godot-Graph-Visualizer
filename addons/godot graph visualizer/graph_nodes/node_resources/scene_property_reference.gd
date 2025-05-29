@@ -22,7 +22,7 @@ func set_attached_script(attached_script: ScriptData) -> bool:
 #region Getters
 func get_instance_with_path(path: String) -> SceneData:
 	for scn: SceneData in _scene_instances:
-		if scn.get_node_path() == path or scn.get_uid_text() == path:
+		if scn.get_node_path() == path:
 			return scn
 	
 	return null

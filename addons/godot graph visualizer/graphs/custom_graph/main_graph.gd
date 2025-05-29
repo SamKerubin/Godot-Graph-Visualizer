@@ -22,6 +22,7 @@ func scan_project() -> void:
 	_scene_property_manager = ScenePropertyManager.new(script_files, scene_files)
 
 	_scene_property_manager.search_properties_in_all_scenes()
+	#graph.set_nodes() <- Modify later
 
 func set_ui_colors(ins_n: Color, pck_n: Color, inst_cn: Color, pack_cn: Color) -> void:
 	instance_node_color = ins_n
