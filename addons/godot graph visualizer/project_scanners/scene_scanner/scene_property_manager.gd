@@ -8,9 +8,8 @@ var _scene_properties: Array[SceneData]
 
 var _scene_files: Array = []
 
-func _init(script_files: Array, scene_files: Array) -> void:
-	_script_parser_manager = ScriptParserManager.new(script_files)
-	_scene_files = scene_files
+func _init() -> void:
+	_script_parser_manager = ScriptParserManager.new()
 
 #region Scene Reading
 func _check_scene(path: String) -> void:
@@ -73,10 +72,10 @@ func _update_scene_property(scene_data: SceneData) -> void:
 	var scene_index: int = _scene_properties.find(scene_data)
 	_scene_properties.set(scene_index, scene_data)
 
-func search_properties_in_all_scenes() -> void:
+func search_properties_in_all_scenes(script_files: Array, scene_files: Array) -> void:
 	_scene_properties.clear()
-	_script_parser_manager.parse_all_scripts()
-	for scn: String in _scene_files:
+	_script_parser_manager.parse_all_scripts(script_files)
+	for scn: String in scene_files:
 		_check_scene(scn)
 #endregion
 

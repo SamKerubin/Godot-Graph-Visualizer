@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://c4h2pps361nfk"]
+[gd_scene load_steps=4 format=3 uid="uid://c4h2pps361nfk"]
 
 [ext_resource type="Script" uid="uid://cpbiysh4eu32b" path="res://addons/godot graph visualizer/main_screen/main.gd" id="1_ohb5f"]
-[ext_resource type="PackedScene" uid="uid://syxx40gtq0sw" path="res://addons/godot graph visualizer/graphs/custom_graph/MainGraph.tscn" id="2_fpftl"]
+[ext_resource type="Script" uid="uid://cehy4sj137g8s" path="res://addons/godot graph visualizer/main_screen/main_screen_resources/main_graph.gd" id="2_hdwl8"]
+[ext_resource type="PackedScene" uid="uid://mksg1boo611b" path="res://addons/godot graph visualizer/graphs/custom_graph/Graph.tscn" id="3_hdwl8"]
 
 [node name="Main" type="Panel"]
 anchors_preset = 15
@@ -13,26 +14,21 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_ohb5f")
 
-[node name="VSplitContainer" type="VSplitContainer" parent="."]
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offset = 650
-dragging_enabled = false
-
-[node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer"]
-layout_mode = 2
 split_offset = 350
 dragging_enabled = false
 
-[node name="Options" type="Panel" parent="VSplitContainer/HSplitContainer"]
+[node name="Options" type="Panel" parent="HSplitContainer"]
 visible = false
 layout_mode = 2
 
-[node name="VSplitContainer" type="VSplitContainer" parent="VSplitContainer/HSplitContainer/Options"]
+[node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer/Options"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,11 +39,11 @@ split_offset = 330
 dragging_enabled = false
 dragger_visibility = 1
 
-[node name="Filters" type="Panel" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer"]
+[node name="Filters" type="Panel" parent="HSplitContainer/Options/VSplitContainer"]
 self_modulate = Color(0.728822, 0.728822, 0.728822, 1)
 layout_mode = 2
 
-[node name="Filters" type="RichTextLabel" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Filters"]
+[node name="Filters" type="RichTextLabel" parent="HSplitContainer/Options/VSplitContainer/Filters"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.251429
@@ -64,7 +60,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Graphs" type="HBoxContainer" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Filters"]
+[node name="Graphs" type="HBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Filters"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.0168571
@@ -80,28 +76,30 @@ grow_vertical = 2
 theme_override_constants/separation = 20
 metadata/_edit_use_anchors_ = true
 
-[node name="Change" type="Label" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Filters/Graphs"]
+[node name="Change" type="Label" parent="HSplitContainer/Options/VSplitContainer/Filters/Graphs"]
 layout_mode = 2
 text = "Change Graph:"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Filters/Graphs"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Filters/Graphs"]
 layout_mode = 2
 theme_override_constants/separation = 20
 metadata/_edit_use_anchors_ = true
 
-[node name="PackedScene" type="Button" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Filters/Graphs/HBoxContainer"]
+[node name="PackedScene" type="Button" parent="HSplitContainer/Options/VSplitContainer/Filters/Graphs/HBoxContainer"]
+unique_name_in_owner = true
 self_modulate = Color(0.633757, 0.633757, 0.633757, 1)
 layout_mode = 2
 text = "PackedScene"
 
-[node name="Instance" type="Button" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Filters/Graphs/HBoxContainer"]
+[node name="Instance" type="Button" parent="HSplitContainer/Options/VSplitContainer/Filters/Graphs/HBoxContainer"]
+unique_name_in_owner = true
 self_modulate = Color(0.635294, 0.635294, 0.635294, 1)
 layout_mode = 2
 text = "Instance"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Filters"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Filters"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.0172857
@@ -117,21 +115,23 @@ grow_vertical = 2
 theme_override_constants/separation = 10
 metadata/_edit_use_anchors_ = true
 
-[node name="HideNodes" type="Label" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer"]
+[node name="HideNodes" type="Label" parent="HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer"]
 layout_mode = 2
 text = "Hide Nodes"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ToolScripts" type="CheckBox" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer"]
+[node name="ToolScripts" type="CheckBox" parent="HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Hide tool scripts"
 
-[node name="UnrelatedNodes" type="CheckBox" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer"]
+[node name="UnrelatedNodes" type="CheckBox" parent="HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Hide unrelated nodes"
 
-[node name="Reload" type="Button" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Filters"]
+[node name="Reload" type="Button" parent="HSplitContainer/Options/VSplitContainer/Filters"]
 modulate = Color(0.635294, 0.635294, 0.635294, 1)
 layout_mode = 1
 anchors_preset = 8
@@ -147,11 +147,11 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Reload Graph"
 
-[node name="Config" type="Panel" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer"]
+[node name="Config" type="Panel" parent="HSplitContainer/Options/VSplitContainer"]
 self_modulate = Color(0.729412, 0.729412, 0.729412, 1)
 layout_mode = 2
 
-[node name="Colors" type="RichTextLabel" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config"]
+[node name="Colors" type="RichTextLabel" parent="HSplitContainer/Options/VSplitContainer/Config"]
 layout_mode = 2
 anchor_left = 0.24
 anchor_top = 0.094
@@ -165,7 +165,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Config"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.026
@@ -181,86 +181,92 @@ grow_vertical = 2
 theme_override_constants/separation = 15
 metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="HBoxContainer" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer"]
+[node name="VBoxContainer" type="HBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 135
 
-[node name="InstanceNodes" type="Label" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer"]
+[node name="InstanceNodes" type="Label" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Instance Nodes"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="InstanceNodesColor" type="ColorPickerButton" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer"]
+[node name="InstanceNodesColor" type="ColorPickerButton" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "                 "
 
-[node name="VBoxContainer2" type="HBoxContainer" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer"]
+[node name="VBoxContainer2" type="HBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 105
 
-[node name="PackedSceneNodes" type="Label" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer2"]
+[node name="PackedSceneNodes" type="Label" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer2"]
 layout_mode = 2
 text = "PackedScene Nodes"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PackedSceneNodesColor" type="ColorPickerButton" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer2"]
+[node name="PackedSceneNodesColor" type="ColorPickerButton" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "                 "
 
-[node name="VBoxContainer3" type="HBoxContainer" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer"]
+[node name="VBoxContainer3" type="HBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 55
 
-[node name="InstanceNodesConnection" type="Label" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer3"]
+[node name="InstanceNodesConnection" type="Label" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer3"]
 layout_mode = 2
 text = "Instance Nodes Connection"
 
-[node name="InstanceNodesConnectionColor" type="ColorPickerButton" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer3"]
+[node name="InstanceNodesConnectionColor" type="ColorPickerButton" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "                 "
 
-[node name="VBoxContainer4" type="HBoxContainer" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer"]
+[node name="VBoxContainer4" type="HBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 25
 
-[node name="PackedSceneNodesConnection" type="Label" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer4"]
+[node name="PackedSceneNodesConnection" type="Label" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer4"]
 layout_mode = 2
 text = "PackedScene Nodes Connection"
 
-[node name="PackedSceneNodesConnectionColor" type="ColorPickerButton" parent="VSplitContainer/HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer4"]
+[node name="PackedSceneNodesConnectionColor" type="ColorPickerButton" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer4"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "                 "
 
-[node name="CloseOptionMenu" type="Button" parent="VSplitContainer/HSplitContainer/Options"]
+[node name="CloseOptionMenu" type="Button" parent="HSplitContainer/Options"]
 layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
 text = "<-"
 flat = true
 
-[node name="MainGraph" parent="VSplitContainer/HSplitContainer" instance=ExtResource("2_fpftl")]
+[node name="MainGraph" type="Panel" parent="HSplitContainer"]
+layout_mode = 2
+script = ExtResource("2_hdwl8")
+
+[node name="VSplitContainer2" type="VSplitContainer" parent="HSplitContainer/MainGraph"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 650
+dragging_enabled = false
+
+[node name="Graph" parent="HSplitContainer/MainGraph/VSplitContainer2" instance=ExtResource("3_hdwl8")]
 layout_mode = 2
 
-[node name="OpenOptionMenu" type="Button" parent="VSplitContainer/HSplitContainer/MainGraph"]
-layout_mode = 0
-offset_left = 1.0
-offset_right = 24.0
-offset_bottom = 31.0
-text = "->"
-flat = true
-
-[node name="GraphInfo" type="Panel" parent="VSplitContainer"]
+[node name="GraphInfo" type="Panel" parent="HSplitContainer/MainGraph/VSplitContainer2"]
 visible = false
 self_modulate = Color(0.61339, 0.61339, 0.61339, 1)
 layout_mode = 2
 
-[node name="Close" type="Button" parent="VSplitContainer/GraphInfo"]
+[node name="Close" type="Button" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo"]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -274,7 +280,7 @@ offset_right = 13.192
 offset_bottom = 15.4
 text = "x"
 
-[node name="Message" type="Label" parent="VSplitContainer/GraphInfo"]
+[node name="Message" type="Label" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -289,15 +295,44 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Click a node to show more detailed information"
 
-[node name="References" type="ItemList" parent="VSplitContainer/GraphInfo"]
-visible = false
+[node name="Container" type="Control" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="References" type="ItemList" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo/Container"]
+visible = false
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 38.0
+offset_top = 67.0
+offset_right = -38.0
+offset_bottom = -47.0
+grow_horizontal = 2
+grow_vertical = 2
 allow_reselect = true
 
-[connection signal="pressed" from="VSplitContainer/HSplitContainer/Options/CloseOptionMenu" to="." method="_on_close_option_menu_pressed"]
-[connection signal="pressed" from="VSplitContainer/HSplitContainer/MainGraph/OpenOptionMenu" to="." method="_on_open_option_menu_pressed"]
+[node name="Node" type="Label" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo/Container"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -45.0
+offset_top = 24.0
+offset_right = 45.0
+offset_bottom = 47.0
+grow_horizontal = 2
+text = "Node name"
+
+[node name="OpenOptionMenu" type="Button" parent="HSplitContainer/MainGraph"]
+layout_mode = 2
+offset_top = 55.0
+offset_right = 23.0
+offset_bottom = 86.0
+text = "->"
+flat = true

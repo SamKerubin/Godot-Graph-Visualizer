@@ -1,0 +1,54 @@
+[gd_scene load_steps=4 format=3 uid="uid://bncf27fvmqnxe"]
+
+[ext_resource type="Script" uid="uid://cwf8x76x5e0lj" path="res://addons/godot graph visualizer/main_screen/main_screen_resources/loading_screen.gd" id="1_6k1tf"]
+[ext_resource type="Texture2D" uid="uid://dwjc82e6x1lhv" path="res://icon.svg" id="2_ob50l"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ob50l"]
+font_size = 25
+
+[node name="LoadingScreen" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6k1tf")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -37.0
+offset_right = 35.0
+offset_bottom = 37.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Control"]
+position = Vector2(34.588, 35.874)
+rotation = 43.6206
+scale = Vector2(0.568938, 0.576156)
+texture = ExtResource("2_ob50l")
+
+[node name="Loading" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.660494
+anchor_right = 0.5
+anchor_bottom = 0.660494
+offset_left = -37.5
+offset_top = -11.5
+offset_right = 37.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Loading..."
+label_settings = SubResource("LabelSettings_ob50l")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true

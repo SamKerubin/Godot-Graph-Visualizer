@@ -12,11 +12,11 @@ var _parsed_scripts: Array[ScriptData]
 
 var _script_properties: ScriptPropertyManager
 
-func _init(script_files: Array) -> void:
+func _init() -> void:
 	if _scene_reference_regex.compile(SCENE_REFERENCE) != OK:
 		push_error("Error: Failed to compile scene reference regex")
 
-	_script_properties = ScriptPropertyManager.new(script_files)
+	_script_properties = ScriptPropertyManager.new()
 
 #region Script Parsing
 func _parse_script(script_path: String, script_properties: ScriptPropertyReference) -> void:
@@ -119,9 +119,9 @@ func _find_value(val: String, source: ScriptPropertyReference) -> String:
 
 	return current_source if current_source is String else ""
 
-func parse_all_scripts() -> void:
+func parse_all_scripts(script_files: Array) -> void:
 	_parsed_scripts.clear()
-	_script_properties.search_properties_in_all_scripts()
+	_script_properties.search_properties_in_all_scripts(script_files)
 	for scr: String in _script_properties.get_script_properties():
 		_parse_script(scr, _script_properties.get_script_properties()[scr])
 #endregion

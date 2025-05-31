@@ -1,9 +1,25 @@
 @tool
 extends GraphEdit
 
-signal content_loaded
+signal node_loaded(node: SamGraphNode)
+
+const LOADING_SCREEN: PackedScene = preload("uid://bncf27fvmqnxe")
 
 const GRAPH_NODE_SCENE: PackedScene = preload("uid://bo153wubc0sl1")
+
+var loading_screen_instance: Panel = null
+
+func create_loading_screen() -> void:
+	if not loading_screen_instance:
+		loading_screen_instance = LOADING_SCREEN.instantiate()
+		add_child(loading_screen_instance)
+		loading_screen_instance.set_size.call_deferred(size)
+		loading_screen_instance.z_index = 100
+
+func _delete_loading_screen() -> void:
+	if loading_screen_instance:
+		remove_child(loading_screen_instance)
+		loading_screen_instance.queue_free()
 
 func set_nodes(nodes: Array[SceneData], 
 				node_connections: Array[Dictionary], 
@@ -22,9 +38,11 @@ func set_nodes(nodes: Array[SceneData],
 		new_node.node_path = node.get_node_path()
 		new_node.modulate = node_color
 
+		node_loaded.emit(new_node)
+
 	_set_connections(node_connections, connection_color)
 	
-	content_loaded.emit()
+	_delete_loading_screen()
 
 func _set_connections(node_connections: Array[Dictionary], connection_color: Color) -> void:
 	# Use graph connections variable,

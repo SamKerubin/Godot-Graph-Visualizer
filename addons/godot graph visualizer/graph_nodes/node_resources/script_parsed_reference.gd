@@ -2,8 +2,6 @@
 extends Resource
 class_name ScriptParsedReference
 
-var script_data: ScriptData
-
 var _instance_reference: Dictionary[String, int] = {}
 var _packedscene_reference: Dictionary[String, int] = {}
 
