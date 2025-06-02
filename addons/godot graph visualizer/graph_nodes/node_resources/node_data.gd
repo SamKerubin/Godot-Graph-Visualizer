@@ -6,6 +6,7 @@ class_name NodeData
 
 var _node_name: String
 var _node_path: String
+var _node_uid: String
 
 var initialized: bool = false
 
@@ -23,6 +24,7 @@ func _set_node_uid(path_or_uid: String) -> bool:
 	if uid_int == ResourceUID.INVALID_ID:
 		return false
 
+	_node_uid = ResourceUID.id_to_text(uid_int)
 	_node_path = ResourceUID.get_id_path(uid_int)
 
 	return true
@@ -48,6 +50,9 @@ func get_node_name() -> String:
 
 func get_node_path() -> String:
 	return _node_path
+
+func get_node_uid() -> String:
+	return _node_uid
 
 func serialize() -> Dictionary:
 	return {

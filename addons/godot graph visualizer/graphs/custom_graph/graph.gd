@@ -22,12 +22,14 @@ func _delete_loading_screen() -> void:
 		loading_screen_instance.queue_free()
 
 func set_nodes(nodes: Array[SceneData], 
-				node_connections: Array[Dictionary], 
+				node_connections: Array[ConnectionData], 
 				node_color: Color, connection_color: Color) -> void:
+
+	clear_graph.call_deferred()
 
 	for node: SceneData in nodes:
 		var new_node: SamGraphNode = GRAPH_NODE_SCENE.instantiate()
-		
+
 		add_child(new_node)
 		new_node.set_position_offset(_set_next_position())
 
@@ -41,10 +43,10 @@ func set_nodes(nodes: Array[SceneData],
 		node_loaded.emit(new_node)
 
 	_set_connections(node_connections, connection_color)
-	
+
 	_delete_loading_screen()
 
-func _set_connections(node_connections: Array[Dictionary], connection_color: Color) -> void:
+func _set_connections(node_connections: Array[ConnectionData], connection_color: Color) -> void:
 	# Use graph connections variable,
 	# Update for each element inside the array
 	# Keep in mind, research about how a GraphEdit saves the connections
@@ -53,10 +55,17 @@ func _set_connections(node_connections: Array[Dictionary], connection_color: Col
 
 # Ill implement an algorithm to auto-sort nodes in the graph (later obv)
 func _set_next_position() -> Vector2: return Vector2.ZERO 
+# For sorting algorithm, ill maybe implement something cluster-based
+# Its easier sorting nodes by groups than all apart
+# I can group them like a tree, father and childs
+# Each father got its own container (cluster)
+# The cluster can move to be near other nodes
 
 func clear_graph() -> void:
 	for node: Control in get_children():
+		if not node is SamGraphNode: continue
+
 		remove_child(node)
 		node.queue_free()
 
-	connections = []
+	clear_connections()

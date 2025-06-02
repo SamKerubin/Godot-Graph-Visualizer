@@ -6,8 +6,6 @@ var _script_parser_manager: ScriptParserManager
 
 var _scene_properties: Array[SceneData]
 
-var _scene_files: Array = []
-
 func _init() -> void:
 	_script_parser_manager = ScriptParserManager.new()
 
@@ -20,11 +18,10 @@ func _check_scene(path: String) -> void:
 		return
 
 	var scn: PackedScene = ResourceLoader.load(path, "PackedScene")
-
 	var scn_root: Node = scn.instantiate()
 
 	var scene_data: SceneData = _search_in_scene(scn_root, path)
-	if scene_data: _update_scene_property(scene_data)
+	if scene_data: _scene_properties.append(scene_data)
 
 	_search_instances(scene_data, scn_root)
 
@@ -53,24 +50,20 @@ func _search_instances(scene_data: SceneData, scn: Node) -> void:
 
 	for child: Node in scn.get_children():
 		if child.scene_file_path != "":
-			var new_scene: SceneData = find_scene_with_path(child.scene_file_path)
-			if not new_scene: new_scene = SceneData.new(child.scene_file_path)
+			var child_path: String = child.scene_file_path
+			var new_scene: SceneData = find_scene_with_path(child_path)
+			if not new_scene:
+				new_scene = SceneData.new(child_path)
+				_scene_properties.append(new_scene)
 
-			scene_data.get_properties().add_instance(new_scene)
-			_update_scene_property(new_scene)
+			scene_data.get_properties().add_instance(child_path)
+
+			_search_instances(new_scene, child)
 
 			_search_instances(new_scene, child)
 			continue
 
 		_search_instances(scene_data, child)
-
-func _update_scene_property(scene_data: SceneData) -> void:
-	if not _scene_properties.has(scene_data):
-		_scene_properties.append(scene_data)
-		return
-
-	var scene_index: int = _scene_properties.find(scene_data)
-	_scene_properties.set(scene_index, scene_data)
 
 func search_properties_in_all_scenes(script_files: Array, scene_files: Array) -> void:
 	_scene_properties.clear()
@@ -82,9 +75,9 @@ func search_properties_in_all_scenes(script_files: Array, scene_files: Array) ->
 #region Get Scene Property
 func find_scene_with_path(path: String) -> SceneData:
 	for scn: SceneData in _scene_properties:
-		if scn.get_node_path() == path:
+		if scn.get_node_path() == path or scn.get_node_uid() == path:
 			return scn
-
+	
 	return null
 
 func get_scenes_properties() -> Array[SceneData]:

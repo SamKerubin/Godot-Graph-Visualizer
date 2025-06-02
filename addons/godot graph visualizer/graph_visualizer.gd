@@ -23,6 +23,7 @@ func _enter_tree() -> void:
 		return
 
 	get_editor_interface().get_editor_main_screen().add_child(main_panel_instance)
+	main_panel_instance.load_instance()
 
 	main_panel_instance.visible = false
 

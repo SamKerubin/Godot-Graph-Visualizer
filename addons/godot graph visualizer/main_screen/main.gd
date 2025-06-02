@@ -21,4 +21,15 @@ extends Control
 @onready var instance_nodes_connection_color: ColorPickerButton = %InstanceNodesConnectionColor
 @onready var packed_scene_nodes_connection_color: ColorPickerButton = %PackedSceneNodesConnectionColor
 
+func load_instance() -> void:
+	main_graph.create_resources()
+
 func save() -> void: pass
+
+func _on_graph_color_changed(color: Color) -> void:
+	main_graph.set_ui_colors(
+		instance_nodes_color.color,
+		packed_scene_nodes_color.color,
+		instance_nodes_connection_color.color,
+		packed_scene_nodes_connection_color.color
+	)
