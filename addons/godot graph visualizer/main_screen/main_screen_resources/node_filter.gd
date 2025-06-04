@@ -26,26 +26,27 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[Relati
 
 	for n: SceneData in nodes:
 		var current_name: String = n.get_node_name().capitalize()
+		var current_path: String = n.get_node_path()
 
 		var new_relation: RelationData = relation_manager.find_relation_with_name(current_name)
-		if not new_relation: 
-			new_relation = RelationData.new()
-			new_relation.node_name = current_name
+		if not new_relation: new_relation = RelationData.new(current_name, current_path)
 
 		var serialized_node: Dictionary = n.serialize()
-		var current_relations: Dictionary = comparator.call(n, serialized_node)
+		var current_relations: Dictionary = comparator.call(n, serialized_node) as Dictionary
 
 		for ref: String in current_relations:
 			var relation_scene: SceneData = _temp_scene_properties.find_scene_with_path(ref)
+
+			var relation_path: String = relation_scene.get_node_path()
 			var scene_name: String = relation_scene.get_node_name().capitalize()
 			
 			var existing_relation: RelationData = relation_manager.find_relation_with_name(scene_name)
-			if not existing_relation: 
-				existing_relation = RelationData.new()
-				existing_relation.node_name = scene_name
+			if not existing_relation: existing_relation = RelationData.new(scene_name, relation_path)
 
 			new_relation.add_outgoing_node(existing_relation, current_relations[ref])
 			existing_relation.add_incoming_node(new_relation, current_relations[ref])
+
+		relation_manager.relations.append(new_relation)
 
 	return relation_manager.relations
 

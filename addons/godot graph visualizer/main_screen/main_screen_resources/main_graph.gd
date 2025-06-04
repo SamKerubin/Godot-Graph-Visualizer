@@ -14,6 +14,7 @@ extends Panel
 var _file_scanner: FileScanner
 var _scene_property_manager: ScenePropertyManager
 var _node_filter: NodeFilter
+var _layout_manager: LayoutManager
 
 var instance_node_color: Color
 var packedscene_node_color: Color
@@ -26,11 +27,14 @@ var relations: Array[RelationData] = []
 
 func create_resources() -> void:
 	graph.create_loading_screen()
-	graph.node_loaded.connect(_on_graph_node_loaded)
 
 	_file_scanner = FileScanner.new()
 	_scene_property_manager = ScenePropertyManager.new()
 	_node_filter = NodeFilter.new()
+
+	_layout_manager = LayoutManager.new()
+	_layout_manager.node_loaded.connect(_on_graph_node_loaded)
+
 	scan_project()
 
 func scan_project() -> void:
@@ -44,7 +48,10 @@ func scan_project() -> void:
 	var scenes: Array[SceneData] = _scene_property_manager.get_scenes_properties()
 
 	relations = _node_filter.filter_nodes_by_type(graph_type, scenes)
-	graph.set_nodes(scenes, relations, _get_current_node_color(), _get_current_connection_color())
+
+	_layout_manager.set_up_layout(relations, graph)
+	
+	graph.delete_loading_screen()
 
 func set_ui_colors(ins_n: Color, pck_n: Color, inst_cn: Color, pack_cn: Color) -> void:
 	instance_node_color = ins_n
