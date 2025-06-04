@@ -22,7 +22,7 @@ var packedscene_node_connection_color: Color
 
 var graph_type: String = "instance" # By default it will generate an instance graph
 
-var relations: Array[ConnectionData] = [] # Dictionary -> String, int
+var relations: Array[RelationData] = []
 
 func create_resources() -> void:
 	graph.create_loading_screen()
@@ -53,16 +53,10 @@ func set_ui_colors(ins_n: Color, pck_n: Color, inst_cn: Color, pack_cn: Color) -
 	packedscene_node_connection_color = pack_cn
 
 func _get_current_node_color() -> Color:
-	if graph_type == "instance": return instance_node_color
-	elif graph_type == "packedscene": return packedscene_node_color
-	
-	return Color.TRANSPARENT
+	return instance_node_color
 
 func _get_current_connection_color() -> Color:
-	if graph_type == "instance": return instance_node_connection_color
-	elif graph_type == "packedscene": return packedscene_node_connection_color
-	
-	return Color.TRANSPARENT
+	return instance_node_connection_color
 
 func _on_graph_node_loaded(node: SamGraphNode) -> void:
 	node.node_clicked.connect(_on_node_clicked)

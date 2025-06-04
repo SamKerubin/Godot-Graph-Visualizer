@@ -7,7 +7,9 @@ var _temp_scene_properties: ScenePropertyManager
 func set_temporal_properties(scene_properties: ScenePropertyManager) -> void:
 	_temp_scene_properties = scene_properties
 
-func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[ConnectionData]:
+func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[RelationData]:
+	var relation_manager: RelationManager = RelationManager.new()
+
 	if not _temp_scene_properties:
 		push_error("Error: Scene Properties have a null or invalid value")
 		return []
@@ -22,41 +24,39 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[Connec
 		push_error("Error: Couldnt filter nodes with a reference of type \'%s\'" % type)
 		return []
 
-	var references: Array[ConnectionData] = []
 	for n: SceneData in nodes:
+		var current_name: String = n.get_node_name().capitalize()
+
+		var new_relation: RelationData = relation_manager.find_relation_with_name(current_name)
+		if not new_relation: 
+			new_relation = RelationData.new()
+			new_relation.node_name = current_name
+
 		var serialized_node: Dictionary = n.serialize()
-		var current_references: Dictionary = comparator.call(n, serialized_node)
+		var current_relations: Dictionary = comparator.call(n, serialized_node)
 
-		if current_references.is_empty(): continue
+		for ref: String in current_relations:
+			var relation_scene: SceneData = _temp_scene_properties.find_scene_with_path(ref)
+			var scene_name: String = relation_scene.get_node_name().capitalize()
+			
+			var existing_relation: RelationData = relation_manager.find_relation_with_name(scene_name)
+			if not existing_relation: 
+				existing_relation = RelationData.new()
+				existing_relation.node_name = scene_name
 
-		var current_node: String = n.get_node_name().capitalize()
+			new_relation.add_outgoing_node(existing_relation, current_relations[ref])
+			existing_relation.add_incoming_node(new_relation, current_relations[ref])
 
-		for ref: String in current_references:
-			var current_reference_data: SceneData = _temp_scene_properties.find_scene_with_path(ref)
-			var current_reference_name: String = current_reference_data.get_node_name().capitalize()
-			var times_references: int = current_references[ref]
-
-			var script_data: ScriptData = n.get_properties().get_attached_script()
-			var script_path: String = script_data.get_node_path() \
-			if script_data \
-			else "No attached script"
-
-			var new_connection_data: ConnectionData = ConnectionData.new()
-			new_connection_data.from = current_node
-			new_connection_data.to = current_reference_name
-			new_connection_data.times_referenced = times_references
-			new_connection_data.attached_script = script_path
-
-			references.append(new_connection_data)
-
-	return references
+	return relation_manager.relations
 
 func _get_node_instances(node: SceneData, serialized_node: Dictionary) -> Dictionary:
 	var internal_instances: Dictionary = serialized_node.get("instance", {})
 	var attached_script: Dictionary = serialized_node.get("attached_script", {})
+
 	if internal_instances.is_empty() and attached_script.is_empty(): return {}
 
 	var script_instances: Dictionary = attached_script.get("instance", {})
+
 	for scr_inst: String in script_instances:
 		internal_instances[scr_inst] = internal_instances.get(scr_inst, 0) + script_instances[scr_inst]
 

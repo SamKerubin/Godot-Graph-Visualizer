@@ -22,7 +22,7 @@ func _delete_loading_screen() -> void:
 		loading_screen_instance.queue_free()
 
 func set_nodes(nodes: Array[SceneData], 
-				node_connections: Array[ConnectionData], 
+				node_connections: Array[RelationData], 
 				node_color: Color, connection_color: Color) -> void:
 
 	clear_graph.call_deferred()
@@ -31,7 +31,6 @@ func set_nodes(nodes: Array[SceneData],
 		var new_node: SamGraphNode = GRAPH_NODE_SCENE.instantiate()
 
 		add_child(new_node)
-		new_node.set_position_offset(_set_next_position())
 
 		var node_name: String = node.get_node_name().capitalize()
 
@@ -46,7 +45,7 @@ func set_nodes(nodes: Array[SceneData],
 
 	_delete_loading_screen()
 
-func _set_connections(node_connections: Array[ConnectionData], connection_color: Color) -> void:
+func _set_connections(node_connections: Array[RelationData], connection_color: Color) -> void:
 	# Use graph connections variable,
 	# Update for each element inside the array
 	# Keep in mind, research about how a GraphEdit saves the connections
