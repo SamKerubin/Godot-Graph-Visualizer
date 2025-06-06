@@ -2,6 +2,10 @@
 extends Resource
 class_name LayoutManager
 
+## Class made to manage the main graph layout
+## see [class SamGraphNode], [class RelationData], [class RelationManager][br]
+## @experimental: this class is still under development, expect changes and testing
+
 signal node_loaded(node: SamGraphNode)
 
 const GRAPH_NODE_SCENE: PackedScene = preload("uid://bo153wubc0sl1")
@@ -53,6 +57,12 @@ func _set_layout_mode(relation: RelationData, node: SamGraphNode,
 	var children: Dictionary[RelationData, int] = relation.outgoing
 	var n: int = children.size()
 
+	var position_getter: Callable
+	match n:
+		1, 2, 3, 4: position_getter = _get_radial_position
+		5, 6, 7, 8: position_getter = _get_fan_position
+		_: position_getter = _get_grid_position
+
 	var m: int = 1
 	for child: RelationData in children:
 
@@ -65,23 +75,19 @@ func _set_layout_mode(relation: RelationData, node: SamGraphNode,
 			current_node.position = (current_node.position + node.position) / 2.0
 			continue
 
-		var position_getter: Callable
-		if n <= 4: position_getter = _get_radial_position
-		elif n <= 8: position_getter = _get_fan_position
-		else: position_getter = _get_grid_position
-		
-		position_getter.call(node, m, n, depth)
+		var child_position: Vector2 = position_getter.call(node, m, n, depth)
+		current_node.set_position_offset(child_position)
 
 		m += 1
 
 		_set_layout_mode(child, current_node, depth + 1, visited)
 
 func _get_radial_position(node: SamGraphNode, m: int, n: int, depth: int) -> Vector2:
-	var radius: float = 4.0 / m
-	var angle: float = (PI / (n + 1) * (m + 1))
+	const RADIUS: int = 400
+	var angle: float = (-PI / n) * m
 
-	var x: float = node.position.x + cos(angle) * radius
-	var y: float = node.position.y + sin(angle) * radius
+	var x: float = node.position.x + cos(angle) * RADIUS
+	var y: float = node.position.y + sin(angle) * RADIUS
 
 	return Vector2(x, y)
 

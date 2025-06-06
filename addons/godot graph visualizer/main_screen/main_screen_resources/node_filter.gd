@@ -2,11 +2,21 @@
 extends Resource
 class_name NodeFilter
 
+## Class made to filter all the parsed nodes into relations[br]
+## To see how relations works, see [class RelationData], [class RelationManager]
+
 var _temp_scene_properties: ScenePropertyManager
 
+## Set temporal [param scene_properties] to be used as a getter for [class SceneData] instances
 func set_temporal_properties(scene_properties: ScenePropertyManager) -> void:
 	_temp_scene_properties = scene_properties
 
+## Filters the relations declared inside [param nodes] using [param type] as mediator[br]
+## [param type] can be equal to:[br]
+## 1. "instance" see [method _get_node_instances][br]
+## 2. "packedscene" see [method _get_node_packedscenes]
+## Also, creates an instance of [class RelationData] for each element in [param nodes]
+## and returns an array of each instances created
 func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[RelationData]:
 	var relation_manager: RelationManager = RelationManager.new()
 
@@ -32,7 +42,7 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[Relati
 		if not new_relation: new_relation = RelationData.new(current_name, current_path)
 
 		var serialized_node: Dictionary = n.serialize()
-		var current_relations: Dictionary = comparator.call(n, serialized_node) as Dictionary
+		var current_relations: Dictionary = comparator.call(serialized_node) as Dictionary
 
 		for ref: String in current_relations:
 			var relation_scene: SceneData = _temp_scene_properties.find_scene_with_path(ref)
@@ -50,7 +60,10 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[Relati
 
 	return relation_manager.relations
 
-func _get_node_instances(node: SceneData, serialized_node: Dictionary) -> Dictionary:
+## Filter the serialized relations [param serialized_node] and returns only
+## the instances[br]
+## See [class ScriptPropertyReference], [class ScenePropertyReference]
+func _get_node_instances(serialized_node: Dictionary) -> Dictionary:
 	var internal_instances: Dictionary = serialized_node.get("instance", {})
 	var attached_script: Dictionary = serialized_node.get("attached_script", {})
 
@@ -63,7 +76,10 @@ func _get_node_instances(node: SceneData, serialized_node: Dictionary) -> Dictio
 
 	return internal_instances
 
-func _get_node_packedscenes(node: SceneData, serialized_node: Dictionary) -> Dictionary:
+## Filter the serialized relations [param serialized_node] and returns only
+## the packedscene references[br]
+## See [class ScriptPropertyReference], [class ScenePropertyReference]
+func _get_node_packedscenes(serialized_node: Dictionary) -> Dictionary:
 	var attached_script: Dictionary = serialized_node.get("attached_script", {})
 	if attached_script.is_empty(): return {}
 

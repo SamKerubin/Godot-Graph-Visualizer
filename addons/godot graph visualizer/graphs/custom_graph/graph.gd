@@ -1,13 +1,15 @@
 @tool
 extends GraphEdit
 
-const LOADING_SCREEN: PackedScene = preload("uid://bncf27fvmqnxe")
+## @experimental: This class is currently under development, except changes and some testing
+
+const _LOADING_SCREEN: PackedScene = preload("uid://bncf27fvmqnxe")
 
 var _loading_screen_instance: Panel = null
 
 func create_loading_screen() -> void:
 	if not _loading_screen_instance:
-		_loading_screen_instance = LOADING_SCREEN.instantiate()
+		_loading_screen_instance = _LOADING_SCREEN.instantiate()
 		add_child(_loading_screen_instance)
 		_loading_screen_instance.set_size.call_deferred(size)
 		_loading_screen_instance.z_index = 100

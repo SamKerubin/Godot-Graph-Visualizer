@@ -2,23 +2,55 @@
 extends Resource
 class_name ScriptPropertyManager
 
-const CLASS_DECLARATION_REFERENCE: String = r"^class_name\s+(\w+)"
-const VARIABLE_DECLARATION_REFERENCE: String = r"(var|const)\s+(\w+)(?::\s*(?:[\w.]+(?:\s*[\s*[\w\s,]+\s*\])?))?\s*(?:(?::?=)\s*(.+))?"
+## Manager class made to read scripts properties[br]
+## It search for things like:[br]
+## - variables/constants[br]
+## - methods[br][br]
+## For reading all scripts, use: [method search_properties_in_all_scripts][br][br]
+## For more information about properties, see: [class ScriptPropertyReference]
 
+# Regexes
+const _CLASS_DECLARATION_REFERENCE: String = r"^class_name\s+(\w+)"
+const _VARIABLE_DECLARATION_REFERENCE: String = \
+	r"(var|const)\s+(\w+)(?::\s*(?:[\w.]+" \
+	+ r"(?:\s*[\s*[\w\s,]+\s*\])?))?\s*(?:(?::?=)\s*(.+))?"
+
+## Holds all the saved properties of each script file[br]
+## see [class ScriptPropertyReference]
 var _script_properties: Dictionary[String, ScriptPropertyReference]
 
+## Regex that will match with class names
 var _class_regex: RegEx = RegEx.new()
+## Regex that will match with variables
 var _variable_regex: RegEx = RegEx.new()
 
 func _init() -> void:
-	if _class_regex.compile(CLASS_DECLARATION_REFERENCE) != OK:
+	"""
+		Initialize the Regexes
+	"""
+
+	if _class_regex.compile(_CLASS_DECLARATION_REFERENCE) != OK:
 		push_error("Error: Failed to compile class declaration regex")
 
-	if _variable_regex.compile(VARIABLE_DECLARATION_REFERENCE) != OK:
+	if _variable_regex.compile(_VARIABLE_DECLARATION_REFERENCE) != OK:
 		push_error("Error: Failed to compile variable declaration regex")
 
 #region Reading Scripts
+## @experimental: This is still an uncomplete method
+## Given a script file path, reads it and saves every property found[br]
+## While reading, ignores comments like:[br][br]
+## - #[br]
+## - ##[br]
+## - """ """[br]
+## And complete lines that for example, declares arrays or dicts:[br]
+## [gdscript]
+## var dict: Dictionary = { # ... 
+## } # <- Completes all the content
+## [/gdscript]
 func _read_file(path: String) -> void:
+	""" 
+	 """
+
 	if not ResourceLoader.exists(path):
 		push_error("Error: Invalid path \'%s\'" % path)
 		return
@@ -50,6 +82,10 @@ func _read_file(path: String) -> void:
 
 	script.close()
 
+## Search in a line of a script file for references[br]
+## Matches the line with all regexes[br]
+## If theres is any match, then saves it and return a new instance of
+## [class ScriptPropertyReference]
 func _search_in_line(line: String, script_property: ScriptPropertyReference) -> ScriptPropertyReference:
 	var c_name: String = _match_class(line)
 
@@ -65,17 +101,35 @@ func _search_in_line(line: String, script_property: ScriptPropertyReference) -> 
 
 	return script_property
 
+## Store a new script property[br]
+## If its already in the dictionary, then its not added
 func _store_line(path: String, script: ScriptPropertyReference) -> void:
 	if _script_properties.has(path): return
 
 	_script_properties.set(path, script)
 
+## Reads every script file inside the project[br]
+## [param script_files] Holds every script file path inside the project
+func search_properties_in_all_scripts(script_files: Array) -> void:
+	_script_properties.clear()
+	for scr: String in script_files:
+		_read_file(scr)
+#endregion
+
+#region Matching Regex
+## Uses regex [member _class_regex] to search for
+## a class name inside the script[br]
+## If it doesnt match anything, returns an empty string
 func _match_class(line: String) -> String:
 	var matches: RegExMatch = _class_regex.search(line)
 	if matches: return matches.get_string(1)
 
 	return ""
 
+## Uses regex [member _variable_regex] to search
+## for properties inside the script[br]
+## If it doesnt match anything, returns an array with 3 slots
+## with string value "null"
 func _match_property(line: String) -> Array[String]:
 	var matches: RegExMatch = _variable_regex.search(line)
 	if matches:
@@ -87,19 +141,20 @@ func _match_property(line: String) -> Array[String]:
 
 	return ["null", "null", "null"]
 
-func search_properties_in_all_scripts(script_files: Array) -> void:
-	_script_properties.clear()
-	for scr: String in script_files:
-		_read_file(scr)
+# TODO: Include a method to add methods and variable scoping for each method added
 #endregion
 
 #region Get Script Property
+## [param c_name] Refers to a class name[br]
+## Search all the properties saved[br]
+## Returns the first instance that matches the entered [param c_name]
 func find_script_property_with_class(c_name: String) -> ScriptPropertyReference:
 	for prop: ScriptPropertyReference in _script_properties.values():
 		if prop.get_class_name() == c_name: return prop
 	
 	return null
 
+## Returns the properties that are currently saved
 func get_script_properties() -> Dictionary[String, ScriptPropertyReference]:
 	return _script_properties
 #endregion

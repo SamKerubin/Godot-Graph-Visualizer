@@ -1,6 +1,10 @@
 @tool
 extends Panel
 
+## @experimental: This class in still unfinished, expect changes and testing[br]
+## Class made to handle every action inside the graph:
+## node generation/interaction, layout generation
+
 @onready var container: VSplitContainer = $VSplitContainer2
 
 @onready var graph: GraphEdit = $VSplitContainer2/Graph
@@ -75,11 +79,6 @@ func _on_node_clicked(path: String, node_name: String) -> void:
 	# Show the nodes name
 	# Show every references listed with its path and times referenced
 	# Also, show the icon of the referenced scene
-
-	""" 
-		PSTD: add a value to the regex in ScriptParserManager
-		So you can also allow the user to use ResourceLoader.load(path)
-	"""
 	pass
 
 func _on_node_hovered(path: String, node_name: String) -> void:

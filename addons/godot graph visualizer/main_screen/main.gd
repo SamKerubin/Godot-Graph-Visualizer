@@ -1,6 +1,6 @@
 @tool
 extends Control
-## @experimental: This class is currently being used to perform tests
+## @experimental: This class is uncomplete, expect changes and some testing
 
 @onready var options: Panel = $HSplitContainer/Options
 @onready var main_graph: Panel = $HSplitContainer/MainGraph
