@@ -15,6 +15,14 @@ var mapped_nodes: Dictionary[RelationData, SamGraphNode] = {}
 func set_up_layout(node_relations: Array[RelationData], graph: GraphEdit) -> void:
 	_map_nodes(node_relations, graph)
 	var roots: Array[RelationData] = _get_roots(node_relations)
+	for r: RelationData in roots:
+		print("r ", r.node_name)
+	for n: RelationData in node_relations:
+		print(n.node_name)
+		for i: RelationData in n.incoming:
+			print("\ti ", i.node_name)
+		for o: RelationData in n.outgoing:
+			print("\to ", o.node_name)
 
 	_place_roots(roots)
 
@@ -35,7 +43,6 @@ func _get_roots(node_relations: Array[RelationData]) -> Array[RelationData]:
 	)
 
 func _place_roots(roots: Array[RelationData]) -> void:
-
 	var x_spacing: float = 600.0
 	var start_x: float = 100.0
 	var start_y: float = 100.0
@@ -63,10 +70,13 @@ func _set_layout_mode(relation: RelationData, node: SamGraphNode,
 		5, 6, 7, 8: position_getter = _get_fan_position
 		_: position_getter = _get_grid_position
 
+	if not position_getter.is_valid():
+		push_error("Error: Unable to set a position getter to child size of \'%d\': " % n)
+		return
+
 	var m: int = 1
 	for child: RelationData in children:
 
-		# this is still buggy, fix later
 		var current_node: SamGraphNode = mapped_nodes.get(child)
 
 		if not current_node: continue
@@ -83,11 +93,11 @@ func _set_layout_mode(relation: RelationData, node: SamGraphNode,
 		_set_layout_mode(child, current_node, depth + 1, visited)
 
 func _get_radial_position(node: SamGraphNode, m: int, n: int, depth: int) -> Vector2:
-	const RADIUS: int = 400
+	var radius: int = 200
 	var angle: float = (-PI / n) * m
 
-	var x: float = node.position.x + cos(angle) * RADIUS
-	var y: float = node.position.y + sin(angle) * RADIUS
+	var x: float = node.position.x + cos(angle) * radius
+	var y: float = node.position.y + sin(angle) * radius
 
 	return Vector2(x, y)
 

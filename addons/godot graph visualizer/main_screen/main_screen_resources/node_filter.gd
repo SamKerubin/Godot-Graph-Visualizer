@@ -18,11 +18,9 @@ func set_temporal_properties(scene_properties: ScenePropertyManager) -> void:
 ## Also, creates an instance of [class RelationData] for each element in [param nodes]
 ## and returns an array of each instances created
 func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[RelationData]:
-	var relation_manager: RelationManager = RelationManager.new()
+	if not _temp_scene_properties: return []
 
-	if not _temp_scene_properties:
-		push_error("Error: Scene Properties have a null or invalid value")
-		return []
+	var relation_manager: RelationManager = RelationManager.new()
 
 	if nodes.is_empty(): return []
 
@@ -30,7 +28,7 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[Relati
 	if type == "instance": comparator = _get_node_instances
 	elif type == "packedscene": comparator = _get_node_packedscenes
 
-	if not comparator:
+	if not comparator.is_valid():
 		push_error("Error: Couldnt filter nodes with a reference of type \'%s\'" % type)
 		return []
 
@@ -46,6 +44,7 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[Relati
 
 		for ref: String in current_relations:
 			var relation_scene: SceneData = _temp_scene_properties.find_scene_with_path(ref)
+			if not relation_scene: continue
 
 			var relation_path: String = relation_scene.get_node_path()
 			var scene_name: String = relation_scene.get_node_name().capitalize()
@@ -55,8 +54,10 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[Relati
 
 			new_relation.add_outgoing_node(existing_relation, current_relations[ref])
 			existing_relation.add_incoming_node(new_relation, current_relations[ref])
+			
+			relation_manager.update_relation(existing_relation)
 
-		relation_manager.relations.append(new_relation)
+		relation_manager.update_relation(new_relation)
 
 	return relation_manager.relations
 

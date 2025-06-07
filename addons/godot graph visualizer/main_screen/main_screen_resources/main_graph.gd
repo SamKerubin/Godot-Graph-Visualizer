@@ -48,13 +48,13 @@ func scan_project() -> void:
 
 	_scene_property_manager.search_properties_in_all_scenes(script_files, scene_files)
 	_node_filter.set_temporal_properties(_scene_property_manager)
-	
+
 	var scenes: Array[SceneData] = _scene_property_manager.get_scenes_properties()
 
 	relations = _node_filter.filter_nodes_by_type(graph_type, scenes)
 
 	_layout_manager.set_up_layout(relations, graph)
-	
+
 	graph.delete_loading_screen()
 
 func set_ui_colors(ins_n: Color, pck_n: Color, inst_cn: Color, pack_cn: Color) -> void:
@@ -86,7 +86,7 @@ func _on_node_hovered(path: String, node_name: String) -> void:
 	# If its bigger or equals than the maximum hover time, then
 	# show an interface with the nodes name, and how many relations it have (overall)
 	pass
- 
+
 func _on_node_unhovered() -> void:
 	# If exists, delete the hover interface
 	pass

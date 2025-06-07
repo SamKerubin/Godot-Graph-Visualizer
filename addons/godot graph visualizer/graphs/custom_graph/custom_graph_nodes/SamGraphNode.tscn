@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://bd2y3dnu77y4h" path="res://addons/godot graph visualizer/graphs/custom_graph/custom_graph_nodes/sam_graph_node.gd" id="1_ked3x"]
 
 [node name="SamGraphNode" type="GraphNode"]
+offset_right = 123.0
+offset_bottom = 118.0
 draggable = false
 selectable = false
 script = ExtResource("1_ked3x")
