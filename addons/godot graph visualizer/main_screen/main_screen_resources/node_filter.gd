@@ -48,13 +48,13 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[Relati
 
 			var relation_path: String = relation_scene.get_node_path()
 			var scene_name: String = relation_scene.get_node_name().capitalize()
-			
+
 			var existing_relation: RelationData = relation_manager.find_relation_with_name(scene_name)
 			if not existing_relation: existing_relation = RelationData.new(scene_name, relation_path)
 
 			new_relation.add_outgoing_node(existing_relation, current_relations[ref])
 			existing_relation.add_incoming_node(new_relation, current_relations[ref])
-			
+
 			relation_manager.update_relation(existing_relation)
 
 		relation_manager.update_relation(new_relation)

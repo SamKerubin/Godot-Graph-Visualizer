@@ -12,19 +12,22 @@ const GRAPH_NODE_SCENE: PackedScene = preload("uid://bo153wubc0sl1")
 
 var mapped_nodes: Dictionary[RelationData, SamGraphNode] = {}
 
+var _position_manager: NodePositionManager
+
+func _init() -> void:
+	_position_manager = NodePositionManager.new()
+
 func set_up_layout(node_relations: Array[RelationData], graph: GraphEdit) -> void:
 	_map_nodes(node_relations, graph)
 	var roots: Array[RelationData] = _get_roots(node_relations)
-	for r: RelationData in roots:
-		print("r ", r.node_name)
-	for n: RelationData in node_relations:
-		print(n.node_name)
-		for i: RelationData in n.incoming:
-			print("\ti ", i.node_name)
-		for o: RelationData in n.outgoing:
-			print("\to ", o.node_name)
 
 	_place_roots(roots)
+
+	var shared_nodes: Array[RelationData] = _get_shared_nodes(node_relations)
+	_place_shared_nodes(shared_nodes)
+
+	var unrelated_nodes: Array[RelationData] = _get_unrelated_nodes(node_relations)
+	_place_unrelated_nodes(unrelated_nodes)
 
 func _map_nodes(node_relations: Array[RelationData], graph: GraphEdit) -> void:
 	for relation: RelationData in node_relations:
@@ -66,12 +69,12 @@ func _set_layout_mode(relation: RelationData, node: SamGraphNode,
 
 	var position_getter: Callable
 	match n:
-		1, 2, 3, 4: position_getter = _get_radial_position
-		5, 6, 7, 8: position_getter = _get_fan_position
-		_: position_getter = _get_grid_position
+		1, 2, 3, 4: position_getter = _position_manager.get_radial_position
+		5, 6, 7, 8: position_getter = _position_manager.get_fan_position
+		_: position_getter = _position_manager.get_grid_position
 
 	if not position_getter.is_valid():
-		push_error("Error: Unable to set a position getter to child size of \'%d\': " % n)
+		push_error("Error: Unable to set a position getter to children size of \'%d\': " % n)
 		return
 
 	var m: int = 1
@@ -81,42 +84,33 @@ func _set_layout_mode(relation: RelationData, node: SamGraphNode,
 
 		if not current_node: continue
 
-		if visited.has(current_node):
-			current_node.position = (current_node.position + node.position) / 2.0
-			continue
+		if visited.has(current_node): continue
 
-		var child_position: Vector2 = position_getter.call(node, m, n, depth)
+		var child_position: Vector2 = position_getter.call(node.position_offset, m, n, depth)
 		current_node.set_position_offset(child_position)
 
 		m += 1
 
 		_set_layout_mode(child, current_node, depth + 1, visited)
 
-func _get_radial_position(node: SamGraphNode, m: int, n: int, depth: int) -> Vector2:
-	var radius: int = 200
-	var angle: float = (-PI / n) * m
-
-	var x: float = node.position.x + cos(angle) * radius
-	var y: float = node.position.y + sin(angle) * radius
-
-	return Vector2(x, y)
-
-func _get_fan_position(node: SamGraphNode, m: int, n: int, depth: int) -> Vector2:
-	var x: float = node.position.x + depth * 300
-	var y: float = node.position.y + (m - n / 2) * 180 
-	
-	# x = parent.x + (M - N / 2) * 250
-	# y = parent.y + depth * 300
-
-	return Vector2(x, y)
-
-func _get_grid_position(node: SamGraphNode, m: int, n: int, depth: int) -> Vector2:
-	return Vector2.ZERO
+func _place_shared_nodes(shared_nodes: Array[RelationData]) -> void:
+	pass
 
 func _get_shared_nodes(node_relations: Array[RelationData]) -> Array[RelationData]:
 	return node_relations.filter(func(x: RelationData) -> bool:
 		return x.incoming.size() > 1
 	)
+
+func _place_unrelated_nodes(unrelated_nodes: Array[RelationData]) -> void:
+	var n: int = unrelated_nodes.size()
+
+	var initial_position: Vector2 = Vector2(1000, 200)
+
+	for i: int in range(n):
+		var relation: RelationData = unrelated_nodes[i]
+		print(relation.node_name)
+		var node: SamGraphNode = mapped_nodes[relation]
+		node.position_offset = _position_manager.get_grid_position(initial_position, i, n)
 
 func _get_unrelated_nodes(node_relations: Array[RelationData]) -> Array[RelationData]:
 	return node_relations.filter(func(x: RelationData) -> bool:
