@@ -38,6 +38,8 @@ func create_resources() -> void:
 
 	_layout_manager = LayoutManager.new()
 	_layout_manager.node_loaded.connect(_on_graph_node_loaded)
+	
+	_layout_manager.layout_loaded.connect(graph._on_layout_loaded)
 
 	scan_project()
 

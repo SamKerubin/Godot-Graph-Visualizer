@@ -1,0 +1,19 @@
+[gd_scene load_steps=6 format=3 uid="uid://dxyvg8iro6h54"]
+
+[ext_resource type="PackedScene" uid="uid://mnmnbfk5sdp0" path="res://plugin_test/Scene6.tscn" id="1_8dedf"]
+[ext_resource type="PackedScene" path="res://plugin_test/Scene9.tscn" id="2_pixv7"]
+[ext_resource type="PackedScene" path="res://plugin_test/Scene10.tscn" id="3_pixv7"]
+[ext_resource type="PackedScene" path="res://plugin_test/Scene11.tscn" id="4_wcaaa"]
+[ext_resource type="PackedScene" uid="uid://c36xhfdhscppb" path="res://plugin_test/Scene7.tscn" id="5_146s8"]
+
+[node name="Scene4" type="Node2D"]
+
+[node name="Scene6" parent="." instance=ExtResource("1_8dedf")]
+
+[node name="Scene9" parent="." instance=ExtResource("2_pixv7")]
+
+[node name="Scene10" parent="." instance=ExtResource("3_pixv7")]
+
+[node name="Scene11" parent="." instance=ExtResource("4_wcaaa")]
+
+[node name="Scene6-2" parent="." instance=ExtResource("5_146s8")]

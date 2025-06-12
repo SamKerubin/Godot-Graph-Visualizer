@@ -7,6 +7,7 @@ class_name LayoutManager
 ## @experimental: this class is still under development, expect changes and testing
 
 signal node_loaded(node: SamGraphNode)
+signal layout_loaded(mapped_nodes: Dictionary[RelationData, SamGraphNode])
 
 const GRAPH_NODE_SCENE: PackedScene = preload("uid://bo153wubc0sl1")
 
@@ -14,13 +15,12 @@ var mapped_nodes: Dictionary[RelationData, SamGraphNode] = {}
 
 var _position_manager: NodePositionManager
 
-func _init() -> void:
+func set_up_layout(node_relations: Array[RelationData], graph: GraphEdit) -> void:
 	_position_manager = NodePositionManager.new()
 
-func set_up_layout(node_relations: Array[RelationData], graph: GraphEdit) -> void:
 	_map_nodes(node_relations, graph)
-	var roots: Array[RelationData] = _get_roots(node_relations)
 
+	var roots: Array[RelationData] = _get_roots(node_relations)
 	_place_roots(roots)
 
 	var shared_nodes: Array[RelationData] = _get_shared_nodes(node_relations)
@@ -28,6 +28,8 @@ func set_up_layout(node_relations: Array[RelationData], graph: GraphEdit) -> voi
 
 	var unrelated_nodes: Array[RelationData] = _get_unrelated_nodes(node_relations)
 	_place_unrelated_nodes(unrelated_nodes)
+
+	layout_loaded.emit(mapped_nodes)
 
 func _map_nodes(node_relations: Array[RelationData], graph: GraphEdit) -> void:
 	for relation: RelationData in node_relations:
@@ -40,22 +42,7 @@ func _map_nodes(node_relations: Array[RelationData], graph: GraphEdit) -> void:
 		graph.add_child(new_graph_node)
 		mapped_nodes[relation] = new_graph_node
 
-func _get_roots(node_relations: Array[RelationData]) -> Array[RelationData]:
-	return node_relations.filter(func(x: RelationData) -> bool:
-		return x.incoming.is_empty() and not x.outgoing.is_empty()
-	)
-
-func _place_roots(roots: Array[RelationData]) -> void:
-	var x_spacing: float = 600.0
-	var start_x: float = 100.0
-	var start_y: float = 100.0
-
-	for i: int in range(roots.size()):
-		var root: RelationData = roots[i]
-		var node: SamGraphNode = mapped_nodes[root]
-		node.set_position_offset(Vector2(start_x + i * x_spacing, start_y))
-
-		_set_layout_mode(root, node, 1, {})
+		node_loaded.emit(new_graph_node)
 
 func _set_layout_mode(relation: RelationData, node: SamGraphNode, 
 						depth: int, visited: Dictionary[SamGraphNode, bool]) -> void:
@@ -81,7 +68,6 @@ func _set_layout_mode(relation: RelationData, node: SamGraphNode,
 	for child: RelationData in children:
 
 		var current_node: SamGraphNode = mapped_nodes.get(child)
-
 		if not current_node: continue
 
 		if visited.has(current_node): continue
@@ -93,7 +79,28 @@ func _set_layout_mode(relation: RelationData, node: SamGraphNode,
 
 		_set_layout_mode(child, current_node, depth + 1, visited)
 
+func _place_roots(roots: Array[RelationData]) -> void:
+	var x_spacing: float = 600.0
+	var start_x: float = 100.0
+	var start_y: float = 100.0
+
+	for i: int in range(roots.size()):
+		var root: RelationData = roots[i]
+		var node: SamGraphNode = mapped_nodes[root]
+		node.set_position_offset(Vector2(start_x + i * x_spacing, start_y))
+
+		_set_layout_mode(root, node, 1, {})
+
+func _get_roots(node_relations: Array[RelationData]) -> Array[RelationData]:
+	return node_relations.filter(func(x: RelationData) -> bool:
+		return x.incoming.is_empty() and not x.outgoing.is_empty()
+	)
+
 func _place_shared_nodes(shared_nodes: Array[RelationData]) -> void:
+	# Thinking about how display the shared nodes...
+	# - Average position of every parent
+	# - Interpolation (only works in nodes with 2 parents)
+	# - Re-doing the layout
 	pass
 
 func _get_shared_nodes(node_relations: Array[RelationData]) -> Array[RelationData]:
@@ -104,11 +111,10 @@ func _get_shared_nodes(node_relations: Array[RelationData]) -> Array[RelationDat
 func _place_unrelated_nodes(unrelated_nodes: Array[RelationData]) -> void:
 	var n: int = unrelated_nodes.size()
 
-	var initial_position: Vector2 = Vector2(1000, 200)
+	var initial_position: Vector2 = Vector2(2000, 300)
 
 	for i: int in range(n):
 		var relation: RelationData = unrelated_nodes[i]
-		print(relation.node_name)
 		var node: SamGraphNode = mapped_nodes[relation]
 		node.position_offset = _position_manager.get_grid_position(initial_position, i, n)
 

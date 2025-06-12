@@ -15,8 +15,8 @@ func get_fan_position(ref_position: Vector2, m: int, n: int, depth: int=0) -> Ve
 	var x: float = ref_position.x + depth * 300
 	var y: float = ref_position.y + (m - n / 2) * 180 
 
-	# x = parent.x + (M - N / 2) * 250
-	# y = parent.y + depth * 300
+	#x = ref_position.x + (m - n / 2) * 250
+	#y = ref_position.y + depth * 300
 
 	return Vector2(x, y)
 
@@ -26,8 +26,8 @@ func get_grid_position(ref_position: Vector2, m: int, n: int, depth: int=0) -> V
 	var col: int = m % cols
 
 	var x_spacing: float = 300.0
-	var y_spacing: float = 250.0
-	var extra_depth: float = row * depth * 100
+	var y_spacing: float = 200.0
+	var extra_depth: float = row * 100
 
 	var x: float = ref_position.x + col * x_spacing
 	var y: float = ref_position.y + row * y_spacing + extra_depth
