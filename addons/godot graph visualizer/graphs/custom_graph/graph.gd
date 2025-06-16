@@ -24,16 +24,6 @@ func _connect_nodes(mapped_nodes: Dictionary[RelationData, SamGraphNode]) -> voi
 
 			var from_slot: int = slot_map[from_node][to_rel]
 			var to_slot: int = slot_map[to_node][from_rel]
-			print(from_node.title)
-			print(from_node.is_slot_enabled_right(from_slot))
-			print(from_slot)
-
-			print(to_node.title)
-			print(to_node.is_slot_enabled_left(to_slot))
-			print(to_slot)
-
-			print("From node: ", from_node.name, " From slot: ", from_slot)
-			print("To node: ", to_node.name, " To slot: ", to_slot)
 
 			connect_node(from_node.name, from_slot, to_node.name, to_slot)
 
@@ -47,6 +37,7 @@ func _set_all_slots(mapped_nodes: Dictionary[RelationData, SamGraphNode]) \
 		slot_map[node] = {}
 
 		var index: int = 0
+
 		var relations: Array[RelationData] = []
 		relations += relation.incoming.keys()
 		relations += relation.outgoing.keys()
@@ -54,6 +45,11 @@ func _set_all_slots(mapped_nodes: Dictionary[RelationData, SamGraphNode]) \
 		for rel in relations:
 			var is_incoming: bool = relation.incoming.has(rel)
 			var is_outgoing: bool = relation.outgoing.has(rel)
+
+			if node.get_child_count() <= index:
+				var placeholder = Control.new()
+				placeholder.name = "Slot %d" % index
+				node.add_child(placeholder)
 
 			node.set_slot(index, is_incoming, TYPE_INT, Color.WHITE, is_outgoing, TYPE_INT, Color.WHITE)
 
