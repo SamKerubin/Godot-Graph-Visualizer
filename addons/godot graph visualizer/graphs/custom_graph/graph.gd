@@ -10,6 +10,7 @@ var _loading_screen_instance: Panel
 func _on_layout_loaded(mapped_nodes: Dictionary[RelationData, SamGraphNode]) -> void:
 	_connect_nodes(mapped_nodes)
 
+# FIXME
 # TODO: Add a label for each node placed that displays the times a relation is made
 func _connect_nodes(mapped_nodes: Dictionary[RelationData, SamGraphNode]) -> void:
 	var slot_map: Dictionary[SamGraphNode, Dictionary] = _set_all_slots(mapped_nodes)
@@ -24,6 +25,9 @@ func _connect_nodes(mapped_nodes: Dictionary[RelationData, SamGraphNode]) -> voi
 
 			var from_slot: int = slot_map[from_node][to_rel]
 			var to_slot: int = slot_map[to_node][from_rel]
+			#print(">>> CONNECTING:")
+			#prints("FROM:", from_node.name, "OUT slot:", from_slot, "/", from_node.get_output_port_count())
+			#prints("TO  :", to_node.name, "IN slot:", to_slot, "/", to_node.get_input_port_count())
 
 			connect_node(from_node.name, from_slot, to_node.name, to_slot)
 
@@ -34,26 +38,27 @@ func _set_all_slots(mapped_nodes: Dictionary[RelationData, SamGraphNode]) \
 
 	for relation: RelationData in mapped_nodes.keys():
 		var node: SamGraphNode = mapped_nodes[relation]
-		slot_map[node] = {}
 
-		var index: int = 0
+		slot_map[node] = {} as Dictionary[RelationData, int]
 
 		var relations: Array[RelationData] = []
 		relations += relation.incoming.keys()
 		relations += relation.outgoing.keys()
 
-		for rel in relations:
+		if relations.is_empty(): continue
+
+		var index: int = 0
+		for rel: RelationData in relations:
 			var is_incoming: bool = relation.incoming.has(rel)
 			var is_outgoing: bool = relation.outgoing.has(rel)
 
-			if node.get_child_count() <= index:
-				var placeholder = Control.new()
-				placeholder.name = "Slot %d" % index
-				node.add_child(placeholder)
-
-			node.set_slot(index, is_incoming, TYPE_INT, Color.WHITE, is_outgoing, TYPE_INT, Color.WHITE)
+			node.set_custom_slot(index, is_incoming, is_outgoing, TYPE_INT, Color.WHITE)
+			#prints("Slot creado en:", node.name, "index:", index)
+			#prints("  Input?", is_incoming, "Output?", is_outgoing)
+			#prints("  Actual OUT count:", node.get_output_port_count(), "IN count:", node.get_input_port_count())
 
 			slot_map[node][rel] = index
+
 			index += 1
 
 	return slot_map

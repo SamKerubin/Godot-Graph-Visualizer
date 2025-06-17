@@ -8,6 +8,16 @@ signal node_unhovered
 
 var node_path: String = "res://"
 
+# FIXME
+func set_custom_slot(index: int, is_incoming: bool, is_outgoing: bool, type: int, color: Color) -> void:
+	if get_child_count() <= index:
+		var placeholder = Control.new()
+		placeholder.name = "Slot %d" % index
+		add_child(placeholder)
+
+	""" This shouldnt be working like this, but ill fix it later """
+	set_slot(index, true, type, color, true, type, color)
+
 func _gui_input(event: InputEvent) -> void:
 	# Manage this events:
 	# - Hover -> Barely show information of the node
