@@ -29,7 +29,8 @@ var graph_type: String = "instance" # By default it will generate an instance gr
 
 var relations: Array[RelationData] = []
 
-func create_resources() -> void:
+func create_resources(hide_tool_scripts: bool, hide_unrelated_nodes: bool) -> void:
+	graph.clear_graph()
 	graph.create_loading_screen()
 
 	_file_scanner = FileScanner.new()
@@ -41,9 +42,9 @@ func create_resources() -> void:
 	
 	_layout_manager.layout_loaded.connect(graph._on_layout_loaded)
 
-	scan_project()
+	scan_project(hide_tool_scripts, hide_unrelated_nodes)
 
-func scan_project() -> void:
+func scan_project(hide_tool_scripts: bool, hide_unrelated_nodes: bool) -> void:
 	_file_scanner.files = _file_scanner.scan_files_in_directory("res://")
 	var script_files: Array = _file_scanner.get_files_by_type(FileTypes.FileType.SCRIPT_FILE)
 	var scene_files: Array = _file_scanner.get_files_by_type(FileTypes.FileType.SCENE_FILE)
@@ -70,6 +71,9 @@ func _get_current_node_color() -> Color:
 
 func _get_current_connection_color() -> Color:
 	return instance_node_connection_color
+
+func change_graph_type(type: String) -> void:
+	graph_type = type
 
 func _on_graph_node_loaded(node: SamGraphNode) -> void:
 	node.node_clicked.connect(_on_node_clicked)

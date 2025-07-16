@@ -25,6 +25,7 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[Relati
 	if nodes.is_empty(): return []
 
 	var comparator: Callable
+
 	if type == "instance": comparator = _get_node_instances
 	elif type == "packedscene": comparator = _get_node_packedscenes
 

@@ -21,10 +21,31 @@ extends Control
 @onready var instance_nodes_connection_color: ColorPickerButton = %InstanceNodesConnectionColor
 @onready var packed_scene_nodes_connection_color: ColorPickerButton = %PackedSceneNodesConnectionColor
 
-func load_instance() -> void:
-	main_graph.create_resources()
+var hide_tool_scripts: bool = false
+var hide_unrelated_nodes: bool = false
 
-func save() -> void: pass
+func _ready() -> void:
+	close_option_menu.pressed.connect(_option_menu_request.bind(false))
+	open_option_menu.pressed.connect(_option_menu_request.bind(true))
+
+	instance.pressed.connect(main_graph.change_graph_type.bind(instance.name.to_lower()))
+	packed_scene.pressed.connect(main_graph.change_graph_type.bind(packed_scene.name.to_lower()))
+
+func load_instance() -> void:
+	main_graph.create_resources(hide_tool_scripts, hide_unrelated_nodes)
+
+func _on_reload_graph_request() -> void:
+	load_instance()
+
+func _option_menu_request(opened: bool) -> void:
+	options.visible = opened
+	open_option_menu.visible = not opened
+
+func _change_view_of_tool_scripts(toggled_on: bool) -> void:
+	hide_tool_scripts = toggled_on
+
+func _change_view_of_unrelated_nodes(toggled_on: bool) -> void:
+	hide_unrelated_nodes = toggled_on
 
 func _on_graph_color_changed(color: Color) -> void:
 	main_graph.set_ui_colors(
@@ -33,3 +54,6 @@ func _on_graph_color_changed(color: Color) -> void:
 		instance_nodes_connection_color.color,
 		packed_scene_nodes_connection_color.color
 	)
+
+# Idk what this does, i saw it in a plugin template when i was just starting so i just added it
+func save() -> void: pass

@@ -337,6 +337,9 @@ offset_bottom = 86.0
 text = "->"
 flat = true
 
+[connection signal="toggled" from="HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer/ToolScripts" to="." method="_change_view_of_tool_scripts"]
+[connection signal="toggled" from="HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer/UnrelatedNodes" to="." method="_change_view_of_unrelated_nodes"]
+[connection signal="pressed" from="HSplitContainer/Options/VSplitContainer/Filters/Reload" to="." method="_on_reload_graph_request"]
 [connection signal="color_changed" from="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer/InstanceNodesColor" to="." method="_on_graph_color_changed"]
 [connection signal="color_changed" from="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer2/PackedSceneNodesColor" to="." method="_on_graph_color_changed"]
 [connection signal="color_changed" from="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer3/InstanceNodesConnectionColor" to="." method="_on_graph_color_changed"]

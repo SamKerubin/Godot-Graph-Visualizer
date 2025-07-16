@@ -13,6 +13,7 @@ func _enter_tree() -> void:
 		+ "If you encounter any bug or have any suggestion, dont be afraid to tell me :3\n\t" \
 		+ "GitHub: @SamKerubin\n\tEmail: samuelkiller2013@gmail.com"
 	)
+
 	main_panel_instance = MAIN_PANEL.instantiate()
 	if not main_panel_instance:
 		push_error(

@@ -72,6 +72,8 @@ func create_loading_screen() -> void:
 
 func delete_loading_screen() -> void:
 	if _loading_screen_instance:
+		await get_tree().create_timer(0.1).timeout
+
 		remove_child(_loading_screen_instance)
 		_loading_screen_instance.queue_free()
 

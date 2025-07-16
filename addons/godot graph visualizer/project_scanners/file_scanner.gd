@@ -15,7 +15,6 @@ var files: Dictionary[FileTypes.FileType, Array] = {}
 ## Also, you can use argument 'addons' to exclude /addons/ directory[br]
 ## [param path] refers to the directory path
 func scan_files_in_directory(path: String) -> Dictionary[FileTypes.FileType, Array]:
-
 	var dir: DirAccess = DirAccess.open(path)
 
 	var files: Dictionary[FileTypes.FileType, Array] = {}
