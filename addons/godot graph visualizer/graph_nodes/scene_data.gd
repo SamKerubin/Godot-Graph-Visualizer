@@ -22,6 +22,11 @@ func _init(path_or_uid: String) -> void:
 func get_properties() -> ScenePropertyReference:
 	return _scene_properties
 
+func is_tool() -> bool:
+	return get_properties().get_attached_script().is_tool \
+		if get_properties().get_attached_script() \
+		else false
+
 ## Returns a dictionary holding the information of the scene[br]
 ## See [class NodeData] to understand which things are serialized
 func serialize() -> Dictionary:

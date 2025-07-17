@@ -16,3 +16,6 @@ func add_incoming_node(node: RelationData, times_referenced: int) -> void:
 
 func add_outgoing_node(node: RelationData, times_references: int) -> void:
 	outgoing[node] = outgoing.get(node, 0) + times_references
+
+func have_any_relation() -> bool:
+	return not incoming.is_empty() or not outgoing.is_empty()

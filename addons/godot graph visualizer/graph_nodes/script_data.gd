@@ -7,6 +7,10 @@ class_name ScriptData
 
 var _script_parsed_properties: ScriptParsedReference
 
+## Flag that indicates if the current script is a tool script
+## For more information about tool scripts, see [annotation @GDScript.@tool]
+var is_tool: bool = false
+
 func _init(path_or_uid: String) -> void:
 	"""
 		Uses a path (or uid) to initialize the parent class NodeData
@@ -32,6 +36,7 @@ func get_parsed_properties() -> ScriptParsedReference:
 func serialize() -> Dictionary:
 	var script_data: Dictionary = super.serialize()
 	script_data.merge(_script_parsed_properties.get_parsed_properties())
+	script_data.merge({"is_tool": is_tool})
 
 	return script_data
 #endregion

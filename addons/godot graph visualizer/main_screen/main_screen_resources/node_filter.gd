@@ -17,12 +17,13 @@ func set_temporal_properties(scene_properties: ScenePropertyManager) -> void:
 ## 2. "packedscene" see [method _get_node_packedscenes]
 ## Also, creates an instance of [class RelationData] for each element in [param nodes]
 ## and returns an array of each instances created
-func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[RelationData]:
+func filter_nodes_by_type(type: String, nodes: Array[SceneData], exclude_tools: bool) -> Array[RelationData]:
 	if not _temp_scene_properties: return []
 
 	var relation_manager: RelationManager = RelationManager.new()
 
-	if nodes.is_empty(): return []
+	if nodes.is_empty():
+		return []
 
 	var comparator: Callable
 
@@ -34,6 +35,10 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[Relati
 		return []
 
 	for n: SceneData in nodes:
+		if exclude_tools:
+			if n.is_tool():
+				continue
+
 		var current_name: String = n.get_node_name().capitalize()
 		var current_path: String = n.get_node_path()
 
@@ -45,13 +50,19 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData]) -> Array[Relati
 
 		for ref: String in current_relations:
 			var relation_scene: SceneData = _temp_scene_properties.find_scene_with_path(ref)
-			if not relation_scene: continue
+			if not relation_scene: 
+				continue
+
+			if exclude_tools:
+				if relation_scene.is_tool():
+					continue
 
 			var relation_path: String = relation_scene.get_node_path()
 			var scene_name: String = relation_scene.get_node_name().capitalize()
 
 			var existing_relation: RelationData = relation_manager.find_relation_with_name(scene_name)
-			if not existing_relation: existing_relation = RelationData.new(scene_name, relation_path)
+			if not existing_relation: 
+				existing_relation = RelationData.new(scene_name, relation_path)
 
 			new_relation.add_outgoing_node(existing_relation, current_relations[ref])
 			existing_relation.add_incoming_node(new_relation, current_relations[ref])
@@ -69,7 +80,8 @@ func _get_node_instances(serialized_node: Dictionary) -> Dictionary:
 	var internal_instances: Dictionary = serialized_node.get("instance", {})
 	var attached_script: Dictionary = serialized_node.get("attached_script", {})
 
-	if internal_instances.is_empty() and attached_script.is_empty(): return {}
+	if internal_instances.is_empty() and attached_script.is_empty():
+		return {}
 
 	var script_instances: Dictionary = attached_script.get("instance", {})
 
@@ -83,6 +95,7 @@ func _get_node_instances(serialized_node: Dictionary) -> Dictionary:
 ## See [class ScriptPropertyReference], [class ScenePropertyReference]
 func _get_node_packedscenes(serialized_node: Dictionary) -> Dictionary:
 	var attached_script: Dictionary = serialized_node.get("attached_script", {})
-	if attached_script.is_empty(): return {}
+	if attached_script.is_empty():
+		return {}
 
 	return attached_script.get("packedscene", {})

@@ -59,10 +59,12 @@ func _search_attached_script(scn: Node) -> ScriptData:
 
 	var script_data_path: String = script.resource_path
 	var script_data: ScriptData = _script_parser_manager.find_script_with_path(script_data_path)
+	
+	script_data.is_tool = script.is_tool()
 
 	return script_data
 
-# TODO: Scenes can have childs with a attached script without being instances,
+# TODO: Scenes can have childs with an attached script without being instances,
 # find a way to check each child of a scene and add its script to the original scene
 # if it doesnt is a previously created instance
 
@@ -84,7 +86,6 @@ func _search_instances(scene_data: SceneData, scn: Node) -> void:
 
 			_search_instances(new_scene, child)
 
-			_search_instances(new_scene, child)
 			continue
 
 		_search_instances(scene_data, child)

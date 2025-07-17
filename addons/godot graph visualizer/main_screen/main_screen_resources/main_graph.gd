@@ -54,9 +54,9 @@ func scan_project(hide_tool_scripts: bool, hide_unrelated_nodes: bool) -> void:
 
 	var scenes: Array[SceneData] = _scene_property_manager.get_scenes_properties()
 
-	relations = _node_filter.filter_nodes_by_type(graph_type, scenes)
+	relations = _node_filter.filter_nodes_by_type(graph_type, scenes, hide_tool_scripts)
 
-	_layout_manager.set_up_layout(relations, graph)
+	_layout_manager.set_up_layout(relations, graph, hide_unrelated_nodes)
 
 	graph.delete_loading_screen()
 

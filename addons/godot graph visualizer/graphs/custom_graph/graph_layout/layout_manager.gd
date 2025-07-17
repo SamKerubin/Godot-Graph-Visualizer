@@ -15,10 +15,10 @@ var mapped_nodes: Dictionary[RelationData, SamGraphNode] = {}
 
 var _position_manager: NodePositionManager
 
-func set_up_layout(node_relations: Array[RelationData], graph: GraphEdit) -> void:
+func set_up_layout(node_relations: Array[RelationData], graph: GraphEdit, exclude_unrelated: bool) -> void:
 	_position_manager = NodePositionManager.new()
 
-	_map_nodes(node_relations, graph)
+	_map_nodes(node_relations, graph, exclude_unrelated)
 
 	var roots: Array[RelationData] = _get_roots(node_relations)
 	_place_roots(roots)
@@ -26,13 +26,17 @@ func set_up_layout(node_relations: Array[RelationData], graph: GraphEdit) -> voi
 	var shared_nodes: Array[RelationData] = _get_shared_nodes(node_relations)
 	_place_shared_nodes(shared_nodes)
 
-	var unrelated_nodes: Array[RelationData] = _get_unrelated_nodes(node_relations)
-	_place_unrelated_nodes(unrelated_nodes)
+	if not exclude_unrelated:
+		var unrelated_nodes: Array[RelationData] = _get_unrelated_nodes(node_relations)
+		_place_unrelated_nodes(unrelated_nodes)
 
 	layout_loaded.emit(mapped_nodes)
 
-func _map_nodes(node_relations: Array[RelationData], graph: GraphEdit) -> void:
+func _map_nodes(node_relations: Array[RelationData], graph: GraphEdit, exclude_unrelated: bool) -> void:
 	for relation: RelationData in node_relations:
+		if not relation.have_any_relation() and exclude_unrelated:
+			continue
+
 		var new_graph_node: SamGraphNode = GRAPH_NODE_SCENE.instantiate()
 
 		new_graph_node.title = relation.node_name
