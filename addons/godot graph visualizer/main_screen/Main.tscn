@@ -254,14 +254,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offset = 650
+split_offset = 850
 dragging_enabled = false
 
 [node name="Graph" parent="HSplitContainer/MainGraph/VSplitContainer2" instance=ExtResource("3_hdwl8")]
 layout_mode = 2
+scroll_offset = Vector2(0, -125)
 
 [node name="GraphInfo" type="Panel" parent="HSplitContainer/MainGraph/VSplitContainer2"]
-visible = false
 self_modulate = Color(0.61339, 0.61339, 0.61339, 1)
 layout_mode = 2
 
@@ -303,7 +303,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="References" type="ItemList" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo/Container"]
-visible = false
 layout_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0

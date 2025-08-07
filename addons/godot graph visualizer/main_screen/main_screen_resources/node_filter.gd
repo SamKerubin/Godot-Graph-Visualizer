@@ -17,10 +17,13 @@ func set_temporal_properties(scene_properties: ScenePropertyManager) -> void:
 ## 2. "packedscene" see [method _get_node_packedscenes]
 ## Also, creates an instance of [class RelationData] for each element in [param nodes]
 ## and returns an array of each instances created
-func filter_nodes_by_type(type: String, nodes: Array[SceneData], exclude_tools: bool) -> Array[RelationData]:
+func filter_nodes_by_type(type: String, nodes: Array[SceneData], 
+					exclude_tools: bool, relation_manager: RelationManager
+			) -> Array[RelationData]:
+
 	if not _temp_scene_properties: return []
 
-	var relation_manager: RelationManager = RelationManager.new()
+
 
 	if nodes.is_empty():
 		return []
