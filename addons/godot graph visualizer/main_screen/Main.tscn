@@ -259,14 +259,47 @@ dragging_enabled = false
 
 [node name="Graph" parent="HSplitContainer/MainGraph/VSplitContainer2" instance=ExtResource("3_hdwl8")]
 layout_mode = 2
-scroll_offset = Vector2(0, -125)
+scroll_offset = Vector2(0, -230)
 
 [node name="GraphInfo" type="Panel" parent="HSplitContainer/MainGraph/VSplitContainer2"]
 self_modulate = Color(0.61339, 0.61339, 0.61339, 1)
 layout_mode = 2
 
-[node name="Close" type="Button" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo"]
+[node name="Container" type="Control" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="References" type="ItemList" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo/Container"]
 visible = false
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 38.0
+offset_top = 67.0
+offset_right = -38.0
+offset_bottom = -47.0
+grow_horizontal = 2
+grow_vertical = 2
+allow_reselect = true
+
+[node name="Node" type="Label" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo/Container"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -45.0
+offset_top = 24.0
+offset_right = 45.0
+offset_bottom = 47.0
+grow_horizontal = 2
+text = "Node name"
+
+[node name="Close" type="Button" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.979
@@ -294,39 +327,6 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Click a node to show more detailed information"
 
-[node name="Container" type="Control" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="References" type="ItemList" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo/Container"]
-layout_mode = 2
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 38.0
-offset_top = 67.0
-offset_right = -38.0
-offset_bottom = -47.0
-grow_horizontal = 2
-grow_vertical = 2
-allow_reselect = true
-
-[node name="Node" type="Label" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo/Container"]
-visible = false
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -45.0
-offset_top = 24.0
-offset_right = 45.0
-offset_bottom = 47.0
-grow_horizontal = 2
-text = "Node name"
-
 [node name="OpenOptionMenu" type="Button" parent="HSplitContainer/MainGraph"]
 layout_mode = 2
 offset_top = 55.0
@@ -342,3 +342,4 @@ flat = true
 [connection signal="color_changed" from="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer2/PackedSceneNodesColor" to="." method="_on_graph_color_changed"]
 [connection signal="color_changed" from="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer3/InstanceNodesConnectionColor" to="." method="_on_graph_color_changed"]
 [connection signal="color_changed" from="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer4/PackedSceneNodesConnectionColor" to="." method="_on_graph_color_changed"]
+[connection signal="pressed" from="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo/Close" to="HSplitContainer/MainGraph" method="_on_close_graph_info_pressed"]

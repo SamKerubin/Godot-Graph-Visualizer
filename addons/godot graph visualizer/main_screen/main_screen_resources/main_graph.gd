@@ -69,6 +69,80 @@ func scan_project(hide_tool_scripts: bool, hide_unrelated_nodes: bool) -> void:
 
 	graph.delete_loading_screen()
 
+func _on_graph_node_loaded(node: SamGraphNode) -> void:
+	node.node_clicked.connect(_on_node_clicked)
+	node.node_hovered.connect(_on_node_hovered)
+	node.node_unhovered.connect(_on_node_unhovered)
+
+func _on_close_graph_info_pressed() -> void:
+	references.visible = false
+	close.visible = false
+	message.visible = true
+
+	message.text = "Click a node to show more detailed information"
+	current_node_name.text = ""
+
+	container.split_offset = 850
+
+func _on_node_clicked(node_name: String) -> void:
+	# Show the nodes name
+	# Show every references listed with its path and times referenced
+	var relation: RelationData = _relation_manager.find_relation_with_name(node_name)
+	if not relation:
+		message.text = "If this message keeps appearing, please report it"
+		return
+
+	_show_relations_in_itemlist(relation.outgoing)
+
+	current_node_name.text = node_name
+	references.visible = true
+	close.visible = true
+	message.visible = false
+	container.split_offset = 550
+
+func _show_relations_in_itemlist(relations: Dictionary[RelationData, int]) -> void:
+	references.clear()
+
+	if relations.is_empty():
+		references.add_item("No outgoing relations avialable")
+		return
+
+	for rel: RelationData in relations.keys():
+		var rel_name: String = rel.node_name
+		var amount: int = relations[rel]
+
+		references.add_item("%s    --    %s %s referenced" % 
+								[rel_name, str(amount), "times" if amount > 1 else "time"]
+							)
+
+# TODO: Add the hover timer
+func _on_node_hovered(node_name: String) -> void:
+	# Evaluate first the maximum hover time (arsund .5 - .8 seconds)
+	# If its greater or equals than the maximum hover time, then
+	# show an interface with the nodes name, and how many relations it have (overall)
+	if not _hover_instance:
+		var scene: RelationData = _relation_manager.find_relation_with_name(node_name)
+		var node: SamGraphNode = _layout_manager.mapped_nodes.get(scene)
+		if not node:
+			return
+
+		_hover_instance = _HOVER_SCENE.instantiate()
+		add_child(_hover_instance)
+
+		var node_position: Vector2 = node.get_global_position()
+		var parent_position: Vector2 = _hover_instance.get_parent().get_global_position()
+		var extra_offset: Vector2 = Vector2(20, -20)
+		var incoming: int = scene.incoming.size()
+		var outgoing: int = scene.outgoing.size()
+
+		_hover_instance.position = (node_position - parent_position) - extra_offset
+		_hover_instance.initialize(incoming, outgoing)
+
+func _on_node_unhovered() -> void:
+	if _hover_instance:
+		_hover_instance.queue_free()
+		_hover_instance = null
+
 func set_ui_colors(ins_n: Color, pck_n: Color, inst_cn: Color, pack_cn: Color) -> void:
 	instance_node_color = ins_n
 	packedscene_node_color = pck_n
@@ -83,47 +157,3 @@ func _get_current_connection_color() -> Color:
 
 func change_graph_type(type: String) -> void:
 	graph_type = type
-
-func _on_graph_node_loaded(node: SamGraphNode) -> void:
-	node.node_clicked.connect(_on_node_clicked)
-	node.node_hovered.connect(_on_node_hovered)
-	node.node_unhovered.connect(_on_node_unhovered)
-
-func _on_node_clicked(path: String, node_name: String) -> void:
-	# Get references for node of path 'path'
-	# Show the nodes name
-	# Show every references listed with its path and times referenced
-	$VSplitContainer2/GraphInfo/Message.text = node_name
-	pass
-
-# FIXME: When created the instance, the entire project crashes.
-# Maybe it has to do with the unhovered method?
-func _on_node_hovered(path: String, node_name: String) -> void:
-	# Evaluate first the maximum hover time (around .5 - .8 seconds)
-	# If its greater or equals than the maximum hover time, then
-	# show an interface with the nodes name, and how many relations it have (overall)
-	if not _hover_instance:
-		_hover_instance = _HOVER_SCENE.instantiate()
-
-		var scene: RelationData = _relation_manager.find_relation_with_name(node_name)
-		var node: SamGraphNode = _layout_manager.mapped_nodes.get(scene)
-		if not node:
-			_hover_instance.queue_free()
-			_hover_instance = null
-			return
-
-		var node_position: Vector2 = node.position_offset
-		print(node_position)
-		_hover_instance.set_position(node_position)
-
-		add_child(_hover_instance)
-
-		var amount: int = scene.outgoing.size()
-		_hover_instance.initialize(node_name, amount)
-
-func _on_node_unhovered() -> void:
-	if _hover_instance:
-		remove_child(_hover_instance)
-		_hover_instance.queue_free()
-		_hover_instance = null
-	pass

@@ -23,8 +23,6 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData],
 
 	if not _temp_scene_properties: return []
 
-
-
 	if nodes.is_empty():
 		return []
 

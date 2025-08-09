@@ -1,14 +1,14 @@
 @tool
-extends Control
+extends Panel
 
-@onready var scene_name: RichTextLabel = $SceneName
-@onready var relations_amount: RichTextLabel = $Amount
+@onready var incoming: RichTextLabel = $Incoming
+@onready var outgoing: RichTextLabel = $Outgoing
 
 var initialized: bool = false
 
-func initialize(scn_name: String, amount: int) -> void:
+func initialize(incoming_rel: int, outgoing_rel: int) -> void:
 	if not initialized:
 		initialized = true
 
-		scene_name.text = scn_name
-		relations_amount.text = str(amount)
+		incoming.text = "Incoming: %s" % str(incoming_rel)
+		outgoing.text = "Outgoing: %s" % str(outgoing_rel)

@@ -12,6 +12,8 @@ func _on_layout_loaded(mapped_nodes: Dictionary[RelationData, SamGraphNode]) -> 
 
 # FIXME
 # TODO: Add a label for each node placed that displays the times a relation is made
+# TODO: Design an algorithm to connect the graph nodes in a clear way:
+# If node A is further than node B, connect the nearest por between both
 func _connect_nodes(mapped_nodes: Dictionary[RelationData, SamGraphNode]) -> void:
 	var slot_map: Dictionary[SamGraphNode, Dictionary] = _set_all_slots(mapped_nodes)
 
@@ -72,16 +74,15 @@ func create_loading_screen() -> void:
 
 func delete_loading_screen() -> void:
 	if _loading_screen_instance:
-		await get_tree().create_timer(0.1).timeout
-
-		remove_child(_loading_screen_instance)
 		_loading_screen_instance.queue_free()
+		_loading_screen_instance = null
 
 func clear_graph() -> void:
 	for node: Control in get_children():
-		if not node is SamGraphNode: continue
+		if not node is SamGraphNode:
+			continue
 
-		remove_child(node)
 		node.queue_free()
+		node = null
 
 	clear_connections()

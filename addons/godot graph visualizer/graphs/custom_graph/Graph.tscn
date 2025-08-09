@@ -8,5 +8,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+connection_lines_curvature = 0.0
 zoom_min = 0.15
 script = ExtResource("1_e5pta")

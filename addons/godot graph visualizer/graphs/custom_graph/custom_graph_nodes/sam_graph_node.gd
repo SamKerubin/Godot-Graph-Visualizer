@@ -2,8 +2,8 @@
 extends GraphNode
 class_name SamGraphNode
 
-signal node_clicked(path: String, node_name: String)
-signal node_hovered(path: String, node_name: String)
+signal node_clicked(node_name: String)
+signal node_hovered(node_name: String)
 signal node_unhovered
 
 var node_path: String = "res://"
@@ -27,11 +27,11 @@ func _gui_input(event: InputEvent) -> void:
 		if event.is_double_click():
 			EditorInterface.open_scene_from_path(node_path)
 
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			node_clicked.emit(node_path, name)
+		if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+			node_clicked.emit(name)
 
 func _on_mouse_entered() -> void:
-	node_hovered.emit(node_path, name)
+	node_hovered.emit(name)
 
 func _on_mouse_exited() -> void:
 	node_unhovered.emit()
