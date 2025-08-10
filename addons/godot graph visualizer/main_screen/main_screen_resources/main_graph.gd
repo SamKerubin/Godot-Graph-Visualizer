@@ -78,6 +78,7 @@ func _on_close_graph_info_pressed() -> void:
 	references.visible = false
 	close.visible = false
 	message.visible = true
+	current_node_name.visible = false
 
 	message.text = "Click a node to show more detailed information"
 	current_node_name.text = ""
@@ -95,9 +96,12 @@ func _on_node_clicked(node_name: String) -> void:
 	_show_relations_in_itemlist(relation.outgoing)
 
 	current_node_name.text = node_name
+
+	current_node_name.visible = true
 	references.visible = true
 	close.visible = true
 	message.visible = false
+
 	container.split_offset = 550
 
 func _show_relations_in_itemlist(relations: Dictionary[RelationData, int]) -> void:
