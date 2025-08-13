@@ -8,11 +8,43 @@ const PLUGIN_NAME: String = "Visualize Project"
 var main_panel_instance: Control
 
 func _enter_tree() -> void:
-	push_warning(
-		"Warning: This plugin its still on beta and may be up to changes\n" \
-		+ "If you encounter any bug or have any suggestion, dont be afraid to tell me :3\n\t" \
-		+ "GitHub: @SamKerubin\n\tEmail: samuelkiller2013@gmail.com"
-	)
+	var version: String
+	var plugin_name: String
+
+	var cfg: ConfigFile = ConfigFile.new()
+	if cfg.load("res://addons/godot graph visualizer/plugin.cfg") == OK:
+		version = cfg.get_value("plugin", "version", "1.0.0")
+		plugin_name = cfg.get_value("plugin", "name", "GodotGraphVisualizer")
+
+	push_warning("
+[INFO]
+\n
+Hello! This is Sam, youre currently using the %s version of this plugin,
+called %s.
+\n
+Please, keep in mind:
+\n
+\t- This plugin is still under development
+\t- Many things arent completely done and are up to many changes
+\n
+I would be so thankful if you give a feedback of this project.
+\n
+If a custom error message appears, most of the time you want to ignore it.
+As im still developing this, i use lots of error messages to debug and test things
+(yes, i dont know how to use the debugger in tool mode).
+\n
+Thank you so much for giving a try to my first project ever <3
+\n
+If youre interesed on contacting me, here you got some of my accounts:
+\n
+Github: SamKerubin
+Instagram: @SamKerubin
+Email: samuelkiller2013@gmail.com / samuelimitola08@gmail.com
+\n
+Ily :3
+\n
+Hope you enjoy using this beautiful plugin <3
+	" % [version, plugin_name])
 
 	main_panel_instance = MAIN_PANEL.instantiate()
 	if not main_panel_instance:
