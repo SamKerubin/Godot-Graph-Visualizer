@@ -64,6 +64,7 @@ func _read_file(path: String) -> void:
 	while not script.eof_reached():
 		var line: String = script.get_line()
 		if line:
+			# FIXME: This doesnt work 100% well, fix later
 			if line.contains("#"):
 				line = line.get_slice("#", 0)
 
@@ -71,7 +72,7 @@ func _read_file(path: String) -> void:
 				line = line.replace("\\", "")
 				line += script.get_line().replace("\t", "")
 
-			""" This crashes the editor, modify later """
+			# FIXME: This crashes the editor, modify later
 			#if line.ends_with("[") or line.ends_with("{"):
 				#while line.count("]", 0, line.length() - 1) != 1 or line.count("}", 0, line.length() - 1) != 1:
 					#line += script.get_line().replace("\t", "")

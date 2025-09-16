@@ -124,28 +124,30 @@ func _on_node_hovered(node_name: String) -> void:
 	# Evaluate first the maximum hover time (arsund .5 - .8 seconds)
 	# If its greater or equals than the maximum hover time, then
 	# show an interface with the nodes name, and how many relations it have (overall)
-	if not _hover_instance:
-		var scene: RelationData = _relation_manager.find_relation_with_name(node_name)
-		var node: SamGraphNode = _layout_manager.mapped_nodes.get(scene)
-		if not node:
-			return
+	if _hover_instance: pass
+	
+	var scene: RelationData = _relation_manager.find_relation_with_name(node_name)
+	var node: SamGraphNode = _layout_manager.mapped_nodes.get(scene)
+	if not node:
+		return
 
-		_hover_instance = _HOVER_SCENE.instantiate()
-		add_child(_hover_instance)
+	_hover_instance = _HOVER_SCENE.instantiate()
+	add_child(_hover_instance)
 
-		var node_position: Vector2 = node.get_global_position()
-		var parent_position: Vector2 = _hover_instance.get_parent().get_global_position()
-		var extra_offset: Vector2 = Vector2(20, -20)
-		var incoming: int = scene.incoming.size()
-		var outgoing: int = scene.outgoing.size()
+	var node_position: Vector2 = node.get_global_position()
+	var parent_position: Vector2 = _hover_instance.get_parent().get_global_position()
+	var extra_offset: Vector2 = Vector2(20, -20)
+	var incoming: int = scene.incoming.size()
+	var outgoing: int = scene.outgoing.size()
 
-		_hover_instance.position = (node_position - parent_position) - extra_offset
-		_hover_instance.initialize(incoming, outgoing)
+	_hover_instance.position = (node_position - parent_position) - extra_offset
+	_hover_instance.initialize(incoming, outgoing)
 
 func _on_node_unhovered() -> void:
-	if _hover_instance:
-		_hover_instance.queue_free()
-		_hover_instance = null
+	if not _hover_instance: pass
+
+	_hover_instance.queue_free()
+	_hover_instance = null
 
 func set_ui_colors(ins_n: Color, pck_n: Color, inst_cn: Color, pack_cn: Color) -> void:
 	instance_node_color = ins_n

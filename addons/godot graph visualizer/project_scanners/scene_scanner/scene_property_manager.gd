@@ -7,23 +7,26 @@ class_name ScenePropertyManager
 ## see [class ScenePropertyReference]
 
 var _script_parser_manager: ScriptParserManager
+var _documentation_formatter: DocumentationFormatter
 
 ## Holds the parsed scenes properties in an array of [class SceneData]
 var _scene_properties: Array[SceneData]
 
 func _init() -> void:
 	"""
-		Initialize the parser
+		Initialize the parsers
 	"""
 
 	_script_parser_manager = ScriptParserManager.new()
+	_documentation_formatter = DocumentationFormatter.new()
 
 #region Scene Matching
 ## Given a [param path], opens the scene file
 ## and search for each direct instance (child)
 ## the scene have
 func _check_scene(path: String) -> void:
-	if find_scene_with_path(path): return
+	if find_scene_with_path(path):
+		return
 
 	if not ResourceLoader.exists(path):
 		push_error("Error: Invalid path \'%s\'" % path)
@@ -33,7 +36,8 @@ func _check_scene(path: String) -> void:
 	var scn_root: Node = scn.instantiate()
 
 	var scene_data: SceneData = _search_in_scene(scn_root, path)
-	if scene_data: _scene_properties.append(scene_data)
+	if scene_data:
+		_scene_properties.append(scene_data)
 
 	_search_instances(scene_data, scn_root)
 
@@ -43,10 +47,16 @@ func _check_scene(path: String) -> void:
 ## returns a [class SceneData] instance
 func _search_in_scene(scn: Node, path: String) -> SceneData:
 	var scene_data: SceneData = find_scene_with_path(path)
-	if not scene_data: scene_data = SceneData.new(path)
+	if not scene_data:
+		scene_data = SceneData.new(path)
 
 	var script_data: ScriptData = _search_attached_script(scn)
-	if script_data: scene_data.get_properties().set_attached_script(script_data)
+	if script_data:
+		scene_data.get_properties().set_attached_script(script_data)
+
+	var editor_description: String = _documentation_formatter.format_text(scn.editor_description)
+
+	scene_data.get_properties().set_editor_description(editor_description)
 
 	return scene_data
 
@@ -55,7 +65,8 @@ func _search_in_scene(scn: Node, path: String) -> SceneData:
 ## [class ScriptData]
 func _search_attached_script(scn: Node) -> ScriptData:
 	var script: Script = scn.get_script()
-	if not script: return null
+	if not script:
+		return null
 
 	var script_data_path: String = script.resource_path
 	var script_data: ScriptData = _script_parser_manager.find_script_with_path(script_data_path)
@@ -72,7 +83,8 @@ func _search_attached_script(scn: Node) -> ScriptData:
 ## calls recursively with each children of the node[br]
 ## For each instance, adds it to the current [param scene_data]
 func _search_instances(scene_data: SceneData, scn: Node) -> void:
-	if scn.get_children().is_empty(): return
+	if scn.get_children().is_empty():
+		return
 
 	for child: Node in scn.get_children():
 		if child.scene_file_path != "":
@@ -83,9 +95,7 @@ func _search_instances(scene_data: SceneData, scn: Node) -> void:
 				_scene_properties.append(new_scene)
 
 			scene_data.get_properties().add_instance(child_path)
-
 			_search_instances(new_scene, child)
-
 			continue
 
 		_search_instances(scene_data, child)

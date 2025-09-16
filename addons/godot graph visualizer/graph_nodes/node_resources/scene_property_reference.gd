@@ -9,8 +9,11 @@ class_name ScenePropertyReference
 ## key: instance path, value: times referenced
 var _scene_instances: Dictionary[String, int]
 ## Attached script a scene may have
-## see [class ScriptData]
+## See [class ScriptData]
 var _attached_script: ScriptData
+## Editor description of the Scene[br]
+## See [member Node.editor_description]
+var _formatted_editor_description: String
 
 #region Setters
 ## Adds an [param instance] path to [member _scene_instances][br]
@@ -28,6 +31,9 @@ func set_attached_script(attached_script: ScriptData) -> bool:
 	_attached_script = attached_script
  
 	return true
+
+func set_editor_description(desc: String) -> void:
+	desc = _formatted_editor_description
 #endregion
 
 #region Getters
@@ -42,6 +48,7 @@ func get_attached_script() -> ScriptData:
 func get_properties() -> Dictionary:
 	return {
 		"attached_script": get_attached_script().serialize() if _attached_script else {},
-		"instance": _scene_instances
+		"instance": _scene_instances,
+		"formatted_description": _formatted_editor_description
 	}
 #endregion
