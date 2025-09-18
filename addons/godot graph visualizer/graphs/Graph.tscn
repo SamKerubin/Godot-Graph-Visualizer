@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://mksg1boo611b"]
 
-[ext_resource type="Script" uid="uid://b45p88cqeanp0" path="res://addons/godot graph visualizer/graphs/custom_graph/graph.gd" id="1_e5pta"]
+[ext_resource type="Script" uid="uid://b45p88cqeanp0" path="res://addons/godot graph visualizer/graphs/graph.gd" id="1_e5pta"]
 
 [node name="Graph" type="GraphEdit"]
 anchors_preset = 15

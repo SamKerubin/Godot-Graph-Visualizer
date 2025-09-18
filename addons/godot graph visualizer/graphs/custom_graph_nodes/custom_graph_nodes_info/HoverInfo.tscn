@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c8sm51cqoyt8k"]
 
-[ext_resource type="Script" uid="uid://bstu6s5vsgxfi" path="res://addons/godot graph visualizer/graphs/custom_graph/custom_graph_nodes/custom_graph_nodes_info/hover_info.gd" id="1_7vqpp"]
+[ext_resource type="Script" uid="uid://bstu6s5vsgxfi" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/hover_info.gd" id="1_7vqpp"]
 
 [node name="HoverInfo" type="Panel"]
 anchors_preset = 15

@@ -48,9 +48,6 @@ func _init() -> void:
 ## } # <- Completes all the content
 ## [/gdscript]
 func _read_file(path: String) -> void:
-	""" 
-	 """
-
 	if not ResourceLoader.exists(path):
 		push_error("Error: Invalid path \'%s\'" % path)
 		return
@@ -79,7 +76,8 @@ func _read_file(path: String) -> void:
 
 			result = _search_in_line(line, result)
 
-	if result: _store_line(path, result)
+	if result:
+		_store_line(path, result)
 
 	script.close()
 
@@ -151,7 +149,8 @@ func _match_property(line: String) -> Array[String]:
 ## Returns the first instance that matches the entered [param c_name]
 func find_script_property_with_class(c_name: String) -> ScriptPropertyReference:
 	for prop: ScriptPropertyReference in _script_properties.values():
-		if prop.get_class_name() == c_name: return prop
+		if prop.get_class_name() == c_name:
+			return prop
 	
 	return null
 

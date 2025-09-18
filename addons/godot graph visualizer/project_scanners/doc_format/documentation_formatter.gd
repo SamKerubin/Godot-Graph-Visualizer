@@ -13,19 +13,18 @@ func format_text(text: String) -> String:
 		return "This scene does not have a provided description within the property \'Editor Description\'"
 
 	var text_formatted: String = ""
-	var splitted_text: PackedStringArray = text.split("\n")
-	for line: String in splitted_text:
+	var lines: PackedStringArray = text.split("\n")
+	for line: String in lines:
 		text_formatted += _format_line(line) + "\n"
 
 	return text_formatted
 
 func _format_line(line: String) -> String:
+	var formatted_line: String = ""
+
 	var opening_tags: TagQueue = TagQueue.new()
 	var string_literal: String = ""
 	var closing_tags: TagQueue = TagQueue.new()
-
-	for c in line:
-		pass
 
 	# OPTION 1:
 	#     Uses regexes to get every tag in the line
@@ -38,4 +37,4 @@ func _format_line(line: String) -> String:
 	# Empties the queue 1 formatting it with bbcode syntax
 	# Places the string literal
 	# Empties the queue 2 formatting it with bbcode syntax
-	return ""
+	return formatted_line

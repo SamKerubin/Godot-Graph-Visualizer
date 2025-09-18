@@ -54,6 +54,3 @@ func _on_graph_color_changed(color: Color) -> void:
 		instance_nodes_connection_color.color,
 		packed_scene_nodes_connection_color.color
 	)
-
-# Idk what this does, i saw it in a plugin template when i was just starting so i just added it
-func save() -> void: pass

@@ -7,7 +7,6 @@ class_name ScenePropertyManager
 ## see [class ScenePropertyReference]
 
 var _script_parser_manager: ScriptParserManager
-var _documentation_formatter: DocumentationFormatter
 
 ## Holds the parsed scenes properties in an array of [class SceneData]
 var _scene_properties: Array[SceneData]
@@ -18,7 +17,6 @@ func _init() -> void:
 	"""
 
 	_script_parser_manager = ScriptParserManager.new()
-	_documentation_formatter = DocumentationFormatter.new()
 
 #region Scene Matching
 ## Given a [param path], opens the scene file
@@ -54,9 +52,7 @@ func _search_in_scene(scn: Node, path: String) -> SceneData:
 	if script_data:
 		scene_data.get_properties().set_attached_script(script_data)
 
-	var editor_description: String = _documentation_formatter.format_text(scn.editor_description)
-
-	scene_data.get_properties().set_editor_description(editor_description)
+	scene_data.get_properties().set_editor_description(scn.editor_description)
 
 	return scene_data
 

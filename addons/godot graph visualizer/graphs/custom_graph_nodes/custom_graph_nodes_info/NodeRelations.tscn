@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://7co4xgyxcqa8"]
+
+[ext_resource type="Script" uid="uid://bqfgkwlf5avsy" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/node_relations.gd" id="1_qkvx1"]
+
+[node name="NodeRelations" type="Panel"]
+script = ExtResource("1_qkvx1")

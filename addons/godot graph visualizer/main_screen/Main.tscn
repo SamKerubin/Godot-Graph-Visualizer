@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cpbiysh4eu32b" path="res://addons/godot graph visualizer/main_screen/main.gd" id="1_ohb5f"]
 [ext_resource type="Script" uid="uid://cehy4sj137g8s" path="res://addons/godot graph visualizer/main_screen/main_screen_resources/main_graph.gd" id="2_hdwl8"]
-[ext_resource type="PackedScene" uid="uid://mksg1boo611b" path="res://addons/godot graph visualizer/graphs/custom_graph/Graph.tscn" id="3_hdwl8"]
+[ext_resource type="PackedScene" uid="uid://mksg1boo611b" path="res://addons/godot graph visualizer/graphs/Graph.tscn" id="3_hdwl8"]
 
 [node name="Main" type="Panel"]
 anchors_preset = 15
@@ -151,7 +151,7 @@ self_modulate = Color(0.729412, 0.729412, 0.729412, 1)
 layout_mode = 2
 
 [node name="Colors" type="RichTextLabel" parent="HSplitContainer/Options/VSplitContainer/Config"]
-layout_mode = 2
+layout_mode = 0
 anchor_left = 0.24
 anchor_top = 0.0938919
 anchor_right = 0.76
@@ -275,7 +275,7 @@ grow_vertical = 2
 
 [node name="References" type="ItemList" parent="HSplitContainer/MainGraph/VSplitContainer2/GraphInfo/Container"]
 visible = false
-layout_mode = 2
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 38.0
@@ -328,7 +328,7 @@ grow_vertical = 2
 text = "Click a node to show more detailed information"
 
 [node name="OpenOptionMenu" type="Button" parent="HSplitContainer/MainGraph"]
-layout_mode = 2
+layout_mode = 0
 offset_top = 55.0
 offset_right = 23.0
 offset_bottom = 86.0

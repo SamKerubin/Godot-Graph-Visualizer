@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://byk0ferakma6e"]
+
+[ext_resource type="Script" uid="uid://d1gc1c356klus" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/click_info.gd" id="1_7mprg"]
+
+[node name="ClickInfo" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7mprg")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NodeName" type="RichTextLabel" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.085
+anchor_right = 0.5
+anchor_bottom = 0.085
+offset_left = -757.0
+offset_top = -19.800003
+offset_right = 757.0
+offset_bottom = 20.199997
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
