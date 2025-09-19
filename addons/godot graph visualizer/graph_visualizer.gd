@@ -78,6 +78,3 @@ func _get_plugin_name() -> String:
 
 func _get_plugin_icon() -> Texture2D:
 	return ICON
-
-func _save_external_data() -> void:
-	main_panel_instance.save()

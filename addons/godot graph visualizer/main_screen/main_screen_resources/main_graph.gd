@@ -10,12 +10,8 @@ const _HOVER_SCENE: PackedScene = preload("uid://c8sm51cqoyt8k")
 @onready var container: VSplitContainer = $VSplitContainer2
 
 @onready var graph: GraphEdit = $VSplitContainer2/Graph
-
-@onready var close: Button = $VSplitContainer2/GraphInfo/Close
-@onready var message: Label = $VSplitContainer2/GraphInfo/Message
-
-@onready var references: ItemList = $VSplitContainer2/GraphInfo/Container/References
-@onready var current_node_name: Label = $VSplitContainer2/GraphInfo/Container/Node
+@onready var click_info: Control = $VSplitContainer2/ClickInfo
+@onready var close_click_interface: Button = $CloseClickInterface
 
 var _file_scanner: FileScanner
 var _scene_property_manager: ScenePropertyManager
@@ -74,50 +70,28 @@ func _on_graph_node_loaded(node: SamGraphNode) -> void:
 	node.node_hovered.connect(_on_node_hovered)
 	node.node_unhovered.connect(_on_node_unhovered)
 
-func _on_close_graph_info_pressed() -> void:
-	references.visible = false
-	close.visible = false
-	message.visible = true
-	current_node_name.visible = false
-
-	message.text = "Click a node to show more detailed information"
-	current_node_name.text = ""
-
-	container.split_offset = 850
+func _on_close_click_interface_pressed() -> void:
+	click_info.visible = false
+	close_click_interface.visible = false
+	click_info.clear_current_node()
 
 func _on_node_clicked(node_name: String) -> void:
+	var node: RelationData = _relation_manager.find_relation_with_name(node_name)
+
+	click_info.set_current_node(node)
+	click_info.visible = true
+	close_click_interface.visible = true
+
+	click_info.change_view_to_relations(node.outgoing)
 	# Show the nodes name
 	# Show every references listed with its path and times referenced
-	var relation: RelationData = _relation_manager.find_relation_with_name(node_name)
-	if not relation:
-		message.text = "If this message keeps appearing, please report it"
-		return
 
-	_show_relations_in_itemlist(relation.outgoing)
-
-	current_node_name.text = node_name
-
-	current_node_name.visible = true
-	references.visible = true
-	close.visible = true
-	message.visible = false
-
-	container.split_offset = 550
-
-func _show_relations_in_itemlist(relations: Dictionary[RelationData, int]) -> void:
-	references.clear()
-
-	if relations.is_empty():
-		references.add_item("No outgoing relations avialable")
-		return
-
-	for rel: RelationData in relations.keys():
-		var rel_name: String = rel.node_name
-		var amount: int = relations[rel]
-
-		references.add_item("%s    --    %s %s referenced" % 
-								[rel_name, str(amount), "times" if amount > 1 else "time"]
-							)
+	#current_node_name.text = node_name
+#
+	#current_node_name.visible = true
+	#references.visible = true
+	#close.visible = true
+	#message.visible = false
 
 # TODO: Add the hover timer
 func _on_node_hovered(node_name: String) -> void:

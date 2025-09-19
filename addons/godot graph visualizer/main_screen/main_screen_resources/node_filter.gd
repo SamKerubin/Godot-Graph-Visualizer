@@ -42,9 +42,11 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData],
 
 		var current_name: String = n.get_node_name().capitalize()
 		var current_path: String = n.get_node_path()
+		var current_documentation: String = n.get_properties().get_editor_description()
 
 		var new_relation: RelationData = relation_manager.find_relation_with_name(current_name)
-		if not new_relation: new_relation = RelationData.new(current_name, current_path)
+		if not new_relation:
+			new_relation = RelationData.new(current_name, current_path, current_documentation)
 
 		var serialized_node: Dictionary = n.serialize()
 		var current_relations: Dictionary = comparator.call(serialized_node) as Dictionary
@@ -60,10 +62,11 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData],
 
 			var relation_path: String = relation_scene.get_node_path()
 			var scene_name: String = relation_scene.get_node_name().capitalize()
+			var documentation = relation_scene.get_properties().get_editor_description()
 
 			var existing_relation: RelationData = relation_manager.find_relation_with_name(scene_name)
 			if not existing_relation: 
-				existing_relation = RelationData.new(scene_name, relation_path)
+				existing_relation = RelationData.new(scene_name, relation_path, documentation)
 
 			new_relation.add_outgoing_node(existing_relation, current_relations[ref])
 			existing_relation.add_incoming_node(new_relation, current_relations[ref])

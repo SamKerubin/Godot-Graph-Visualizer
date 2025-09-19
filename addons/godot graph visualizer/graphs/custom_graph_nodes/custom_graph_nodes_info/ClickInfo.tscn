@@ -1,35 +1,60 @@
-[gd_scene load_steps=2 format=3 uid="uid://byk0ferakma6e"]
+[gd_scene load_steps=6 format=3 uid="uid://byk0ferakma6e"]
 
 [ext_resource type="Script" uid="uid://d1gc1c356klus" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/click_info.gd" id="1_7mprg"]
+[ext_resource type="PackedScene" uid="uid://b4exklskakecf" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/NodeDocumentation.tscn" id="2_y5dd8"]
+[ext_resource type="PackedScene" uid="uid://7co4xgyxcqa8" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/NodeRelations.tscn" id="3_tiu2i"]
 
-[node name="ClickInfo" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y5dd8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tiu2i"]
+
+[node name="ClickInfo" type="Panel"]
+anchors_preset = -1
+anchor_right = 0.98700005
 anchor_bottom = 1.0
+offset_right = 24.95996
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_7mprg")
 
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="NodeName" type="RichTextLabel" parent="Panel"]
+[node name="NodeName" type="RichTextLabel" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.085
+anchor_top = 0.074
 anchor_right = 0.5
-anchor_bottom = 0.085
-offset_left = -757.0
-offset_top = -19.800003
-offset_right = 757.0
-offset_bottom = 20.199997
+anchor_bottom = 0.074
+offset_left = -890.0
+offset_top = 0.08000183
+offset_right = 890.0
+offset_bottom = 98.08
 grow_horizontal = 2
-grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_y5dd8")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_tiu2i")
 bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NodeDocumentation" parent="." instance=ExtResource("2_y5dd8")]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.187
+anchor_right = 0.5
+anchor_bottom = 0.187
+offset_left = -638.0
+offset_top = 0.039993286
+offset_right = 638.0
+offset_bottom = 820.04
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="NodeRelations" parent="." instance=ExtResource("3_tiu2i")]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.187
+anchor_right = 0.5
+anchor_bottom = 0.187
+offset_left = -645.0
+offset_top = 4.0399933
+offset_right = 633.0
+offset_bottom = 824.04

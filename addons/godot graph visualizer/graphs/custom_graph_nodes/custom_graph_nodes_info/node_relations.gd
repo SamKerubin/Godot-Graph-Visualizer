@@ -1,10 +1,9 @@
 @tool
 extends Panel
 
-# Adapt the already existing method to display every relation in "MainGraph" scene
+@onready var references: ItemList = $References
 
-"""
-func _show_relations_in_itemlist(relations: Dictionary[RelationData, int]) -> void:
+func show_relations_in_itemlist(relations: Dictionary[RelationData, int]) -> void:
 	references.clear()
 
 	if relations.is_empty():
@@ -17,4 +16,4 @@ func _show_relations_in_itemlist(relations: Dictionary[RelationData, int]) -> vo
 
 		references.add_item("%s    --    %s %s referenced" % 
 								[rel_name, str(amount), "times" if amount > 1 else "time"]
-"""
+								)

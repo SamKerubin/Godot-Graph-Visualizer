@@ -1,17 +1,27 @@
-[gd_scene load_steps=2 format=3 uid="uid://c8sm51cqoyt8k"]
+[gd_scene load_steps=6 format=3 uid="uid://c8sm51cqoyt8k"]
 
 [ext_resource type="Script" uid="uid://bstu6s5vsgxfi" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/hover_info.gd" id="1_7vqpp"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cjtho"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vdcmi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vp3gl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d33c4"]
+
 [node name="HoverInfo" type="Panel"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -1486.0
-offset_bottom = -713.0
+anchors_preset = -1
+anchor_left = 0.07
+anchor_right = 0.07
+offset_left = -134.4
+offset_right = 135.6
+offset_bottom = 249.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_7vqpp")
+metadata/_edit_use_anchors_ = true
 
 [node name="Incoming" type="RichTextLabel" parent="."]
 layout_mode = 1
@@ -27,6 +37,8 @@ offset_bottom = 10.5
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_cjtho")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_vdcmi")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -44,5 +56,7 @@ offset_bottom = 104.5
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_vp3gl")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_d33c4")
 horizontal_alignment = 1
 vertical_alignment = 1

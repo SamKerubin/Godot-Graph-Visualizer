@@ -13,7 +13,7 @@ var _scene_instances: Dictionary[String, int]
 var _attached_script: ScriptData
 ## Editor description of the Scene[br]
 ## See [member Node.editor_description]
-var _formatted_editor_description: String
+var _editor_description: String
 
 #region Setters
 ## Adds an [param instance] path to [member _scene_instances][br]
@@ -33,13 +33,16 @@ func set_attached_script(attached_script: ScriptData) -> bool:
 	return true
 
 func set_editor_description(desc: String) -> void:
-	desc = _formatted_editor_description
+	desc = _editor_description
 #endregion
 
 #region Getters
 ## Returns [member _attached_script]
 func get_attached_script() -> ScriptData:
 	return _attached_script
+
+func get_editor_description() -> String:
+	return _editor_description
 
 ## Returns a wrapped dictionary holding the information of:[br]
 ## [member _attached_script][br]
@@ -49,6 +52,6 @@ func get_properties() -> Dictionary:
 	return {
 		"attached_script": get_attached_script().serialize() if _attached_script else {},
 		"instance": _scene_instances,
-		"formatted_description": _formatted_editor_description
+		"formatted_description": _editor_description
 	}
 #endregion
