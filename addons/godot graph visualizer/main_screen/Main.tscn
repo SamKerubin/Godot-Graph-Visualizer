@@ -274,6 +274,7 @@ dragging_enabled = false
 layout_mode = 2
 
 [node name="ClickInfo" parent="HSplitContainer/MainGraph/VSplitContainer2" instance=ExtResource("4_md0m1")]
+visible = false
 layout_mode = 2
 
 [node name="CloseClickInterface" type="Button" parent="HSplitContainer/MainGraph"]
@@ -285,6 +286,7 @@ offset_left = 601.0
 offset_top = 9.0
 offset_right = 662.0
 offset_bottom = 70.0
+grow_horizontal = 2
 text = "x"
 
 [node name="OpenOptionMenu" type="Button" parent="HSplitContainer/MainGraph"]

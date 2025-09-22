@@ -82,7 +82,7 @@ func _on_node_clicked(node_name: String) -> void:
 	click_info.visible = true
 	close_click_interface.visible = true
 
-	click_info.change_view_to_relations(node.outgoing)
+	click_info.change_view_to_relations()
 	# Show the nodes name
 	# Show every references listed with its path and times referenced
 

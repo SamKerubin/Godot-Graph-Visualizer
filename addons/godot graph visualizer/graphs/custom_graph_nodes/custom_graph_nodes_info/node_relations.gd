@@ -1,10 +1,10 @@
 @tool
-extends Panel
+extends Control
 
 @onready var references: ItemList = $References
 
-func show_relations_in_itemlist(relations: Dictionary[RelationData, int]) -> void:
-	references.clear()
+func set_references(relations: Dictionary[RelationData, int]) -> void:
+	clear_references()
 
 	if relations.is_empty():
 		references.add_item("No outgoing relations avialable")
@@ -17,3 +17,6 @@ func show_relations_in_itemlist(relations: Dictionary[RelationData, int]) -> voi
 		references.add_item("%s    --    %s %s referenced" % 
 								[rel_name, str(amount), "times" if amount > 1 else "time"]
 								)
+
+func clear_references() -> void:
+	references.clear()

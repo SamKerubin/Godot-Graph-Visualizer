@@ -10,8 +10,9 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cd7tg"]
 
-[node name="NodeDocumentation" type="Panel"]
-anchors_preset = -1
+[node name="NodeDocumentation" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -35,30 +36,19 @@ text = "[font_size=50]Documentation[b][/b][/font_size]"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VScrollBar" type="VScrollBar" parent="."]
+[node name="Documentation" type="RichTextLabel" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.19900002
-anchor_right = 0.5
-anchor_bottom = 0.19900002
-offset_left = -763.0
-offset_top = 0.07998657
-offset_right = 767.0
-offset_bottom = 713.07996
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Documentation" type="RichTextLabel" parent="VScrollBar"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.507
-anchor_right = 0.507
-offset_left = -764.71
-offset_top = -1.0
-offset_right = 765.29
-offset_bottom = 710.0
+anchor_left = 0.059000004
+anchor_top = 0.147
+anchor_right = 0.94100004
+anchor_bottom = 0.822
+offset_left = 0.7199936
+offset_top = 0.2400055
+offset_right = -0.7200928
+offset_bottom = 0.23999023
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8mvi3")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_cd7tg")
+bbcode_enabled = true

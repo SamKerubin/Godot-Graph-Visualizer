@@ -33,7 +33,7 @@ func set_attached_script(attached_script: ScriptData) -> bool:
 	return true
 
 func set_editor_description(desc: String) -> void:
-	desc = _editor_description
+	_editor_description = desc
 #endregion
 
 #region Getters

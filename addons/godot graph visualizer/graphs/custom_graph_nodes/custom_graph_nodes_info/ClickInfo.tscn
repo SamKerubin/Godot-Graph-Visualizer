@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://byk0ferakma6e"]
+[gd_scene load_steps=8 format=3 uid="uid://byk0ferakma6e"]
 
 [ext_resource type="Script" uid="uid://d1gc1c356klus" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/click_info.gd" id="1_7mprg"]
 [ext_resource type="PackedScene" uid="uid://b4exklskakecf" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/NodeDocumentation.tscn" id="2_y5dd8"]
@@ -7,6 +7,10 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y5dd8"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tiu2i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uh470"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4w10t"]
 
 [node name="ClickInfo" type="Panel"]
 anchors_preset = -1
@@ -37,24 +41,52 @@ vertical_alignment = 1
 
 [node name="NodeDocumentation" parent="." instance=ExtResource("2_y5dd8")]
 layout_mode = 1
-anchor_left = 0.5
-anchor_top = 0.187
-anchor_right = 0.5
-anchor_bottom = 0.187
-offset_left = -638.0
-offset_top = 0.039993286
-offset_right = 638.0
-offset_bottom = 820.04
+anchors_preset = -1
+anchor_left = 0.497
+anchor_top = 0.19100001
+anchor_right = 0.497
+anchor_bottom = 0.19100001
+offset_left = -638.24
+offset_top = -0.28001404
+offset_right = 637.76
+offset_bottom = 819.72
 grow_horizontal = 1
 grow_vertical = 1
 
 [node name="NodeRelations" parent="." instance=ExtResource("3_tiu2i")]
 layout_mode = 1
-anchor_left = 0.5
-anchor_top = 0.187
-anchor_right = 0.5
-anchor_bottom = 0.187
-offset_left = -645.0
-offset_top = 4.0399933
-offset_right = 633.0
-offset_bottom = 824.04
+anchors_preset = -1
+anchor_left = 0.497
+anchor_top = 0.19100001
+anchor_right = 0.497
+anchor_bottom = 0.19100001
+offset_left = -638.24
+offset_top = -0.28001404
+offset_right = 639.76
+offset_bottom = 819.72
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.277
+anchor_top = 0.254
+anchor_right = 0.277
+anchor_bottom = 0.254
+offset_left = -213.84003
+offset_top = -20.320007
+offset_right = -0.84002686
+offset_bottom = 19.679993
+theme_override_constants/h_separation = 0
+columns = 2
+
+[node name="Relations" type="Button" parent="GridContainer"]
+self_modulate = Color(0.63529414, 0.63529414, 0.63529414, 1)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_uh470")
+text = "Relations"
+
+[node name="Documentation" type="Button" parent="GridContainer"]
+self_modulate = Color(0.63529414, 0.63529414, 0.63529414, 1)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_4w10t")
+text = "Documentation"
