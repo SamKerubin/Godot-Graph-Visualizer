@@ -72,3 +72,6 @@ static func get_bbcode_tag(tag: String, closing: bool=false) -> String:
 		return _SYNTAX.get(tag, {}).get("bbcode_close", "")
 
 	return _SYNTAX.get(tag, {}).get("bbcode_open", "") 
+
+static func has_tag(tag: String) -> bool:
+	return not _SYNTAX.get(tag, "").is_empty()
