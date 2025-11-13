@@ -1,4 +1,4 @@
-# Godot Graph Visualizer ![icon :3](addons/icon.png)
+# Godot Graph Visualizer ![icon :3](noise/icon.png)
 
 Hello! Thanks for being interested on this plugin <3
 
@@ -31,7 +31,7 @@ And... Whats better than having a _graph_ to visualize YOUR project and its depe
 
 What do i mean by this? Simple :3
 
-![cool graph >:3](img1.png)
+![cool graph >:3](noise/img1.png)
 
 Look at this img for example
 
@@ -54,7 +54,7 @@ What this plugin does, is making those run time relations explicit before execut
 
 ## How to use it?
 
-![terrible UI :(](img2.png)
+![terrible UI :(](noise/img2.png)
 
 Here you can see the _only_ functionalities this plugin have by now (yeah, its quite alot i know)
 
@@ -89,7 +89,7 @@ Im really thankful youre interested on this plugin and hope you enjoy using it.
 
 Ill be more than thankful to get a feedback if you are willing to use the plugin. If thats the case, please contact me via:
 
-- Email: samuelkiller2013@gmail.com
+- Email: sammm.1618033@gmail.com
 - [Instagram](https://instagram.com/SamKerubin)
 
 Byeee, hope we meet again soon <3
