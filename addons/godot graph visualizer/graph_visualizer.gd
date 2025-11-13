@@ -39,7 +39,7 @@ If youre interesed on contacting me, here you got some of my accounts:
 \n
 Github: SamKerubin
 Instagram: @SamKerubin
-Email: samuelkiller2013@gmail.com / samuelimitola08@gmail.com
+Email: sammm.1618033@gmail.com
 \n
 Ily :3
 \n
