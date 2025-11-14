@@ -96,6 +96,11 @@ const _SYNTAX := {
 		"bbcode_close": "[/b]",
 		"type": "inline"
 	},
+	"u": {
+		"bbcode_open": "[u]",
+		"bbcode_close": "[/u]",
+		"type": "inline"
+	},
 	"s": {
 		"bbcode_open": "[s]",
 		"bbcode_close": "[/s]",
@@ -107,14 +112,14 @@ const _SYNTAX := {
 		"type": "inline"
 	},
 	"blockquote": {
-		"bbcode_open": "[quote]",
-		"bbcode_close": "[/quote]",
+		"bbcode_open": "\t[color=white]",
+		"bbcode_close": "[/color]",
 		"type": "inline"
 	},
 	">": {
-		"bbcode_open": "[quote]",
-		"bbcode_close": "[/quote]",
-		"type": "inline"
+		"bbcode_open": "\t[color=white]",
+		"bbcode_close": "[/color]",
+		"type": "line"
 	},
 	"code": {
 		"bbcode_open": "[code]",

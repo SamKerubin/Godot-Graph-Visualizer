@@ -32,6 +32,7 @@ func _tokenize_tag(text: String, start: int) -> Dictionary:
 	var i: int = start
 	var buffer: String = ""
 	var start_char: String = text[i]
+	var is_closing: bool = false
 
 	if _is_open_tag(start_char):
 		var end_char: String = ">" if start_char == "<" else "]"
@@ -39,6 +40,7 @@ func _tokenize_tag(text: String, start: int) -> Dictionary:
 
 		while i < text.length() and text[i] != end_char:
 			if text[i] == "/":
+				is_closing = true
 				i += 1
 
 			buffer += text[i]
@@ -53,26 +55,39 @@ func _tokenize_tag(text: String, start: int) -> Dictionary:
 				"token": AST.Token.new(tag_type, tag_value),
 				"next_ind": i
 			}
-	else:
-		var last_valid: String = ""
-		var last_valid_ind: int = start
 
-		while i < text.length() and _is_tag_start(text[i]):
-			buffer += text[i]
-			if BBCodeSyntaxIndex.has_tag(buffer):
-				last_valid = buffer
-				last_valid_ind = i + 1
+		var unknown_tag: String = start_char
+		if is_closing:
+			unknown_tag += "/"
+		unknown_tag += tag_value + end_char
+	
+		return {
+			"token": AST.Token.new("text", unknown_tag),
+			"next_ind": i
+		}
 
-			i += 1
+	var last_valid: String = ""
+	var last_valid_ind: int = start
 
-		if not last_valid.is_empty():
-			var tag_type: String = BBCodeSyntaxIndex.get_tag_type(last_valid)
-			return {
-				"token": AST.Token.new(tag_type, last_valid),
-				"next_ind": last_valid_ind
-			}
+	while i < text.length() and _is_tag_start(text[i]):
+		buffer += text[i]
+		if BBCodeSyntaxIndex.has_tag(buffer):
+			last_valid = buffer
+			last_valid_ind = i + 1
 
-	return _tokenize_text(text, start)
+		i += 1
+
+	if not last_valid.is_empty():
+		var tag_type: String = BBCodeSyntaxIndex.get_tag_type(last_valid)
+		return {
+			"token": AST.Token.new(tag_type, last_valid),
+			"next_ind": last_valid_ind
+		}
+
+	return {
+		"token": AST.Token.new("text", buffer),
+		"next_ind": last_valid_ind
+	}
 
 func _tokenize(text: String) -> Array[AST.Token]:
 	var tokens: Array[AST.Token] = []
