@@ -111,6 +111,11 @@ const _SYNTAX := {
 		"bbcode_close": "[/s]",
 		"type": "inline"
 	},
+	"quote": {
+		"bbcode_open": "\t[color=white]",
+		"bbcode_close": "[/color]",
+		"type": "inline"
+	},
 	"blockquote": {
 		"bbcode_open": "\t[color=white]",
 		"bbcode_close": "[/color]",
@@ -132,9 +137,9 @@ const _SYNTAX := {
 		"type": "inline"
 	},
 	"```": {
-		"bbcode_open": "[codeblock]",
-		"bbcode_close": "[/codeblock]",
-		"type": "inline"
+		"bbcode_open": "[code]",
+		"bbcode_close": "[/code]",
+		"type": "block"
 	}
 	#...
 }
