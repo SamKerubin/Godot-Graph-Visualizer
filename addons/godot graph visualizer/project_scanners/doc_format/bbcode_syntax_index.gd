@@ -10,66 +10,65 @@ const _HEADING5_SIZE := 25
 const _HEADING6_SIZE := 20
 
 #region Syntax
-# TODO: Add the rest of the syntax
 const _SYNTAX := {
 	"h1": {
-		"bbcode_open": "[font_size=%d]" % _HEADING1_SIZE,
-		"bbcode_close": "[/font_size]",
+		"bbcode_open": "[b][font_size=%d]" % _HEADING1_SIZE,
+		"bbcode_close": "[/font_size][/b]",
 		"type": "inline"
 	},
 	"#": {
-		"bbcode_open": "[font_size=%d]" % _HEADING1_SIZE,
-		"bbcode_close": "[/font_size]",
+		"bbcode_open": "[b][font_size=%d]" % _HEADING1_SIZE,
+		"bbcode_close": "[/font_size][/b]",
 		"type": "line"
 	},
 	"h2": {
-		"bbcode_open": "[font_size=%d]" % _HEADING2_SIZE,
-		"bbcode_close": "[/font_size]",
+		"bbcode_open": "[b][font_size=%d]" % _HEADING2_SIZE,
+		"bbcode_close": "[/font_size][/b]",
 		"type": "inline"
 	},
 	"##": {
-		"bbcode_open": "[font_size=%d]" % _HEADING2_SIZE,
-		"bbcode_close": "[/font_size]",
+		"bbcode_open": "[b][font_size=%d]" % _HEADING2_SIZE,
+		"bbcode_close": "[/font_size][/b]",
 		"type": "line"
 	},
 	"h3": {
-		"bbcode_open": "[font_size=%d]" % _HEADING3_SIZE,
-		"bbcode_close": "[/font_size]",
+		"bbcode_open": "[b][font_size=%d]" % _HEADING3_SIZE,
+		"bbcode_close": "[/font_size][/b]",
 		"type": "inline"
 	},
 	"###": {
-		"bbcode_open": "[font_size=%d]" % _HEADING3_SIZE,
-		"bbcode_close": "[/font_size]",
+		"bbcode_open": "[b][font_size=%d]" % _HEADING3_SIZE,
+		"bbcode_close": "[/font_size][/b]",
 		"type": "line"
 	},
 	"h4": {
-		"bbcode_open": "[font_size=%d]" % _HEADING4_SIZE,
-		"bbcode_close": "[/font_size]",
+		"bbcode_open": "[b][font_size=%d]" % _HEADING4_SIZE,
+		"bbcode_close": "[/font_size][/b]",
 		"type": "inline"
 	},
 	"####": {
-		"bbcode_open": "[font_size=%d]" % _HEADING4_SIZE,
-		"bbcode_close": "[/font_size]",
+		"bbcode_open": "[b][font_size=%d]" % _HEADING4_SIZE,
+		"bbcode_close": "[/font_size][/b]",
 		"type": "line"
 	},
 	"h5": {
-		"bbcode_open": "[font_size=%d]" % _HEADING5_SIZE,
-		"bbcode_close": "[/font_size]",
+		"bbcode_open": "[b][font_size=%d]" % _HEADING5_SIZE,
+		"bbcode_close": "[/font_size][/b]",
 		"type": "inline"
 	},
 	"#####": {
-		"bbcode_open": "[font_size=%d]" % _HEADING5_SIZE,
-		"bbcode_close": "[/font_size]",
+		"bbcode_open": "[b][font_size=%d]" % _HEADING5_SIZE,
+		"bbcode_close": "[/font_size][/b]",
 		"type": "line"
 	},
 	"h6": {
-		"bbcode_open": "[font_size=%d]" % _HEADING6_SIZE,
-		"bbcode_close": "[/font_size]",
+		"bbcode_open": "[b][font_size=%d]" % _HEADING6_SIZE,
+		"bbcode_close": "[/font_size][/b]",
 		"type": "inline"
 	},
 	"######": {
-		"bbcode_open": "[font_size=%d]" % _HEADING6_SIZE,
-		"bbcode_close": "[/font_size]",
+		"bbcode_open": "[b][font_size=%d]" % _HEADING6_SIZE,
+		"bbcode_close": "[/font_size][/b]",
 		"type": "line"
 	},
 	"i": {
@@ -97,6 +96,41 @@ const _SYNTAX := {
 		"bbcode_close": "[/b]",
 		"type": "inline"
 	},
+	"s": {
+		"bbcode_open": "[s]",
+		"bbcode_close": "[/s]",
+		"type": "inline"
+	},
+	"~~": {
+		"bbcode_open": "[s]",
+		"bbcode_close": "[/s]",
+		"type": "inline"
+	},
+	"blockquote": {
+		"bbcode_open": "[quote]",
+		"bbcode_close": "[/quote]",
+		"type": "inline"
+	},
+	">": {
+		"bbcode_open": "[quote]",
+		"bbcode_close": "[/quote]",
+		"type": "inline"
+	},
+	"code": {
+		"bbcode_open": "[code]",
+		"bbcode_close": "[/code]",
+		"type": "inline"
+	},
+	"`": {
+		"bbcode_open": "[code]",
+		"bbcode_close": "[/code]",
+		"type": "inline"
+	},
+	"```": {
+		"bbcode_open": "[codeblock]",
+		"bbcode_close": "[/codeblock]",
+		"type": "inline"
+	}
 	#...
 }
 #endregion
