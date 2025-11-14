@@ -3,13 +3,18 @@ extends Control
 
 @onready var documentation: RichTextLabel = $Documentation
 
+var formatted: String = ""
+
 var _documentation_formatter: DocumentationFormatter
 
 func _ready() -> void:
 	_documentation_formatter = DocumentationFormatter.new()
 
 func set_documentation(doc: String) -> void:
-	documentation.text = _documentation_formatter.format_text(doc)
+	if formatted.is_empty():
+		formatted = _documentation_formatter.format_text(doc)
+
+	documentation.text = formatted
 
 func clear_documentation() -> void:
 	documentation.text = ""
