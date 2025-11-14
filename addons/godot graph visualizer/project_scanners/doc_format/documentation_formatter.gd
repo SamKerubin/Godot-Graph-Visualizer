@@ -38,6 +38,9 @@ func _tokenize_tag(text: String, start: int) -> Dictionary:
 		i += 1
 
 		while i < text.length() and text[i] != end_char:
+			if text[i] == "/":
+				i += 1
+
 			buffer += text[i]
 			i += 1
 
@@ -50,26 +53,24 @@ func _tokenize_tag(text: String, start: int) -> Dictionary:
 				"token": AST.Token.new(tag_type, tag_value),
 				"next_ind": i
 			}
+	else:
+		var last_valid: String = ""
+		var last_valid_ind: int = start
 
-		return _tokenize_text(text, start)
+		while i < text.length() and _is_tag_start(text[i]):
+			buffer += text[i]
+			if BBCodeSyntaxIndex.has_tag(buffer):
+				last_valid = buffer
+				last_valid_ind = i + 1
 
-	var last_valid: String = ""
-	var last_valid_ind: int = start
+			i += 1
 
-	while i < text.length() and _is_tag_start(text[i]):
-		buffer += text[i]
-		if BBCodeSyntaxIndex.has_tag(buffer):
-			last_valid = buffer
-			last_valid_ind = i + 1
-
-		i += 1
-
-	if not last_valid.is_empty():
-		var tag_type: String = BBCodeSyntaxIndex.get_tag_type(last_valid)
-		return {
-			"token": AST.Token.new(tag_type, last_valid),
-			"next_ind": last_valid_ind
-		}
+		if not last_valid.is_empty():
+			var tag_type: String = BBCodeSyntaxIndex.get_tag_type(last_valid)
+			return {
+				"token": AST.Token.new(tag_type, last_valid),
+				"next_ind": last_valid_ind
+			}
 
 	return _tokenize_text(text, start)
 
@@ -161,22 +162,6 @@ func _parse(tokens: Array[AST.Token]) -> AST.ASTNode:
 		current = parsed["current"]
 
 	return root
-
-#func printAST(root: AST.ASTNode, depth: int) -> void:
-	#var message: String = ""
-	#var i: int = 0
-	#while i < depth:
-		#message += "  "
-		#i += 1
-#
-	#if i != 0:
-		#message += "|_"
-#
-	#message += "name=%s, type=%s, value=%s"
-#
-	#print(message % [root.name, root.type, root.value])
-	#for c: AST.ASTNode in root.children:
-		#printAST(c, depth + 1)
 #endregion
 
 #region Builder
@@ -208,6 +193,7 @@ func format_text(text: String) -> String:
 		+ "the property \'Editor Description\'"
 
 	var tokens: Array[AST.Token] = _tokenize(text)
+
 	var ast_root: AST.ASTNode = _parse(tokens)
 	var formatted_text: String = _build_ast(ast_root)
 
