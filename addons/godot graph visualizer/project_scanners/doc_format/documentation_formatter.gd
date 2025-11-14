@@ -8,10 +8,10 @@ class_name DocumentationFormatter
 ## - Markdown (later)[br]
 ## - HTML (later)[br]
 
-func is_tag_start(c: String) -> bool:
-	return c in ["[", "<", "*", "_", "`", "#"]
+func _is_tag_start(c: String) -> bool:
+	return c in ["[", "<", "*", "_", "`", "#", ">", "-"] #...
 
-func is_opening_tag(c: String) -> bool:
+func _is_open_tag(c: String) -> bool:
 	return c in ["<", "["]
 
 #region Tokenizer
@@ -19,7 +19,7 @@ func _tokenize_text(text: String, start: int) -> Dictionary:
 	var i: int = start
 	var buffer: String = ""
 
-	while i < text.length() and not is_tag_start(text[i]):
+	while i < text.length() and not _is_tag_start(text[i]):
 		buffer += text[i]
 		i += 1
 
@@ -33,7 +33,7 @@ func _tokenize_tag(text: String, start: int) -> Dictionary:
 	var buffer: String = ""
 	var start_char: String = text[i]
 
-	if is_opening_tag(start_char):
+	if _is_open_tag(start_char):
 		var end_char: String = ">" if start_char == "<" else "]"
 		i += 1
 
@@ -56,7 +56,7 @@ func _tokenize_tag(text: String, start: int) -> Dictionary:
 	var last_valid: String = ""
 	var last_valid_ind: int = start
 
-	while i < text.length() and is_tag_start(text[i]):
+	while i < text.length() and _is_tag_start(text[i]):
 		buffer += text[i]
 		if BBCodeSyntaxIndex.has_tag(buffer):
 			last_valid = buffer
@@ -79,7 +79,7 @@ func _tokenize(text: String) -> Array[AST.Token]:
 
 	while current < text.length():
 		var c: String = text[current]
-		if is_tag_start(c):
+		if _is_tag_start(c):
 			var tag_token: Dictionary = _tokenize_tag(text, current)
 			tokens.append(tag_token["token"])
 			current = tag_token["next_ind"]
@@ -146,8 +146,7 @@ func _parse_token(tokens: Array[AST.Token], current: int) -> Dictionary:
 			"current": current
 		}
 
-	var tag_name: String = BBCodeSyntaxIndex.get_tag_name(token.value)
-	var node: AST.ASTNode = AST.ASTNode.new(token.type, tag_name, token.value, [])
+	var node: AST.ASTNode = AST.ASTNode.new(token.type, token.value, token.value, [])
 
 	current += 1
 	return token_parser.call(tokens, current, node)
@@ -180,6 +179,29 @@ func _parse(tokens: Array[AST.Token]) -> AST.ASTNode:
 		#printAST(c, depth + 1)
 #endregion
 
+#region Builder
+func _build_node(node: AST.ASTNode) -> String:
+	if node.type == "text":
+		return node.value
+
+	var open_tag: String = BBCodeSyntaxIndex.get_bbcode_open_tag(node.value)
+	var close_tag: String = BBCodeSyntaxIndex.get_bbcode_close_tag(node.value)
+
+	var built_node: String = open_tag
+	for n: AST.ASTNode in node.children:
+		built_node += _build_node(n)
+	built_node += close_tag
+
+	return built_node
+
+func _build_ast(ast: AST.ASTNode) -> String:
+	var build: String = ""
+	for n: AST.ASTNode in ast.children:
+		build += _build_node(n)
+
+	return build
+#endregion
+
 func format_text(text: String) -> String:
 	if text.is_empty():
 		return "This scene does not have a provided description within" \
@@ -187,5 +209,6 @@ func format_text(text: String) -> String:
 
 	var tokens: Array[AST.Token] = _tokenize(text)
 	var ast_root: AST.ASTNode = _parse(tokens)
+	var formatted_text: String = _build_ast(ast_root)
 
-	return ""
+	return formatted_text
