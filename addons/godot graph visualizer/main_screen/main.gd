@@ -16,11 +16,6 @@ extends Control
 @onready var tool_scripts: CheckBox = %ToolScripts
 @onready var unrelated_nodes: CheckBox = %UnrelatedNodes
 
-@onready var instance_nodes_color: ColorPickerButton = %InstanceNodesColor
-@onready var packed_scene_nodes_color: ColorPickerButton = %PackedSceneNodesColor
-@onready var instance_nodes_connection_color: ColorPickerButton = %InstanceNodesConnectionColor
-@onready var packed_scene_nodes_connection_color: ColorPickerButton = %PackedSceneNodesConnectionColor
-
 var hide_tool_scripts: bool = false
 var hide_unrelated_nodes: bool = false
 
@@ -46,11 +41,3 @@ func _change_view_of_tool_scripts(toggled_on: bool) -> void:
 
 func _change_view_of_unrelated_nodes(toggled_on: bool) -> void:
 	hide_unrelated_nodes = toggled_on
-
-func _on_graph_color_changed(color: Color) -> void:
-	main_graph.set_ui_colors(
-		instance_nodes_color.color,
-		packed_scene_nodes_color.color,
-		instance_nodes_connection_color.color,
-		packed_scene_nodes_connection_color.color
-	)

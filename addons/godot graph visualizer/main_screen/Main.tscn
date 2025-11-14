@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c4h2pps361nfk"]
+[gd_scene load_steps=7 format=3 uid="uid://c4h2pps361nfk"]
 
 [ext_resource type="Script" uid="uid://cpbiysh4eu32b" path="res://addons/godot graph visualizer/main_screen/main.gd" id="1_ohb5f"]
 [ext_resource type="Script" uid="uid://cehy4sj137g8s" path="res://addons/godot graph visualizer/main_screen/main_screen_resources/main_graph.gd" id="2_hdwl8"]
@@ -8,10 +8,6 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_md0m1"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gm7sx"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wkrys"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h7eh6"]
 
 [node name="Main" type="Panel"]
 anchors_preset = 15
@@ -157,102 +153,10 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Reload Graph"
 
-[node name="Config" type="Panel" parent="HSplitContainer/Options/VSplitContainer"]
-self_modulate = Color(0.729412, 0.729412, 0.729412, 1)
-layout_mode = 2
-
-[node name="Colors" type="RichTextLabel" parent="HSplitContainer/Options/VSplitContainer/Config"]
-layout_mode = 0
-anchor_left = 0.24
-anchor_top = 0.0938919
-anchor_right = 0.76
-anchor_bottom = 0.155668
-offset_top = -13.636
-offset_bottom = 13.364
-theme_override_styles/normal = SubResource("StyleBoxEmpty_wkrys")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_h7eh6")
-bbcode_enabled = true
-text = "[b] Graph Colors [/b]"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Config"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.111753
-anchor_top = 0.559028
-anchor_right = 0.891197
-anchor_bottom = 0.559028
-offset_left = -0.1
-offset_top = -84.532
-offset_right = 0.149963
-offset_bottom = 84.468
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 15
-metadata/_edit_use_anchors_ = true
-
-[node name="VBoxContainer" type="HBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 135
-
-[node name="InstanceNodes" type="Label" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "Instance Nodes"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="InstanceNodesColor" type="ColorPickerButton" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "                 "
-
-[node name="VBoxContainer2" type="HBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 105
-
-[node name="PackedSceneNodes" type="Label" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer2"]
-layout_mode = 2
-text = "PackedScene Nodes"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="PackedSceneNodesColor" type="ColorPickerButton" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "                 "
-
-[node name="VBoxContainer3" type="HBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 55
-
-[node name="InstanceNodesConnection" type="Label" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer3"]
-layout_mode = 2
-text = "Instance Nodes Connection"
-
-[node name="InstanceNodesConnectionColor" type="ColorPickerButton" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer3"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "                 "
-
-[node name="VBoxContainer4" type="HBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 25
-
-[node name="PackedSceneNodesConnection" type="Label" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer4"]
-layout_mode = 2
-text = "PackedScene Nodes Connection"
-
-[node name="PackedSceneNodesConnectionColor" type="ColorPickerButton" parent="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer4"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "                 "
-
 [node name="CloseOptionMenu" type="Button" parent="HSplitContainer/Options"]
 layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+offset_right = 23.0
+offset_bottom = 31.0
 text = "<-"
 flat = true
 
@@ -300,8 +204,4 @@ flat = true
 [connection signal="toggled" from="HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer/ToolScripts" to="." method="_change_view_of_tool_scripts"]
 [connection signal="toggled" from="HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer/UnrelatedNodes" to="." method="_change_view_of_unrelated_nodes"]
 [connection signal="pressed" from="HSplitContainer/Options/VSplitContainer/Filters/Reload" to="." method="_on_reload_graph_request"]
-[connection signal="color_changed" from="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer/InstanceNodesColor" to="." method="_on_graph_color_changed"]
-[connection signal="color_changed" from="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer2/PackedSceneNodesColor" to="." method="_on_graph_color_changed"]
-[connection signal="color_changed" from="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer3/InstanceNodesConnectionColor" to="." method="_on_graph_color_changed"]
-[connection signal="color_changed" from="HSplitContainer/Options/VSplitContainer/Config/VBoxContainer/VBoxContainer4/PackedSceneNodesConnectionColor" to="." method="_on_graph_color_changed"]
 [connection signal="pressed" from="HSplitContainer/MainGraph/CloseClickInterface" to="HSplitContainer/MainGraph" method="_on_close_click_interface_pressed"]
