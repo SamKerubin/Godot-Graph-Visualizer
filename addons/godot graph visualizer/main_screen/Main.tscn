@@ -32,31 +32,16 @@ dragging_enabled = false
 [node name="Options" type="Panel" parent="HSplitContainer"]
 layout_mode = 2
 
-[node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer/Options"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-split_offset = 550
-dragging_enabled = false
-dragger_visibility = 1
-
-[node name="Filters" type="Panel" parent="HSplitContainer/Options/VSplitContainer"]
-self_modulate = Color(0.728822, 0.728822, 0.728822, 1)
-layout_mode = 2
-
-[node name="Filters" type="RichTextLabel" parent="HSplitContainer/Options/VSplitContainer/Filters"]
+[node name="Filters" type="RichTextLabel" parent="HSplitContainer/Options"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.251
 anchor_top = 0.101939
 anchor_right = 0.77085
 anchor_bottom = 0.159515
-offset_top = -11.64
-offset_right = 0.149994
-offset_bottom = 13.36
+offset_top = -11.639999
+offset_right = 0.1499939
+offset_bottom = 13.360001
 grow_horizontal = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_md0m1")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_gm7sx")
@@ -64,80 +49,78 @@ bbcode_enabled = true
 text = "[b] Filters [/b]"
 horizontal_alignment = 1
 vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
 
-[node name="Graphs" type="HBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Filters"]
+[node name="Graphs" type="HBoxContainer" parent="HSplitContainer/Options"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.119778
 anchor_top = 0.309091
 anchor_right = 0.871333
 anchor_bottom = 0.334545
-offset_left = 0.1
+offset_left = 0.099998474
 offset_top = -20.0
-offset_right = -0.100037
+offset_right = -0.10003662
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
-metadata/_edit_use_anchors_ = true
 
-[node name="Change" type="Label" parent="HSplitContainer/Options/VSplitContainer/Filters/Graphs"]
+[node name="Change" type="Label" parent="HSplitContainer/Options/Graphs"]
 layout_mode = 2
 text = "Change Graph:"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Filters/Graphs"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/Options/Graphs"]
 layout_mode = 2
 theme_override_constants/separation = 20
 metadata/_edit_use_anchors_ = true
 
-[node name="PackedScene" type="Button" parent="HSplitContainer/Options/VSplitContainer/Filters/Graphs/HBoxContainer"]
+[node name="PackedScene" type="Button" parent="HSplitContainer/Options/Graphs/HBoxContainer"]
 unique_name_in_owner = true
 self_modulate = Color(0.633757, 0.633757, 0.633757, 1)
 layout_mode = 2
 text = "PackedScene"
 
-[node name="Instance" type="Button" parent="HSplitContainer/Options/VSplitContainer/Filters/Graphs/HBoxContainer"]
+[node name="Instance" type="Button" parent="HSplitContainer/Options/Graphs/HBoxContainer"]
 unique_name_in_owner = true
 self_modulate = Color(0.635294, 0.635294, 0.635294, 1)
 layout_mode = 2
 text = "Instance"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/Options/VSplitContainer/Filters"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/Options"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.282333
 anchor_top = 0.580927
 anchor_right = 0.708889
 anchor_bottom = 0.580927
-offset_left = -0.0499935
-offset_top = -65.51
+offset_left = -0.049987793
+offset_top = -65.51001
 offset_right = 3.0
-offset_bottom = 65.49
+offset_bottom = 65.48999
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
 metadata/_edit_use_anchors_ = true
 
-[node name="HideNodes" type="Label" parent="HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer"]
+[node name="HideNodes" type="Label" parent="HSplitContainer/Options/VBoxContainer"]
 layout_mode = 2
 text = "Hide Nodes"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ToolScripts" type="CheckBox" parent="HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer"]
+[node name="ToolScripts" type="CheckBox" parent="HSplitContainer/Options/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Hide tool scripts"
 
-[node name="UnrelatedNodes" type="CheckBox" parent="HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer"]
+[node name="UnrelatedNodes" type="CheckBox" parent="HSplitContainer/Options/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Hide unrelated nodes"
 
-[node name="Reload" type="Button" parent="HSplitContainer/Options/VSplitContainer/Filters"]
+[node name="Reload" type="Button" parent="HSplitContainer/Options"]
 modulate = Color(0.635294, 0.635294, 0.635294, 1)
 layout_mode = 1
 anchors_preset = 8
@@ -201,7 +184,7 @@ offset_bottom = 86.0
 text = "->"
 flat = true
 
-[connection signal="toggled" from="HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer/ToolScripts" to="." method="_change_view_of_tool_scripts"]
-[connection signal="toggled" from="HSplitContainer/Options/VSplitContainer/Filters/VBoxContainer/UnrelatedNodes" to="." method="_change_view_of_unrelated_nodes"]
-[connection signal="pressed" from="HSplitContainer/Options/VSplitContainer/Filters/Reload" to="." method="_on_reload_graph_request"]
+[connection signal="toggled" from="HSplitContainer/Options/VBoxContainer/ToolScripts" to="." method="_change_view_of_tool_scripts"]
+[connection signal="toggled" from="HSplitContainer/Options/VBoxContainer/UnrelatedNodes" to="." method="_change_view_of_unrelated_nodes"]
+[connection signal="pressed" from="HSplitContainer/Options/Reload" to="." method="_on_reload_graph_request"]
 [connection signal="pressed" from="HSplitContainer/MainGraph/CloseClickInterface" to="HSplitContainer/MainGraph" method="_on_close_click_interface_pressed"]
