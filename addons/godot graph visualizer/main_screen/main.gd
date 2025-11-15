@@ -2,16 +2,16 @@
 extends Control
 ## @experimental: This class is uncomplete, expect changes and some testing
 
-@onready var options: Panel = $HSplitContainer/Options
-@onready var main_graph: Panel = $HSplitContainer/MainGraph
+@onready var options: PanelContainer = $PanelContainer
+@onready var main_graph: Panel = $MainGraph
 
 @onready var packed_scene: Button = %PackedScene
 @onready var instance: Button = %Instance
 
-@onready var close_option_menu: Button = $HSplitContainer/Options/CloseOptionMenu
-@onready var open_option_menu: Button = $HSplitContainer/MainGraph/OpenOptionMenu
+@onready var close_option_menu: Button = %CloseOptionMenu
+@onready var open_option_menu: Button = $MainGraph/OpenOptionMenu
 
-@onready var reload_graph: Button = $HSplitContainer/Options/Reload
+@onready var reload_graph: Button = $PanelContainer/MarginContainer/Options/Reload
 
 @onready var tool_scripts: CheckBox = %ToolScripts
 @onready var unrelated_nodes: CheckBox = %UnrelatedNodes
