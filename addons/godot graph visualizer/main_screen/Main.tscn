@@ -1,13 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://c4h2pps361nfk"]
+[gd_scene load_steps=5 format=3 uid="uid://c4h2pps361nfk"]
 
 [ext_resource type="Script" uid="uid://cpbiysh4eu32b" path="res://addons/godot graph visualizer/main_screen/main.gd" id="1_ohb5f"]
 [ext_resource type="Script" uid="uid://cehy4sj137g8s" path="res://addons/godot graph visualizer/main_screen/main_screen_resources/main_graph.gd" id="2_hdwl8"]
 [ext_resource type="PackedScene" uid="uid://mksg1boo611b" path="res://addons/godot graph visualizer/graphs/Graph.tscn" id="3_hdwl8"]
 [ext_resource type="PackedScene" uid="uid://byk0ferakma6e" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/ClickInfo.tscn" id="4_md0m1"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_md0m1"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gm7sx"]
 
 [node name="Main" type="Panel"]
 anchors_preset = 15
@@ -18,6 +14,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_ohb5f")
+metadata/_edit_use_anchors_ = true
 
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
 layout_mode = 1
@@ -32,114 +29,109 @@ dragging_enabled = false
 [node name="Options" type="Panel" parent="HSplitContainer"]
 layout_mode = 2
 
-[node name="Filters" type="RichTextLabel" parent="HSplitContainer/Options"]
+[node name="FindSceneByName" type="TextEdit" parent="HSplitContainer/Options"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.251
-anchor_top = 0.101939
-anchor_right = 0.77085
-anchor_bottom = 0.159515
-offset_top = -11.639999
-offset_right = 0.1499939
-offset_bottom = 13.360001
-grow_horizontal = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_md0m1")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_gm7sx")
-bbcode_enabled = true
-text = "[b] Filters [/b]"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Graphs" type="HBoxContainer" parent="HSplitContainer/Options"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.119778
-anchor_top = 0.309091
-anchor_right = 0.871333
-anchor_bottom = 0.334545
-offset_left = 0.099998474
-offset_top = -20.0
-offset_right = -0.10003662
-offset_bottom = 20.0
+offset_left = 43.0
+offset_top = 74.0
+offset_right = 353.0
+offset_bottom = 128.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 20
-
-[node name="Change" type="Label" parent="HSplitContainer/Options/Graphs"]
-layout_mode = 2
-text = "Change Graph:"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/Options/Graphs"]
-layout_mode = 2
-theme_override_constants/separation = 20
-metadata/_edit_use_anchors_ = true
-
-[node name="PackedScene" type="Button" parent="HSplitContainer/Options/Graphs/HBoxContainer"]
-unique_name_in_owner = true
-self_modulate = Color(0.633757, 0.633757, 0.633757, 1)
-layout_mode = 2
-text = "PackedScene"
-
-[node name="Instance" type="Button" parent="HSplitContainer/Options/Graphs/HBoxContainer"]
-unique_name_in_owner = true
-self_modulate = Color(0.635294, 0.635294, 0.635294, 1)
-layout_mode = 2
-text = "Instance"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/Options"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.282333
-anchor_top = 0.580927
-anchor_right = 0.708889
-anchor_bottom = 0.580927
-offset_left = -0.049987793
-offset_top = -65.51001
-offset_right = 3.0
-offset_bottom = 65.48999
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 10
-metadata/_edit_use_anchors_ = true
-
-[node name="HideNodes" type="Label" parent="HSplitContainer/Options/VBoxContainer"]
-layout_mode = 2
-text = "Hide Nodes"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ToolScripts" type="CheckBox" parent="HSplitContainer/Options/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Hide tool scripts"
-
-[node name="UnrelatedNodes" type="CheckBox" parent="HSplitContainer/Options/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Hide unrelated nodes"
+placeholder_text = "Find Scene By Name"
 
 [node name="Reload" type="Button" parent="HSplitContainer/Options"]
 modulate = Color(0.635294, 0.635294, 0.635294, 1)
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -57.0
-offset_top = 193.0
-offset_right = 57.0
-offset_bottom = 242.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -185.0
+offset_top = 79.0
+offset_right = -70.99997
+offset_bottom = 123.0
 text = "Reload Graph"
 
+[node name="Change" type="Label" parent="HSplitContainer/Options"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.44
+anchor_bottom = 0.44
+offset_left = 100.0
+text = "Change Graph:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Graphs" type="VBoxContainer" parent="HSplitContainer/Options"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.45600003
+anchor_bottom = 0.45600003
+offset_left = 330.0
+offset_top = -40.48004
+offset_right = 385.0
+offset_bottom = -60.48004
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="PackedScene" type="Button" parent="HSplitContainer/Options/Graphs"]
+unique_name_in_owner = true
+self_modulate = Color(0.633757, 0.633757, 0.633757, 1)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+text = "PackedScene"
+
+[node name="Instance" type="Button" parent="HSplitContainer/Options/Graphs"]
+unique_name_in_owner = true
+self_modulate = Color(0.635294, 0.635294, 0.635294, 1)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+text = "    Instance    "
+
+[node name="HideNodes" type="Label" parent="HSplitContainer/Options"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.22800002
+anchor_bottom = 0.22800002
+offset_left = 53.0
+offset_top = -0.24002075
+offset_right = 147.00003
+offset_bottom = 22.75998
+text = "Hide Nodes:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Hide" type="VBoxContainer" parent="HSplitContainer/Options"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.24300002
+anchor_bottom = 0.24300002
+offset_left = 236.0
+offset_top = -36.440002
+offset_right = 431.0
+offset_bottom = 35.559998
+theme_override_constants/separation = 10
+
+[node name="ToolScripts" type="CheckBox" parent="HSplitContainer/Options/Hide"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Hide tool scripts"
+
+[node name="UnrelatedNodes" type="CheckBox" parent="HSplitContainer/Options/Hide"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Hide unrelated nodes"
+
 [node name="CloseOptionMenu" type="Button" parent="HSplitContainer/Options"]
-layout_mode = 0
-offset_right = 23.0
-offset_bottom = 31.0
+layout_mode = 1
+anchors_preset = -1
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 16.0
+offset_bottom = 16.0
 text = "<-"
 flat = true
 
@@ -166,25 +158,25 @@ layout_mode = 2
 
 [node name="CloseClickInterface" type="Button" parent="HSplitContainer/MainGraph"]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 601.0
-offset_top = 9.0
-offset_right = 662.0
-offset_bottom = 70.0
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -100.0
+offset_top = 38.0
+offset_right = -38.0
+offset_bottom = 100.0
 grow_horizontal = 2
 text = "x"
 
 [node name="OpenOptionMenu" type="Button" parent="HSplitContainer/MainGraph"]
-layout_mode = 0
-offset_top = 55.0
-offset_right = 23.0
-offset_bottom = 86.0
+layout_mode = 1
+anchors_preset = -1
+offset_left = 16.0
+offset_top = 70.0
 text = "->"
 flat = true
 
-[connection signal="toggled" from="HSplitContainer/Options/VBoxContainer/ToolScripts" to="." method="_change_view_of_tool_scripts"]
-[connection signal="toggled" from="HSplitContainer/Options/VBoxContainer/UnrelatedNodes" to="." method="_change_view_of_unrelated_nodes"]
 [connection signal="pressed" from="HSplitContainer/Options/Reload" to="." method="_on_reload_graph_request"]
+[connection signal="toggled" from="HSplitContainer/Options/Hide/ToolScripts" to="." method="_change_view_of_tool_scripts"]
+[connection signal="toggled" from="HSplitContainer/Options/Hide/UnrelatedNodes" to="." method="_change_view_of_unrelated_nodes"]
 [connection signal="pressed" from="HSplitContainer/MainGraph/CloseClickInterface" to="HSplitContainer/MainGraph" method="_on_close_click_interface_pressed"]

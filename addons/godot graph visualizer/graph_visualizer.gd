@@ -50,7 +50,7 @@ Hope you enjoy using this beautiful plugin <3
 	if not main_panel_instance:
 		push_error(
 			"Error: Couldnt load plugin, if the error persists, please contact me:\n\t" \
-			+ "GitHub: @SamKerubin\n\tEmail: samuelkiller2013@gmail.com"
+			+ "GitHub: @SamKerubin\n\tEmail: sammm.1618033@gmail.com"
 		)
 
 		return

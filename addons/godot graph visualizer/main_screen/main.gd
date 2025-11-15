@@ -11,7 +11,7 @@ extends Control
 @onready var close_option_menu: Button = $HSplitContainer/Options/CloseOptionMenu
 @onready var open_option_menu: Button = $HSplitContainer/MainGraph/OpenOptionMenu
 
-@onready var reload_graph: Button = $HSplitContainer/Options/VSplitContainer/Filters/Reload
+@onready var reload_graph: Button = $HSplitContainer/Options/Reload
 
 @onready var tool_scripts: CheckBox = %ToolScripts
 @onready var unrelated_nodes: CheckBox = %UnrelatedNodes
