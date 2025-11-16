@@ -13,8 +13,6 @@ extends Control
 
 @onready var separator: MarginContainer = $MainGraph/Separator
 
-@onready var reload_graph: Button = %Reload
-
 @onready var tool_scripts: CheckBox = %ToolScripts
 @onready var unrelated_nodes: CheckBox = %UnrelatedNodes
 

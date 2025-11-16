@@ -39,7 +39,7 @@ theme_override_constants/margin_left = 460
 
 [node name="Graph" parent="MainGraph/Separator" instance=ExtResource("3_hdwl8")]
 layout_mode = 2
-scroll_offset = Vector2(-920, 0)
+scroll_offset = Vector2(-460, 0)
 
 [node name="ClickInfo" parent="MainGraph/Separator" instance=ExtResource("4_md0m1")]
 visible = false
@@ -178,7 +178,6 @@ size_flags_vertical = 0
 text = "Hide unrelated nodes"
 
 [node name="Reload" type="Button" parent="PanelContainer/MarginContainer/Options"]
-unique_name_in_owner = true
 modulate = Color(0.635294, 0.635294, 0.635294, 1)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -208,3 +207,6 @@ text = "->"
 flat = true
 
 [connection signal="pressed" from="MainGraph/Separator/ClickInfo/CloseClickInterface" to="MainGraph" method="_on_close_click_interface_pressed"]
+[connection signal="toggled" from="PanelContainer/MarginContainer/Options/HideNode/Hide/ToolScripts" to="." method="_change_view_of_tool_scripts"]
+[connection signal="toggled" from="PanelContainer/MarginContainer/Options/HideNode/Hide/UnrelatedNodes" to="." method="_change_view_of_unrelated_nodes"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/Options/Reload" to="." method="_on_reload_graph_request"]
