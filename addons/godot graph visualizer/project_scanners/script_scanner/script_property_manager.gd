@@ -12,7 +12,7 @@ class_name ScriptPropertyManager
 # Regexes
 const _CLASS_DECLARATION_REFERENCE: String = r"^class_name\s+(\w+)"
 const _VARIABLE_DECLARATION_REFERENCE: String = \
-	r"(var|const)\s+(\w+)(?::\s*(?:[\w.]+" \
+	r"(?:var|const)\s+(\w+)(?::\s*(?:[\w.]+" \
 	+ r"(?:\s*[\s*[\w\s,]+\s*\])?))?\s*(?:(?::?=)\s*(.+))?"
 
 ## Holds all the saved properties of each script file[br]
@@ -89,14 +89,13 @@ func _search_in_line(line: String, script_property: ScriptPropertyReference) -> 
 	var c_name: String = _match_class(line)
 
 	var property_match: Array[String] = _match_property(line)
-	var type: String = property_match[0]
-	var value_name: String = property_match[1]
-	var value: String = property_match[2]
+	var value_name: String = property_match[0]
+	var value: String = property_match[1]
 
-	if c_name != "": script_property.set_class_name(c_name)
-
-	if type == "var": script_property.add_var(value_name, value)
-	elif type == "const": script_property.add_const(value_name, value)
+	if c_name != "":
+		script_property.set_class_name(c_name)
+	if value_name != "null":
+		script_property.add_var(value_name, value)
 
 	return script_property
 
@@ -134,11 +133,10 @@ func _match_property(line: String) -> Array[String]:
 	if matches:
 		return [
 			matches.get_string(1),
-			matches.get_string(2),
-			matches.get_string(3)
+			matches.get_string(2)
 		]
 
-	return ["null", "null", "null"]
+	return ["null", "null"]
 
 # TODO: Include a method to add methods and variable scoping for each method added
 #endregion

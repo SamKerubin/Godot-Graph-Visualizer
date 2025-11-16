@@ -18,3 +18,4 @@ func set_documentation(doc: String) -> void:
 
 func clear_documentation() -> void:
 	documentation.text = ""
+	formatted = ""

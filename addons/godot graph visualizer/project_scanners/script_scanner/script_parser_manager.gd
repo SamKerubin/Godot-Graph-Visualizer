@@ -49,10 +49,8 @@ func _parse_script(script_path: String, script_properties: ScriptPropertyReferen
 	var parsed_script: ScriptParsedReference = ScriptParsedReference.new()
 
 	var script_vars: Dictionary[String, String] = script_properties.get_vars()
-	var script_consts: Dictionary[String, String] = script_properties.get_consts()
 
 	var missing_properties: Dictionary[String, String] = script_vars
-	missing_properties.merge(script_consts)
 	for property: String in missing_properties:
 		var value: String = missing_properties[property]
 
@@ -134,20 +132,10 @@ func _find_value(val: String, source: ScriptPropertyReference) -> String:
 
 		if current_source is ScriptPropertyReference:
 			var current_var: String = current_source.get_var(actual_value)
-			var current_const: String = current_source.get_const(actual_value)
 			if not current_var.is_empty():
 				var current_value: Variant = str_to_var(current_var)
 				if not current_value:
 					current_source = str(current_var)
-				else:
-					current_source = current_value
-
-				continue
-
-			elif not current_const.is_empty():
-				var current_value: Variant = str_to_var(current_const)
-				if not current_value:
-					current_source = str(current_const)
 				else:
 					current_source = current_value
 
