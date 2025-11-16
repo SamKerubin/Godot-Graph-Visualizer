@@ -7,7 +7,7 @@ extends Panel
 
 const _HOVER_SCENE: PackedScene = preload("uid://c8sm51cqoyt8k")
 
-@onready var container := $MarginContainer
+@onready var container := $Separator
 
 @onready var graph := $Separator/Graph
 @onready var click_info := $Separator/ClickInfo
