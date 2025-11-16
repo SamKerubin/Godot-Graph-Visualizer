@@ -39,7 +39,7 @@ func _map_nodes(node_relations: Array[RelationData], graph: GraphEdit, exclude_u
 
 		var new_graph_node: SamGraphNode = GRAPH_NODE_SCENE.instantiate()
 
-		new_graph_node.title = relation.node_name
+		new_graph_node.set_node_name(relation.node_name)
 		new_graph_node.name = relation.node_name
 		new_graph_node.node_path = relation.node_path
 

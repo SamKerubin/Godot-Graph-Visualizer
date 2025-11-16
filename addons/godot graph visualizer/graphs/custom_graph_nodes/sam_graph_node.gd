@@ -6,6 +6,8 @@ signal node_clicked(node_name: String)
 signal node_hovered(node_name: String)
 signal node_unhovered
 
+@onready var node_name := $PlaceHolder/NodeName
+
 var node_path: String = "res://"
 
 # FIXME
@@ -17,6 +19,10 @@ func set_custom_slot(index: int, is_incoming: bool, is_outgoing: bool, type: int
 
 	""" This shouldnt be working like this, but ill fix it later """
 	set_slot(index, true, type, color, true, type, color)
+
+func set_node_name(n_name: String) -> void:
+	if not node_name: node_name = $PlaceHolder/NodeName
+	node_name.text = n_name
 
 func _gui_input(event: InputEvent) -> void:
 	# Manage this events:

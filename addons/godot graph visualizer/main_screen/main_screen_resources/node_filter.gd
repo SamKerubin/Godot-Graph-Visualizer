@@ -40,7 +40,7 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData],
 			if n.is_tool():
 				continue
 
-		var current_name: String = n.get_node_name().capitalize()
+		var current_name: String = n.get_node_name()
 		var current_path: String = n.get_node_path()
 		var current_documentation: String = n.get_properties().get_editor_description()
 
@@ -61,7 +61,7 @@ func filter_nodes_by_type(type: String, nodes: Array[SceneData],
 					continue
 
 			var relation_path: String = relation_scene.get_node_path()
-			var scene_name: String = relation_scene.get_node_name().capitalize()
+			var scene_name: String = relation_scene.get_node_name()
 			var documentation = relation_scene.get_properties().get_editor_description()
 
 			var existing_relation: RelationData = relation_manager.find_relation_with_name(scene_name)
