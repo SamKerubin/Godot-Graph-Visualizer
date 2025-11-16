@@ -1,7 +1,7 @@
 @tool
 extends Control
 
-@onready var documentation: RichTextLabel = $Documentation
+@onready var documentation: RichTextLabel = $MarginContainer/VBoxContainer/Documentation
 
 var formatted: String = ""
 

@@ -8,10 +8,12 @@ extends Control
 @onready var packed_scene: Button = %PackedScene
 @onready var instance: Button = %Instance
 
-@onready var close_option_menu: Button = %CloseOptionMenu
-@onready var open_option_menu: Button = $MainGraph/OpenOptionMenu
+@onready var close_option_menu: Button = $ButtonMenu/CloseOptionMenu
+@onready var open_option_menu: Button = $ButtonMenu/OpenOptionMenu
 
-@onready var reload_graph: Button = $PanelContainer/MarginContainer/Options/Reload
+@onready var separator: MarginContainer = $MainGraph/Separator
+
+@onready var reload_graph: Button = %Reload
 
 @onready var tool_scripts: CheckBox = %ToolScripts
 @onready var unrelated_nodes: CheckBox = %UnrelatedNodes
@@ -34,7 +36,13 @@ func _on_reload_graph_request() -> void:
 
 func _option_menu_request(opened: bool) -> void:
 	options.visible = opened
+	close_option_menu.visible = opened
 	open_option_menu.visible = not opened
+
+	var margin_if_closed: int = 0
+	var margin_if_opened: int = 460
+	var margin: int = margin_if_closed if not opened else margin_if_opened
+	separator.add_theme_constant_override("margin_left", margin)
 
 func _change_view_of_tool_scripts(toggled_on: bool) -> void:
 	hide_tool_scripts = toggled_on

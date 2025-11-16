@@ -1,7 +1,7 @@
 @tool
 extends Control
 
-@onready var references: ItemList = $References
+@onready var references: ItemList = $MarginContainer/VBoxContainer/References
 
 func set_references(relations: Dictionary[RelationData, int]) -> void:
 	clear_references()

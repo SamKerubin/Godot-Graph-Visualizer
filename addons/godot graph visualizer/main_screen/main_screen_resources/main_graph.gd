@@ -7,11 +7,11 @@ extends Panel
 
 const _HOVER_SCENE: PackedScene = preload("uid://c8sm51cqoyt8k")
 
-@onready var container: VSplitContainer = $VSplitContainer2
+@onready var container := $MarginContainer
 
-@onready var graph: GraphEdit = $VSplitContainer2/Graph
-@onready var click_info: Control = $VSplitContainer2/ClickInfo
-@onready var close_click_interface: Button = $CloseClickInterface
+@onready var graph := $Separator/Graph
+@onready var click_info := $Separator/ClickInfo
+@onready var close_click_interface := $Separator/ClickInfo/CloseClickInterface
 
 var _file_scanner: FileScanner
 var _scene_property_manager: ScenePropertyManager
@@ -77,7 +77,6 @@ func _on_node_clicked(node_name: String) -> void:
 	click_info.visible = true
 	close_click_interface.visible = true
 
-	click_info.change_view_to_relations()
 	# Show the nodes name
 	# Show every references listed with its path and times referenced
 

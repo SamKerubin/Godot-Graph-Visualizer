@@ -21,72 +21,53 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_7mprg")
 
-[node name="NodeName" type="RichTextLabel" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.074
-anchor_right = 0.5
-anchor_bottom = 0.074
-offset_left = -890.0
-offset_top = 0.08000183
-offset_right = 890.0
-offset_bottom = 98.08
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 150
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 60
+
+[node name="NodeName" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+theme_override_font_sizes/bold_font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxEmpty_y5dd8")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_tiu2i")
+theme_override_styles/background = SubResource("StyleBoxEmpty_uh470")
+theme_override_styles/fill = SubResource("StyleBoxEmpty_4w10t")
 bbcode_enabled = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="NodeDocumentation" parent="." instance=ExtResource("2_y5dd8")]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.497
-anchor_top = 0.19100001
-anchor_right = 0.497
-anchor_bottom = 0.19100001
-offset_left = -638.24
-offset_top = -0.28001404
-offset_right = 637.76
-offset_bottom = 819.72
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="NodeRelations" parent="." instance=ExtResource("3_tiu2i")]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.497
-anchor_top = 0.19100001
-anchor_right = 0.497
-anchor_bottom = 0.19100001
-offset_left = -638.24
-offset_top = -0.28001404
-offset_right = 639.76
-offset_bottom = 819.72
-
-[node name="GridContainer" type="GridContainer" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.277
-anchor_top = 0.254
-anchor_right = 0.277
-anchor_bottom = 0.254
-offset_left = -213.84003
-offset_top = -20.320007
-offset_right = -0.84002686
-offset_bottom = 19.679993
-theme_override_constants/h_separation = 0
-columns = 2
-
-[node name="Relations" type="Button" parent="GridContainer"]
-self_modulate = Color(0.63529414, 0.63529414, 0.63529414, 1)
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_styles/focus = SubResource("StyleBoxEmpty_uh470")
-text = "Relations"
+size_flags_vertical = 3
+current_tab = 0
 
-[node name="Documentation" type="Button" parent="GridContainer"]
-self_modulate = Color(0.63529414, 0.63529414, 0.63529414, 1)
+[node name="Relations" type="TabBar" parent="MarginContainer/VBoxContainer/TabContainer"]
 layout_mode = 2
-theme_override_styles/focus = SubResource("StyleBoxEmpty_4w10t")
-text = "Documentation"
+tabs_rearrange_group = 0
+metadata/_tab_index = 0
+
+[node name="NodeRelations" parent="MarginContainer/VBoxContainer/TabContainer/Relations" instance=ExtResource("3_tiu2i")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="Documentation" type="TabBar" parent="MarginContainer/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="NodeDocumentation" parent="MarginContainer/VBoxContainer/TabContainer/Documentation" instance=ExtResource("2_y5dd8")]
+unique_name_in_owner = true
+layout_mode = 1
