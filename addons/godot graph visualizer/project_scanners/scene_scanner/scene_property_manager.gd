@@ -37,11 +37,9 @@ func _check_scene(path: String) -> void:
 	var scn_root: Node = _open_scene(path)
 
 	var scene_data: SceneData = _search_in_scene(scn_root, path)
-	if scene_data:
-		_scene_properties.append(scene_data)
+	_scene_properties.append(scene_data)
 
 	_search_instances(scene_data, scn_root.get_children())
-
 	scn_root.free()
 
 ## Using a scene [param scn] and its [param path],
@@ -78,11 +76,13 @@ func _search_attached_script(scn: Node) -> ScriptData:
 # find a way to check each child of a scene and add its script to the original scene
 # if it doesnt is a previously created instance
 
-## Filters an array of children nodes
-## [param instance_children
 func _filter_children(instance_children: Array[Node], 
 					own_children: Array[Node]) -> Array[Node]:
-	return instance_children.filter(func(x: Node) -> bool: return x in own_children)
+	var instance_children_names: Array[String] = []
+	for child: Node in instance_children:
+		instance_children_names.append(child.name)
+
+	return own_children.filter(func(x: Node) -> bool: return x.name in instance_children_names)
 
 ## Handles an instance found inside a node[br]
 ## [param instance_path] is the path of the instance[br]
@@ -93,18 +93,14 @@ func _filter_children(instance_children: Array[Node],
 func _handle_instance(instance_path: String, 
 					current_scene: SceneData,
 					child: Node) -> void:
-	var new_scene: SceneData = find_scene_with_path(instance_path)
-	if not new_scene:
-		new_scene = SceneData.new(instance_path)
-		_scene_properties.append(new_scene)
-
 	current_scene.get_properties().add_instance(instance_path)
 
 	var current_instance: Node = _open_scene(instance_path)
-	var instance_children: Array[Node] = _filter_children(child.get_children().duplicate(), 
-												current_instance.get_children().duplicate())
-	current_instance.queue_free()
-	_search_instances(new_scene, instance_children)
+	var child_nodes: Array[Node] = child.get_children()
+	var scene_nodes: Array[Node] = current_instance.get_children()
+	var new_children: Array[Node] = _filter_children(child_nodes, scene_nodes)
+	current_instance.free()
+	_search_instances(current_scene, new_children)
 
 ## Uses a [param scn] scene and access to its children and
 ## calls recursively with each children of the node[br]
