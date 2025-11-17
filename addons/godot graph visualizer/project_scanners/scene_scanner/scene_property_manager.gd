@@ -18,6 +18,10 @@ func _init() -> void:
 
 	_script_parser_manager = ScriptParserManager.new()
 
+func _open_scene(path: String) -> Node:
+	var scn: PackedScene = ResourceLoader.load(path, "PackedScene")
+	return scn.instantiate()
+
 #region Scene Matching
 ## Given a [param path], opens the scene file
 ## and search for each direct instance (child)
@@ -30,14 +34,13 @@ func _check_scene(path: String) -> void:
 		push_error("Error: Invalid path \'%s\'" % path)
 		return
 
-	var scn: PackedScene = ResourceLoader.load(path, "PackedScene")
-	var scn_root: Node = scn.instantiate()
+	var scn_root: Node = _open_scene(path)
 
 	var scene_data: SceneData = _search_in_scene(scn_root, path)
 	if scene_data:
 		_scene_properties.append(scene_data)
 
-	_search_instances(scene_data, scn_root)
+	_search_instances(scene_data, scn_root.get_children())
 
 	scn_root.free()
 
@@ -75,26 +78,48 @@ func _search_attached_script(scn: Node) -> ScriptData:
 # find a way to check each child of a scene and add its script to the original scene
 # if it doesnt is a previously created instance
 
+## Filters an array of children nodes
+## [param instance_children
+func _filter_children(instance_children: Array[Node], 
+					own_children: Array[Node]) -> Array[Node]:
+	return instance_children.filter(func(x: Node) -> bool: return x in own_children)
+
+## Handles an instance found inside a node[br]
+## [param instance_path] is the path of the instance[br]
+## [param current_scene] is the scene whos istance belongs to[br]
+## [param child] is the instance node found in [param current_scene][br]
+## searchs for the children [param child] has, excluding its own children
+## and only counting the ones declared within [param current_scene] scene
+func _handle_instance(instance_path: String, 
+					current_scene: SceneData,
+					child: Node) -> void:
+	var new_scene: SceneData = find_scene_with_path(instance_path)
+	if not new_scene:
+		new_scene = SceneData.new(instance_path)
+		_scene_properties.append(new_scene)
+
+	current_scene.get_properties().add_instance(instance_path)
+
+	var current_instance: Node = _open_scene(instance_path)
+	var instance_children: Array[Node] = _filter_children(child.get_children().duplicate(), 
+												current_instance.get_children().duplicate())
+	current_instance.queue_free()
+	_search_instances(new_scene, instance_children)
+
 ## Uses a [param scn] scene and access to its children and
 ## calls recursively with each children of the node[br]
 ## For each instance, adds it to the current [param scene_data]
-func _search_instances(scene_data: SceneData, scn: Node) -> void:
-	if scn.get_children().is_empty():
+func _search_instances(scene_data: SceneData, children: Array[Node]) -> void:
+	if children.is_empty():
 		return
 
-	for child: Node in scn.get_children():
-		if child.scene_file_path != "":
-			var child_path: String = child.scene_file_path
-			var new_scene: SceneData = find_scene_with_path(child_path)
-			if not new_scene:
-				new_scene = SceneData.new(child_path)
-				_scene_properties.append(new_scene)
-
-			scene_data.get_properties().add_instance(child_path)
-			_search_instances(new_scene, child)
+	for child: Node in children:
+		var child_path: String = child.scene_file_path
+		if child_path != "":
+			_handle_instance(child_path, scene_data, child)
 			continue
 
-		_search_instances(scene_data, child)
+		_search_instances(scene_data, child.get_children())
 
 ## Parses all scenes files in the project[br]
 ## Uses [param script_files] to initialize the script parser[br]
