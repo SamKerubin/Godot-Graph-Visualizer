@@ -2,7 +2,7 @@
 extends EditorPlugin
 
 const MAIN_PANEL: PackedScene = preload("uid://c4h2pps361nfk")
-const ICON: Texture2D = preload("res://noise/icon.png")
+const ICON: Texture2D = preload("uid://6rjqmon425st")
 const PLUGIN_NAME: String = "Visualize Project"
 
 var main_panel_instance: Control
