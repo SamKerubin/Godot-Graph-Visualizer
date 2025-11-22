@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://c4h2pps361nfk"]
 
-[ext_resource type="Script" uid="uid://cpbiysh4eu32b" path="res://addons/godot graph visualizer/main_screen/main.gd" id="1_ohb5f"]
-[ext_resource type="Script" uid="uid://cehy4sj137g8s" path="res://addons/godot graph visualizer/main_screen/main_screen_resources/main_graph.gd" id="2_hdwl8"]
-[ext_resource type="PackedScene" uid="uid://mksg1boo611b" path="res://addons/godot graph visualizer/graphs/Graph.tscn" id="3_hdwl8"]
-[ext_resource type="PackedScene" uid="uid://byk0ferakma6e" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/ClickInfo.tscn" id="4_md0m1"]
+[ext_resource type="Script" uid="uid://cpbiysh4eu32b" path="res://addons/godot-graph-visualizer/main_screen/main.gd" id="1_ohb5f"]
+[ext_resource type="Script" uid="uid://cehy4sj137g8s" path="res://addons/godot-graph-visualizer/main_screen/main_screen_resources/main_graph.gd" id="2_hdwl8"]
+[ext_resource type="PackedScene" uid="uid://mksg1boo611b" path="res://addons/godot-graph-visualizer/graphs/Graph.tscn" id="3_hdwl8"]
+[ext_resource type="PackedScene" uid="uid://byk0ferakma6e" path="res://addons/godot-graph-visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/ClickInfo.tscn" id="4_md0m1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_md0m1"]
 bg_color = Color(0.13247004, 0.15212414, 0.18863675, 1)

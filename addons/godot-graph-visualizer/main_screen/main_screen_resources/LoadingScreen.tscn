@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bncf27fvmqnxe"]
 
-[ext_resource type="Script" uid="uid://cwf8x76x5e0lj" path="res://addons/godot graph visualizer/main_screen/main_screen_resources/loading_screen.gd" id="1_6k1tf"]
-[ext_resource type="Texture2D" uid="uid://dwjc82e6x1lhv" path="res://addons/godot graph visualizer/icon.svg" id="2_ob50l"]
+[ext_resource type="Script" uid="uid://cwf8x76x5e0lj" path="res://addons/godot-graph-visualizer/main_screen/main_screen_resources/loading_screen.gd" id="1_6k1tf"]
+[ext_resource type="Texture2D" uid="uid://dwjc82e6x1lhv" path="res://addons/godot-graph-visualizer/icon.svg" id="2_ob50l"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ob50l"]
 font_size = 25

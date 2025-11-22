@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://b4exklskakecf"]
 
-[ext_resource type="Script" uid="uid://cnp6hbxooxnm4" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/node_documentation.gd" id="1_vo3fl"]
+[ext_resource type="Script" uid="uid://cnp6hbxooxnm4" path="res://addons/godot-graph-visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/node_documentation.gd" id="1_vo3fl"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y8yps"]
 

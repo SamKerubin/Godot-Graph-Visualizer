@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://byk0ferakma6e"]
 
-[ext_resource type="Script" uid="uid://d1gc1c356klus" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/click_info.gd" id="1_7mprg"]
-[ext_resource type="PackedScene" uid="uid://b4exklskakecf" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/NodeDocumentation.tscn" id="2_y5dd8"]
-[ext_resource type="PackedScene" uid="uid://7co4xgyxcqa8" path="res://addons/godot graph visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/NodeRelations.tscn" id="3_tiu2i"]
+[ext_resource type="Script" uid="uid://d1gc1c356klus" path="res://addons/godot-graph-visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/click_info.gd" id="1_7mprg"]
+[ext_resource type="PackedScene" uid="uid://b4exklskakecf" path="res://addons/godot-graph-visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/NodeDocumentation.tscn" id="2_y5dd8"]
+[ext_resource type="PackedScene" uid="uid://7co4xgyxcqa8" path="res://addons/godot-graph-visualizer/graphs/custom_graph_nodes/custom_graph_nodes_info/NodeRelations.tscn" id="3_tiu2i"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y5dd8"]
 
