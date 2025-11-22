@@ -11,7 +11,7 @@ extends Panel
 @onready var node_documentation := %NodeDocumentation
 
 func set_current_node(node: RelationData) -> void:
-	node_name.text = "[font_size=70][b]%s[/b][/font_size]" % node.node_name
+	node_name.text = "[font_size=50][b]%s[/b][/font_size]" % node.node_name
 	node_relations.set_references(node.outgoing)
 	node_documentation.set_documentation(node.documentation)
 

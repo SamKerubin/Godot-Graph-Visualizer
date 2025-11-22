@@ -39,7 +39,7 @@ size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxEmpty_cn4mi")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_kmvkw")
 bbcode_enabled = true
-text = "[font_size=50]Relations[/font_size]"
+text = "[font_size=30]Relations[/font_size]"
 horizontal_alignment = 1
 vertical_alignment = 1
 

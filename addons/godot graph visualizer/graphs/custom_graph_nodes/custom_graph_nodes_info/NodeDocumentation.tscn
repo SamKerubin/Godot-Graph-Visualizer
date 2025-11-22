@@ -26,6 +26,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
@@ -36,7 +40,7 @@ layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_y8yps")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_4t2xq")
 bbcode_enabled = true
-text = "[font_size=50]Documentation[/font_size]"
+text = "[font_size=30]Documentation[/font_size]"
 horizontal_alignment = 1
 vertical_alignment = 1
 
