@@ -5,6 +5,7 @@ class_name ScriptData
 ## Class made to hold the information of a script[br]
 ## See [class ScriptParsedReference], [class ScriptParserManager], [class NodeData] 
 
+## @deprecated
 var _script_parsed_properties: ScriptParsedReference
 
 ## Flag that indicates if the current script is a tool script

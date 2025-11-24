@@ -149,7 +149,7 @@ func _search_instances(scene_data: SceneData, children: Array[Dictionary]) -> vo
 ## Uses [param scene_files] to open each path as a scene
 func search_properties_in_all_scenes(script_files: Array, scene_files: Array) -> void:
 	_scene_properties.clear()
-	_script_parser_manager.parse_all_scripts(script_files)
+	_script_parser_manager.parse_all_scripts(script_files) # NOTE: deprecated method
 	for scn: String in scene_files:
 		_check_scene(scn)
 #endregion

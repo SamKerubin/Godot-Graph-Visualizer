@@ -2,6 +2,8 @@
 extends Resource
 class_name ScriptPropertyReference
 
+# NOTE: deprecated class
+
 ## Class made to save reference read of a script in [class ScriptPropertyManager][br]
 ## It saves variables, constants, methods and also, use variable scoping
 ## @experimental: methods and variable scoping are still under development, expect changes

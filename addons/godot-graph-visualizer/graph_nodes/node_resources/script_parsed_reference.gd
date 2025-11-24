@@ -2,6 +2,8 @@
 extends Resource
 class_name ScriptParsedReference
 
+# NOTE: deprecated class
+
 ## Class that holds every parsed reference from a script[br]
 ## See [class ScriptParserManager] to know more about references
 

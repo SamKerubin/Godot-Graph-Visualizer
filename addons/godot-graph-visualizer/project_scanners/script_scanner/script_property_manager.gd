@@ -2,6 +2,8 @@
 extends Resource
 class_name ScriptPropertyManager
 
+# NOTE: deprecated class
+
 ## Manager class made to read scripts properties[br]
 ## It search for things like:[br]
 ## - variables/constants[br]

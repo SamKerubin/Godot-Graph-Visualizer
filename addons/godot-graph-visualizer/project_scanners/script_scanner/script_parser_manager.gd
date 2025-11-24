@@ -2,6 +2,8 @@
 extends Resource
 class_name ScriptParserManager
 
+# NOTE: deprecated class
+
 ## Manager class that parses all scripts in a project search for references[br]
 ## To understand what is a reference in this context, you can see the next list:[br][br]
 ## References:[br]
