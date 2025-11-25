@@ -51,7 +51,6 @@ func get_editor_description() -> String:
 func get_properties() -> Dictionary:
 	return {
 		"attached_script": get_attached_script().serialize() if _attached_script else {},
-		"instance": _scene_instances,
-		"formatted_description": _editor_description
+		"instance": _scene_instances
 	}
 #endregion

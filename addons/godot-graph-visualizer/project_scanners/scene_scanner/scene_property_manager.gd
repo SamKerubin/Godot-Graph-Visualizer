@@ -6,7 +6,7 @@ class_name ScenePropertyManager
 ## To understand what is considered as 'property' in this context,
 ## see [class ScenePropertyReference]
 
-var _script_parser_manager: ScriptParserManager
+var _script_references: ScriptReferenceManager
 
 ## Holds the parsed scenes properties in an array of [class SceneData]
 var _scene_properties: Array[SceneData]
@@ -16,7 +16,7 @@ func _init() -> void:
 		Initialize the parsers
 	"""
 
-	_script_parser_manager = ScriptParserManager.new()
+	_script_references = ScriptReferenceManager.new()
 
 #region Resource getters
 func _open_scene(path: String) -> Node:
@@ -83,7 +83,7 @@ func _search_attached_script(scn: Node) -> ScriptData:
 		return null
 
 	var script_data_path: String = script.resource_path
-	var script_data: ScriptData = _script_parser_manager.find_script_with_path(script_data_path)
+	var script_data: ScriptData = _script_references.find_script_with_path(script_data_path)
 	
 	script_data.is_tool = script.is_tool()
 
@@ -149,7 +149,7 @@ func _search_instances(scene_data: SceneData, children: Array[Dictionary]) -> vo
 ## Uses [param scene_files] to open each path as a scene
 func search_properties_in_all_scenes(script_files: Array, scene_files: Array) -> void:
 	_scene_properties.clear()
-	_script_parser_manager.parse_all_scripts(script_files) # NOTE: deprecated method
+	_script_references.build_all_references(script_files)
 	for scn: String in scene_files:
 		_check_scene(scn)
 #endregion
@@ -165,6 +165,6 @@ func find_scene_with_path(path: String) -> SceneData:
 func get_scenes_properties() -> Array[SceneData]:
 	return _scene_properties
 
-func get_parsed_scripts() -> ScriptParserManager:
-	return _script_parser_manager
+func get_parsed_scripts() -> ScriptReferenceManager:
+	return _script_references
 #endregion
