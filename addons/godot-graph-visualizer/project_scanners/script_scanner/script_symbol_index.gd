@@ -3,7 +3,6 @@ extends Resource
 class_name ScriptSymbolIndex
 
 enum SymbolType {
-	GLOBAL,
 	NEW_LINE,
 	TABULATION,
 	EQUAL,
@@ -21,8 +20,7 @@ enum SymbolType {
 	FUNCTION,
 	RETURNS,
 	NAME,
-	LITERAL,
-	NUMBER
+	LITERAL
 }
 
 const _SYMBOL := {
@@ -54,6 +52,6 @@ const _SYMBOL := {
 
 static func get_symbol_type(entry: String) -> SymbolType:
 	if entry.is_valid_int() or entry.is_valid_float():
-		return SymbolType.NUMBER
+		return SymbolType.LITERAL
 
 	return _SYMBOL.get(entry, SymbolType.NAME)

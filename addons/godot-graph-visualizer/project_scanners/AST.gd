@@ -12,8 +12,6 @@ class Token:
 
 class ASTNode:
 	var type: int
-	var value: String
 
-	func _init(type: int, value: String) -> void:
+	func _init(type: int) -> void:
 		self.type = type
-		self.value = value
