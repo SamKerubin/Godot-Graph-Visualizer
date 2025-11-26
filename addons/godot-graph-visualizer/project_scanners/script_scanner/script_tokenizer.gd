@@ -40,11 +40,15 @@ func _tokenize_symbol(content: String, start: int) -> Dictionary:
 	}
 
 func _tokenize_string(content: String, start: int) -> Dictionary:
+	var quote: String = content[start]
 	var i: int = start + 1
 	var buffer: String = ""
 
-	while i < content.length() and not _is_string_indicator(content[i]):
+	while i < content.length() and content[i] != quote:
 		buffer += content[i]
+		i += 1
+
+	if i < content.length():
 		i += 1
 
 	return {
