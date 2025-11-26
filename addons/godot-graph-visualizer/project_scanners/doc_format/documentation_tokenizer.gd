@@ -17,7 +17,7 @@ func _tokenize_text(text: String, start: int) -> Dictionary:
 		i += 1
 
 	return {
-		"token": AST.Token.new("text", buffer),
+		"token": AST.Token.new(BBCodeSyntaxIndex.TagType.TEXT, buffer),
 		"next_ind": i
 	}
 
@@ -43,7 +43,7 @@ func _tokenize_tag(text: String, start: int) -> Dictionary:
 		var tag_value: String = buffer.strip_edges()
 
 		if BBCodeSyntaxIndex.has_tag(tag_value):
-			var tag_type: String = BBCodeSyntaxIndex.get_tag_type(tag_value)
+			var tag_type: BBCodeSyntaxIndex.TagType = BBCodeSyntaxIndex.get_tag_type(tag_value)
 			return {
 				"token": AST.Token.new(tag_type, tag_value),
 				"next_ind": i
@@ -55,7 +55,7 @@ func _tokenize_tag(text: String, start: int) -> Dictionary:
 		unknown_tag += tag_value + end_char
 	
 		return {
-			"token": AST.Token.new("text", unknown_tag),
+			"token": AST.Token.new(BBCodeSyntaxIndex.TagType.TEXT, unknown_tag),
 			"next_ind": i
 		}
 
@@ -71,14 +71,14 @@ func _tokenize_tag(text: String, start: int) -> Dictionary:
 		i += 1
 
 	if not last_valid.is_empty():
-		var tag_type: String = BBCodeSyntaxIndex.get_tag_type(last_valid)
+		var tag_type: BBCodeSyntaxIndex.TagType = BBCodeSyntaxIndex.get_tag_type(last_valid)
 		return {
 			"token": AST.Token.new(tag_type, last_valid),
 			"next_ind": last_valid_ind
 		}
 
 	return {
-		"token": AST.Token.new("text", buffer),
+		"token": AST.Token.new(BBCodeSyntaxIndex.TagType.TEXT, buffer),
 		"next_ind": last_valid_ind
 	}
 

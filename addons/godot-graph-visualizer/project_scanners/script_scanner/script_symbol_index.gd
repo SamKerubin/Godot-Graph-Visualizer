@@ -2,33 +2,58 @@
 extends Resource
 class_name ScriptSymbolIndex
 
-const _SYMBOL := {
-	"\n": "new_line",
-	"\t": "tabulation",
-	"=": "equal",
-	"[": "open_squared",
-	"]": "closed_squared",
-	"(": "open_parenthesis",
-	")": "closed_parenthesis",
-	"{": "open_curly",
-	"}": "closed_curly",
-	",": "comma",
-	".": "dot",
-	":": "colon",
-	"\\": "backslash",
-	"var": "variable",
-	"const": "constant",
-	"class_name": "class_name",
-	"extends": "parent_class",
-	"if": "conditional",
-	"while": "loop",
-	"for": "loop",
-	"func": "function",
-	"return": "returns"
+enum SymbolType {
+	GLOBAL,
+	NEW_LINE,
+	TABULATION,
+	EQUAL,
+	SQUARED,
+	PARENTHESIS,
+	CURLY,
+	COMMA,
+	DOT,
+	COLON,
+	BACKSLASH,
+	VARIABLE,
+	CLASS_NAME,
+	PARENT_CLASS,
+	CONDITIONAL,
+	FUNCTION,
+	RETURNS,
+	NAME,
+	LITERAL,
+	NUMBER
 }
 
-static func get_symbol_type(entry: String) -> String:
-	if entry.is_valid_int() or entry.is_valid_float():
-		return "number"
+const _SYMBOL := {
+	"\n": SymbolType.NEW_LINE,
+	"\t": SymbolType.TABULATION,
+	"=": SymbolType.EQUAL,
+	"[": SymbolType.SQUARED,
+	"]": SymbolType.SQUARED,
+	"(": SymbolType.PARENTHESIS,
+	")": SymbolType.PARENTHESIS,
+	"{": SymbolType.CURLY,
+	"}": SymbolType.CURLY,
+	",": SymbolType.COMMA,
+	".": SymbolType.DOT,
+	":": SymbolType.COLON,
+	"\\": SymbolType.BACKSLASH,
+	"var": SymbolType.VARIABLE,
+	"const": SymbolType.VARIABLE,
+	"class_name": SymbolType.CLASS_NAME,
+	"extends": SymbolType.PARENT_CLASS,
+	"if": SymbolType.CONDITIONAL,
+	"elif": SymbolType.CONDITIONAL,
+	"else": SymbolType.CONDITIONAL,
+	"while": SymbolType.CONDITIONAL,
+	"for": SymbolType.CONDITIONAL,
+	"func": SymbolType.FUNCTION,
+	"return": SymbolType.RETURNS
+}
 
-	return _SYMBOL.get(entry, "name")
+static func get_symbol_type(entry: String) -> SymbolType:
+	if entry.is_valid_int() or entry.is_valid_float():
+		return SymbolType.NUMBER
+
+	return _SYMBOL.get(entry, SymbolType.NAME)

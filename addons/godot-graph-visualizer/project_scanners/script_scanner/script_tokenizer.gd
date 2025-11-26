@@ -15,7 +15,7 @@ func _is_comment_indicator(c: String) -> bool:
 	return c == "#"
 
 func _tokenize_special_symbol(c: String, current: int) -> Dictionary:
-	var type: String = ScriptSymbolIndex.get_symbol_type(c)
+	var type: ScriptSymbolIndex.SymbolType = ScriptSymbolIndex.get_symbol_type(c)
 	return {
 		"token": AST.Token.new(type, c),
 		"next_ind": current + 1
@@ -33,7 +33,7 @@ func _tokenize_symbol(content: String, start: int) -> Dictionary:
 		buffer += content[i]
 		i += 1
 
-	var type: String = ScriptSymbolIndex.get_symbol_type(buffer)
+	var type: ScriptSymbolIndex.SymbolType = ScriptSymbolIndex.get_symbol_type(buffer)
 	return {
 		"token": AST.Token.new(type, buffer),
 		"next_ind": i
@@ -52,7 +52,7 @@ func _tokenize_string(content: String, start: int) -> Dictionary:
 		i += 1
 
 	return {
-		"token": AST.Token.new("literal", buffer),
+		"token": AST.Token.new(ScriptSymbolIndex.SymbolType.LITERAL, buffer),
 		"next_ind": i
 	}
 
