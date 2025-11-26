@@ -4,29 +4,26 @@ class_name ScriptProperty
 
 class Variable:
 	var name: String
+	var assignments: Array[Assignment]
 	var line: int
 
 class Assignment:
-	var name: String
 	var value: String
 	var line: int
 
 class Scope:
 	var name: String
 	var variables: Array[Variable]
-	var assignments: Array[Assignment]
 	var local_scope: Array[Scope]
 	var parent: Scope
 	var line: int
 
-	func _init(name: String, variables: Array[Variable], 
-							assigments: Array[Assignment], 
+	func _init(name: String, variables: Array[Variable],
 							local_scope: Array[Scope],
 							parent: Scope,
 							line: int) -> void:
 		self.name = name
 		self.variables = variables
-		self.assignments = assigments
 		self.local_scope = local_scope
 		self.parent = parent
 		self.line = line
@@ -42,7 +39,7 @@ class FunctionScope extends Scope:
 							line: int,
 							params: Scope,
 							return_values: Array[Variable]) -> void:
-		super._init(name, variables, assignments, local_scope, parent, line)
+		super._init(name, variables, local_scope, parent, line)
 		self.params = params
 		self.return_values = return_values
 

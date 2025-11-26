@@ -30,7 +30,7 @@ func build_all_references(script_paths: Array) -> void:
 	_scripts.clear()
 	var script_tokenizer: ScriptTokenizer = ScriptTokenizer.new()
 	var script_parser: ScriptParser = ScriptParser.new()
-	var reference_builder: ReferenceBuilder = ReferenceBuilder.new(_script_properties)
+	var script_property_builder: ScriptPropertyBuilder = ScriptPropertyBuilder.new()
 
 	for path: String in script_paths:
 		var content: String = _get_script_content(path)
@@ -38,10 +38,12 @@ func build_all_references(script_paths: Array) -> void:
 			continue
 
 		var tokens: Array[AST.Token] = script_tokenizer.tokenize(content)
-		var parsed_script: ScriptProperty = script_parser.parse_script(tokens)
+		var ast_root: AST.ASTNode = script_parser.parse_script(tokens)
+		var parsed_script: ScriptProperty = script_property_builder.build_property(ast_root)
 		_script_properties.add_script_to_database(path, parsed_script)
 
 	var script_properties: Dictionary[String, ScriptProperty] = _script_properties.get_all_scripts()
+	var reference_builder: ReferenceBuilder = ReferenceBuilder.new(_script_properties)
 	for path: String in script_properties.keys():
 		var property: ScriptProperty = script_properties[path]
 		var script_reference: ScriptData = reference_builder.build_reference(path, property)

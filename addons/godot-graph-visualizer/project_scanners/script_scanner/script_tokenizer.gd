@@ -3,7 +3,7 @@ extends Resource
 class_name ScriptTokenizer
 
 func _is_special_symbol(c: String) -> bool:
-	return c in ["=", "\n", "\t", "[", "(", "{", "}", ")", "]", ",", ".", ":"]
+	return c in ["=", "\n", "\t", "[", "(", "{", "}", ")", "]", ",", ".", ":", "\\"]
 
 func _is_white_space(c: String) -> bool:
 	return c == " "

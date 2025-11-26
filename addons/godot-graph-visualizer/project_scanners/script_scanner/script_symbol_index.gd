@@ -15,6 +15,7 @@ const _SYMBOL := {
 	",": "comma",
 	".": "dot",
 	":": "colon",
+	"\\": "backslash",
 	"var": "variable",
 	"const": "constant",
 	"class_name": "class_name",
@@ -22,6 +23,7 @@ const _SYMBOL := {
 	"if": "conditional",
 	"while": "loop",
 	"for": "loop",
+	"func": "function",
 	"return": "returns"
 }
 
