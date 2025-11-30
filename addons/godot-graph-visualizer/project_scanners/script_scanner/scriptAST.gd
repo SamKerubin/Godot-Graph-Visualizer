@@ -3,12 +3,15 @@ extends AST
 class_name ScriptAST
 
 enum NodeType {
+	CLASS_NAME,
+	EXTENDS,
 	IDENTIFIER,
 	LITERAL,
 	VAR_DECL,
 	ASSIGNMENT,
 	FUNC_CALL,
 	FUNC_CALLER,
+	INDEX,
 	ARRAY,
 	DICTIONARY,
 	DICT_PAIR,
@@ -28,6 +31,13 @@ class IdentifierNode extends ASTNode:
 	func _init(name: String) -> void:
 		super._init(NodeType.IDENTIFIER)
 		self.name = name
+
+class ScriptPropertyNode extends PropertyNode:
+	var identifier: IdentifierNode
+
+	func _init(type: int, line: int, identifier: IdentifierNode) -> void:
+		super._init(type, line)
+		self.identifier = identifier
 
 class LiteralNode extends ASTNode:
 	var value: Variant
@@ -73,6 +83,15 @@ class CallerNode extends PropertyNode:
 		self.caller = caller
 		self.callable = callable
 		self.args = args
+
+class IndexNode extends PropertyNode:
+	var identifier: IdentifierNode
+	var key: IdentifierNode
+
+	func _init(line: int, identifier: IdentifierNode, key: IdentifierNode) -> void:
+		super._init(NodeType.INDEX, line)
+		self.identifier = identifier
+		self.key = key
 
 class ArrayNode extends LiteralNode:
 	func _init(elements: Array[ASTNode]) -> void:
