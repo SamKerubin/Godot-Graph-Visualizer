@@ -80,8 +80,40 @@ func _parse_variable(tokens: Array[AST.Token], current: int, line_count: int) ->
 
 func _parse_expression(tokens: Array[AST.Token], current: int, line_count: int) -> Dictionary:
 	current += 1
+	var parsed: Dictionary = {}
+	while current < tokens.size():
+		var token: AST.Token = tokens[current]
+
+		if token.type == ScriptSymbolIndex.SymbolType.NEW_LINE:
+			break
+
+		if token.type == ScriptSymbolIndex.SymbolType.BACKSLASH:
+			current += 2
+			line_count += 1
+			continue
+
+		if token.type == ScriptSymbolIndex.SymbolType.LITERAL:
+			parsed = _parse_literal(tokens, current)
+			break
+
+		if token.type == ScriptSymbolIndex.SymbolType.NAME:
+			parsed = _parse_name(tokens, current, line_count)
+			break
+
+		if token.type == ScriptSymbolIndex.SymbolType.SQUARED and token.value == "[":
+			parsed = _parse_array(tokens, current, line_count)
+			break
+
+		if token.type == ScriptSymbolIndex.SymbolType.CURLY and token.value == "{":
+			parsed = _parse_dictionary(tokens, current, line_count)
+			break
+
+		current += 1
+
 	return {
-		"next_ind": current
+		"node": parsed.get("node"),
+		"next_ind": current,
+		"line_count": parsed.get("line_count", line_count)
 	}
 
 func _parse_name(tokens: Array[AST.Token], current: int, line_count: int) -> Dictionary:
@@ -109,6 +141,12 @@ func _parse_index_or_caller(tokens: Array[AST.Token], current: int, line_count: 
 	}
 
 func _parse_caller(tokens: Array[AST.Token], current: int, line_count: int) -> Dictionary:
+	current += 1
+	return {
+		"next_ind": current
+	}
+
+func _parse_index(tokens: Array[AST.Token], current: int, line_count: int) -> Dictionary:
 	current += 1
 	return {
 		"next_ind": current
