@@ -11,6 +11,7 @@ enum NodeType {
 	ASSIGNMENT,
 	FUNC_CALL,
 	FUNC_CALLER,
+	FUNC_DECL,
 	INDEX,
 	ARRAY,
 	DICTIONARY,
@@ -117,17 +118,19 @@ class ScopeNode extends PropertyNode:
 		super._init(NodeType.SCOPE, line)
 		self.body = body
 
-class FuncDeclNode extends ScopeNode:
+class FuncDeclNode extends PropertyNode:
 	var identifier: IdentifierNode
 	var params: Array[IdentifierNode]
 	var returns: Array[ASTNode]
+	var scope: ScopeNode
 
 	func _init(line: int, 
-			body: Array[ASTNode],
 			identifier: IdentifierNode, 
 			params: Array[IdentifierNode],
-			returns: Array[ASTNode]) -> void:
-		super._init(line, body)
+			returns: Array[ASTNode],
+			scope: ScopeNode) -> void:
+		super._init(NodeType.FUNC_DECL, line)
 		self.identifier = identifier
 		self.params = params
 		self.returns = returns
+		self.scope = scope
