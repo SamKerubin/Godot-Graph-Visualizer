@@ -10,9 +10,8 @@ enum NodeType {
 	VAR_DECL,
 	ASSIGNMENT,
 	FUNC_CALL,
-	FUNC_CALLER,
 	FUNC_DECL,
-	INDEX,
+	MEMBER_ACESS,
 	ARRAY,
 	DICTIONARY,
 	DICT_PAIR,
@@ -57,7 +56,7 @@ class VarDeclNode extends PropertyNode:
 		self.expression = expression
 
 class AssignmentNode extends PropertyNode:
-	var target: IdentifierNode
+	var target: ASTNode
 	var expression: ASTNode
 
 	func _init(line: int, target: IdentifierNode, expression: ASTNode) -> void:
@@ -74,24 +73,13 @@ class CallNode extends PropertyNode:
 		self.callable = callable
 		self.args = args
 
-class CallerNode extends PropertyNode:
-	var caller: IdentifierNode
-	var callable: IdentifierNode
-	var args: Array[ASTNode]
-
-	func _init(line: int, caller: IdentifierNode, callable: IdentifierNode, args: Array[ASTNode]) -> void:
-		super._init(NodeType.FUNC_CALLER, line)
-		self.caller = caller
-		self.callable = callable
-		self.args = args
-
-class IndexNode extends PropertyNode:
-	var identifier: IdentifierNode
+class MemberAcessNode extends PropertyNode:
+	var source: ASTNode
 	var key: ASTNode
 
-	func _init(line: int, identifier: IdentifierNode, key: ASTNode) -> void:
-		super._init(NodeType.INDEX, line)
-		self.identifier = identifier
+	func _init(line: int, source: ASTNode, key: ASTNode) -> void:
+		super._init(NodeType.MEMBER_ACESS, line)
+		self.source = source
 		self.key = key
 
 class ArrayNode extends LiteralNode:
@@ -121,16 +109,13 @@ class ScopeNode extends PropertyNode:
 class FuncDeclNode extends PropertyNode:
 	var identifier: IdentifierNode
 	var params: Array[IdentifierNode]
-	var returns: Array[ASTNode]
 	var scope: ScopeNode
 
 	func _init(line: int, 
 			identifier: IdentifierNode, 
 			params: Array[IdentifierNode],
-			returns: Array[ASTNode],
 			scope: ScopeNode) -> void:
 		super._init(NodeType.FUNC_DECL, line)
 		self.identifier = identifier
 		self.params = params
-		self.returns = returns
 		self.scope = scope
