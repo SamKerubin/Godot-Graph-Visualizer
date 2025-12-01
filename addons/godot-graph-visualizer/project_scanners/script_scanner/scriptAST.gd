@@ -87,9 +87,9 @@ class CallerNode extends PropertyNode:
 
 class IndexNode extends PropertyNode:
 	var identifier: IdentifierNode
-	var key: IdentifierNode
+	var key: ASTNode
 
-	func _init(line: int, identifier: IdentifierNode, key: IdentifierNode) -> void:
+	func _init(line: int, identifier: IdentifierNode, key: ASTNode) -> void:
 		super._init(NodeType.INDEX, line)
 		self.identifier = identifier
 		self.key = key

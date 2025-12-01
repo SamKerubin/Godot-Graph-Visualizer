@@ -112,14 +112,43 @@ func _parse_expression(tokens: Array[AST.Token], current: int, line_count: int) 
 
 	return {
 		"node": parsed.get("node"),
-		"next_ind": current,
+		"next_ind": parsed["next_ind"],
 		"line_count": parsed.get("line_count", line_count)
 	}
 
 func _parse_name(tokens: Array[AST.Token], current: int, line_count: int) -> Dictionary:
+	var current_token: AST.Token = tokens[current]
+	var name: String = current_token.value
+
 	current += 1
+	var parsed: Dictionary = {}
+	while current < tokens.size():
+		var token: AST.Token = tokens[current]
+
+		if token.type == ScriptSymbolIndex.SymbolType.NEW_LINE:
+			break
+
+		if token.type == ScriptSymbolIndex.SymbolType.BACKSLASH:
+			current += 2
+			line_count += 1
+			continue
+
+		if token.type == ScriptSymbolIndex.SymbolType.PARENTHESIS and token.value == "(":
+			parsed = _parse_function_call(tokens, current, line_count, name)
+			break
+
+		if token.type == ScriptSymbolIndex.SymbolType.SQUARED and token.value == "[":
+			parsed = _parse_index(tokens, current, line_count, name)
+			break
+
+		if token.type == ScriptSymbolIndex.SymbolType.DOT:
+			parsed = _parse_index_or_caller(tokens, current, line_count, name)
+			break
+
 	return {
-		"next_ind": current
+		"node": parsed.get("node"),
+		"next_ind": parsed["next_ind"],
+		"line_count": parsed.get("line_count", line_count)
 	}
 
 func _parse_array(tokens: Array[AST.Token], current: int, line_count: int) -> Dictionary:
@@ -134,25 +163,25 @@ func _parse_dictionary(tokens: Array[AST.Token], current: int, line_count: int) 
 		"next_ind": current
 	}
 
-func _parse_index_or_caller(tokens: Array[AST.Token], current: int, line_count: int) -> Dictionary:
+func _parse_index_or_caller(tokens: Array[AST.Token], current: int, line_count: int, target_name: String) -> Dictionary:
 	current += 1
 	return {
 		"next_ind": current
 	}
 
-func _parse_caller(tokens: Array[AST.Token], current: int, line_count: int) -> Dictionary:
+func _parse_caller(tokens: Array[AST.Token], current: int, line_count: int, target_name: String) -> Dictionary:
 	current += 1
 	return {
 		"next_ind": current
 	}
 
-func _parse_index(tokens: Array[AST.Token], current: int, line_count: int) -> Dictionary:
+func _parse_index(tokens: Array[AST.Token], current: int, line_count: int, target_name: String) -> Dictionary:
 	current += 1
 	return {
 		"next_ind": current
 	}
 
-func _parse_function_call(tokens: Array[AST.Token], current: int, line_count: int) -> Dictionary:
+func _parse_function_call(tokens: Array[AST.Token], current: int, line_count: int, target_name: String) -> Dictionary:
 	current += 1
 	return {
 		"next_ind": current
