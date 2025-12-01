@@ -59,16 +59,16 @@ class AssignmentNode extends PropertyNode:
 	var target: ASTNode
 	var expression: ASTNode
 
-	func _init(line: int, target: IdentifierNode, expression: ASTNode) -> void:
+	func _init(line: int, target: ASTNode, expression: ASTNode) -> void:
 		super._init(NodeType.ASSIGNMENT, line)
 		self.target = target
 		self.expression = expression
 
 class CallNode extends PropertyNode:
-	var callable: IdentifierNode
+	var callable: ASTNode
 	var args: Array[ASTNode]
 
-	func _init(line: int, callable: IdentifierNode, args: Array[ASTNode]) -> void:
+	func _init(line: int, callable: ASTNode, args: Array[ASTNode]) -> void:
 		super._init(NodeType.FUNC_CALL, line)
 		self.callable = callable
 		self.args = args
