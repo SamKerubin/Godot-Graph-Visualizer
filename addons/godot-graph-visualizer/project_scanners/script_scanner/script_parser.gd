@@ -500,6 +500,14 @@ func _parse_conditional(tokens: Array[AST.Token], current: int, line_count: int,
 		"line_count": line_count
 	}
 
+func _parse_for_loop(tokens: Array[AST.Token], current: int, line_count: int, tab_count: int) -> Dictionary:
+	current += 1
+	return {
+		"node": ScriptAST.ScopeNode.new(line_count, []),
+		"next_ind": current,
+		"line_count": line_count
+	}
+
 func _parse_token(tokens: Array[AST.Token], current: int, line_count: int, tab_count: int) -> Dictionary:
 	var token := tokens[current]
 
@@ -509,9 +517,17 @@ func _parse_token(tokens: Array[AST.Token], current: int, line_count: int, tab_c
 		_SYMBOLS.VARIABLE: return _parse_variable(tokens, current, line_count)
 		_SYMBOLS.FUNCTION: return _parse_function_decl(tokens, current, line_count, tab_count)
 		_SYMBOLS.CONDITIONAL: return _parse_conditional(tokens, current, line_count, tab_count)
+		_SYMBOLS.FOR_LOOP: return _parse_for_loop(tokens, current, line_count, tab_count)
 		_SYMBOLS.NAME: return _parse_expression(tokens, current, line_count, true)
 		_SYMBOLS.RETURNS: return _parse_return_value(tokens, current, line_count)
-		_SYMBOLS.NEW_LINE:
+		#_SYMBOLS.ANNOTATION: return _ignore_annotation(tokens, current, line_count) # im changing this later on
+		_SYMBOLS.IGNORE:
+			return {
+				"next_ind": current + 1,
+				"line_count": line_count
+			}
+		_SYMBOLS.NEW_LINE, \
+		_SYMBOLS.LINE_COMMENT:
 			return {
 				"next_ind": current + 1,
 				"line_count": line_count + 1,
