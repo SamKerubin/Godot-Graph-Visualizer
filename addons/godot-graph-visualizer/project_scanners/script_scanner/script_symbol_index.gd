@@ -48,6 +48,7 @@ const _SYMBOL := {
 	"extends": SymbolType.PARENT_CLASS,
 	"continue": SymbolType.IGNORE,
 	"break": SymbolType.IGNORE,
+	"pass": SymbolType.IGNORE,
 	"await": SymbolType.IGNORE,
 	"signal": SymbolType.IGNORE,
 	"->": SymbolType.IGNORE,

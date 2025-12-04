@@ -428,6 +428,51 @@ func _parse_params(tokens: Array[AST.Token], current: int, line_count: int) -> D
 		"line_count": line_count
 	}
 
+func _parse_scope(tokens: Array[AST.Token], current: int, line_count: int, tab_count: int) -> Dictionary:
+	var scope_node := ScriptAST.ScopeNode.new(line_count, [])
+
+	var token := tokens[current]
+	if token.type != _SYMBOLS.COLON:
+		return {
+			"node": scope_node,
+			"next_ind": current,
+			"line_count": line_count
+		}
+
+	current += 1
+	if tokens[current].type != _SYMBOLS.NEW_LINE:
+		var parsed: Dictionary = _parse_token(tokens, current, line_count, tab_count)
+		if parsed.has("node"):
+			scope_node.body.append(parsed["node"])
+
+		return {
+			"node": scope_node,
+			"next_ind": parsed["next_ind"],
+			"line_count": parsed["line_count"]
+		}
+
+	var inner_tabulation: int = tab_count + 1
+	while current < tokens.size():
+		token = tokens[current]
+
+		if token.type != _SYMBOLS.NEW_LINE and token.type != _SYMBOLS.TABULATION:
+			if inner_tabulation <= tab_count:
+				break
+
+		var parsed: Dictionary = _parse_token(tokens, current, line_count, inner_tabulation)
+		if parsed.has("node"):
+			scope_node.body.append(parsed["node"])
+
+		current = parsed["next_ind"]
+		line_count = parsed["line_count"]
+		inner_tabulation = parsed.get("tab_count", inner_tabulation)
+	
+	return {
+		"node": scope_node,
+		"next_ind": current,
+		"line_count": line_count
+	}
+
 func _parse_function_decl(tokens: Array[AST.Token], current: int, line_count: int, tab_count: int) -> Dictionary:
 	var func_decl_node := ScriptAST.FuncDeclNode.new(line_count, null, [], ScriptAST.ScopeNode.new(line_count, []))
 	current += 1
@@ -457,39 +502,13 @@ func _parse_function_decl(tokens: Array[AST.Token], current: int, line_count: in
 	current = skip["next_ind"]
 	line_count = skip["line_count"]
 
-	token = tokens[current]
-	if token.type == _SYMBOLS.COLON:
-		current += 1
-		if tokens[current].type != _SYMBOLS.NEW_LINE:
-			var parsed: Dictionary = _parse_token(tokens, current, line_count, tab_count)
-			if parsed.has("node"):
-				func_decl_node.scope.body.append(parsed["node"])
-			return {
-				"node": func_decl_node,
-				"next_ind": parsed["next_ind"],
-				"line_count": parsed["line_count"]
-			}
-
-		var inner_tabulation: int = tab_count + 1
-		while current < tokens.size():
-			token = tokens[current]
-
-			if token.type != _SYMBOLS.NEW_LINE and token.type != _SYMBOLS.TABULATION:
-				if inner_tabulation <= tab_count:
-					break
-
-			var parsed: Dictionary = _parse_token(tokens, current, line_count, inner_tabulation)
-			if parsed.has("node"):
-				func_decl_node.scope.body.append(parsed["node"])
-
-			current = parsed["next_ind"]
-			line_count = parsed["line_count"]
-			inner_tabulation = parsed.get("tab_count", inner_tabulation)
+	var scope: Dictionary = _parse_scope(tokens, current, line_count, tab_count)
+	func_decl_node.scope = scope["node"]
 
 	return {
 		"node": func_decl_node,
-		"next_ind": current,
-		"line_count": line_count
+		"next_ind": scope["next_ind"],
+		"line_count": scope["line_count"]
 	}
 
 func _parse_conditional(tokens: Array[AST.Token], current: int, line_count: int, tab_count: int) -> Dictionary:
