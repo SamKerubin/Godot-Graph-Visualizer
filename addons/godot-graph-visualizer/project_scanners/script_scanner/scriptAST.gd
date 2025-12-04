@@ -15,6 +15,7 @@ enum NodeType {
 	ARRAY,
 	DICTIONARY,
 	DICT_PAIR,
+	FOR_LOOP,
 	SCOPE
 }
 
@@ -118,4 +119,13 @@ class FuncDeclNode extends PropertyNode:
 		super._init(NodeType.FUNC_DECL, line)
 		self.identifier = identifier
 		self.params = params
+		self.scope = scope
+
+class FoorLoopNode extends PropertyNode:
+	var variable: IdentifierNode
+	var scope: ScopeNode
+
+	func _init(line: int, variable: IdentifierNode, scope: ScopeNode) -> void:
+		super._init(NodeType.FOR_LOOP, line)
+		self.variable = variable
 		self.scope = scope
