@@ -25,11 +25,11 @@ func _skip_until(stop_tokens: Array[ScriptSymbolIndex.SymbolType],
 	}
 
 func _parse_literal(tokens: Array[AST.Token], current: int, line_count: int) -> Dictionary:
-	var current_token := tokens[current]
+	var literal := tokens[current].value
 	return {
-		"node": ScriptAST.LiteralNode.new(current_token.value),
+		"node": ScriptAST.LiteralNode.new(literal),
 		"next_ind": current + 1,
-		"line_count": line_count
+		"line_count": line_count + literal.count("\n", 0, literal.length())
 	}
 
 func _parse_class_name(tokens: Array[AST.Token], current: int, line_count: int) -> Dictionary:
@@ -155,7 +155,9 @@ func _parse_postfix_chain(tokens: Array[AST.Token], primary: Dictionary, line_co
 		var skip: Dictionary = _skip_until([_SYMBOLS.NEW_LINE,
 											_SYMBOLS.DOT,
 											_SYMBOLS.PARENTHESIS,
-											_SYMBOLS.SQUARED], tokens, current, line_count)
+											_SYMBOLS.SQUARED,
+											_SYMBOLS.COMMA,
+											_SYMBOLS.COLON], tokens, current, line_count)
 		current = skip["next_ind"]
 		line_count = skip["line_count"]
 
@@ -234,7 +236,8 @@ func _parse_array(tokens: Array[AST.Token], current: int, line_count: int) -> Di
 			current += 1
 			break
 
-		if token.type == _SYMBOLS.COMMA:
+		if token.type == _SYMBOLS.COMMA \
+			or token.type == _SYMBOLS.TABULATION:
 			current += 1
 			continue
 
@@ -265,7 +268,8 @@ func _parse_dictionary(tokens: Array[AST.Token], current: int, line_count: int) 
 			current += 1
 			break
 
-		if token.type == _SYMBOLS.COMMA:
+		if token.type == _SYMBOLS.COMMA \
+			or token.type == _SYMBOLS.TABULATION:
 			current += 1
 			continue
 
@@ -361,7 +365,8 @@ func _parse_function_call(tokens: Array[AST.Token], current: int, line_count: in
 			current += 1
 			break
 
-		if token.type == _SYMBOLS.COMMA:
+		if token.type == _SYMBOLS.COMMA \
+			or token.type == _SYMBOLS.TABULATION:
 			current += 1
 			continue
 

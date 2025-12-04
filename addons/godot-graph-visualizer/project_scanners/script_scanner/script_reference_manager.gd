@@ -47,6 +47,7 @@ func print_child(child: AST.ASTNode) -> String:
 		c = "["
 		for sub_c in child.value:
 			c += "%s, " % print_child(sub_c)
+		c += "]"
 	elif child is ScriptAST.DictionaryNode:
 		c = "{"
 		for sub_c in child.value:
@@ -85,8 +86,8 @@ func build_all_references(script_paths: Array) -> void:
 			continue
 
 		var tokens: Array[AST.Token] = script_tokenizer.tokenize(content)
-		var ast_root: AST.ASTNode = script_parser.parse_script(tokens)
 		print(path)
+		var ast_root: AST.ASTNode = script_parser.parse_script(tokens)
 		printAST(ast_root)
 		var parsed_script: ScriptProperty = script_property_builder.build_property(ast_root)
 		_script_properties.add_script_to_database(path, parsed_script)
