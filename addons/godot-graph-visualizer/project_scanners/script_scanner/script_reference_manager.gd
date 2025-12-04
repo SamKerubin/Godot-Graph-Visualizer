@@ -66,6 +66,7 @@ func print_child(child: AST.ASTNode) -> String:
 		c += "):\n"
 		c += print_child(child.scope)
 	elif child is ScriptAST.ScopeNode:
+		c += "Scope ->\n"
 		for sub_c in child.body:
 			c += "\t%s\n" % print_child(sub_c)
 	else:

@@ -512,11 +512,16 @@ func _parse_function_decl(tokens: Array[AST.Token], current: int, line_count: in
 	}
 
 func _parse_conditional(tokens: Array[AST.Token], current: int, line_count: int, tab_count: int) -> Dictionary:
-	current += 1
+	var skip: Dictionary = _skip_until([_SYMBOLS.NEW_LINE, _SYMBOLS.COLON], tokens, current, line_count)
+	current = skip["next_ind"]
+	line_count = skip["line_count"]
+
+	var scope_node := _parse_scope(tokens, current, line_count, tab_count)
+
 	return {
-		"node": ScriptAST.ScopeNode.new(line_count, []),
-		"next_ind": current,
-		"line_count": line_count
+		"node": scope_node["node"],
+		"next_ind": scope_node["next_ind"],
+		"line_count": scope_node["line_count"]
 	}
 
 func _parse_for_loop(tokens: Array[AST.Token], current: int, line_count: int, tab_count: int) -> Dictionary:
