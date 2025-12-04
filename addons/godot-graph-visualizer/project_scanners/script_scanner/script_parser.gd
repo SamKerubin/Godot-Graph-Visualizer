@@ -200,9 +200,14 @@ func _parse_postfix_chain(tokens: Array[AST.Token], primary: Dictionary, line_co
 		"line_count": line_count
 	}
 
+func _is_valid_assign(node: AST.ASTNode) -> bool:
+	return node.type != ScriptAST.NodeType.FUNC_CALL
+
 func _parse_expression(tokens: Array[AST.Token], current: int, line_count: int, expects_assign: bool) -> Dictionary:
 	var primary: Dictionary = _parse_primary(tokens, current, line_count)
 	primary = _parse_postfix_chain(tokens, primary, primary["line_count"])
+
+	expects_assign = expects_assign and _is_valid_assign(primary["node"])
 
 	if expects_assign:
 		var skip: Dictionary = _skip_until([_SYMBOLS.EQUAL], tokens, primary["next_ind"], primary["line_count"])
