@@ -14,13 +14,18 @@ func _skip_until(stop_tokens: Array[ScriptSymbolIndex.SymbolType],
 			line_count += 1
 			continue
 
+		if tokens[current].type == _SYMBOLS.NEW_LINE and not _SYMBOLS.NEW_LINE in stop_tokens:
+			current += 1
+			line_count += 1
+			continue
+
 		if tokens[current].type in stop_tokens:
 			break
 
 		current += 1
 
 	return {
-		"next_ind": current,
+		"next_ind": clamp(current, 0, tokens.size() - 1),
 		"line_count": line_count
 	}
 
@@ -395,6 +400,28 @@ func _parse_return_value(tokens: Array[AST.Token], current: int, line_count: int
 func _parse_params(tokens: Array[AST.Token], current: int, line_count: int) -> Dictionary:
 	var params: Array[ScriptAST.IdentifierNode] = []
 	current += 1
+
+	while current < tokens.size():
+		var token := tokens[current]
+
+		if token.type == _SYMBOLS.PARENTHESIS and token.value == ")":
+			current += 1
+			break
+
+		if token.type == _SYMBOLS.COMMA:
+			current += 1
+			continue
+
+		if token.type == _SYMBOLS.NAME:
+			params.append(ScriptAST.IdentifierNode.new(token.value))
+
+			var skip: Dictionary = _skip_until([_SYMBOLS.COMMA, _SYMBOLS.PARENTHESIS], tokens, current, line_count)
+			current = skip["next_ind"]
+			line_count = skip["line_count"]
+			continue
+
+		current += 1
+
 	return {
 		"node": params,
 		"next_ind": current,
@@ -404,6 +431,61 @@ func _parse_params(tokens: Array[AST.Token], current: int, line_count: int) -> D
 func _parse_function_decl(tokens: Array[AST.Token], current: int, line_count: int, tab_count: int) -> Dictionary:
 	var func_decl_node := ScriptAST.FuncDeclNode.new(line_count, null, [], ScriptAST.ScopeNode.new(line_count, []))
 	current += 1
+
+	var skip: Dictionary = _skip_until([_SYMBOLS.NEW_LINE, _SYMBOLS.NAME], tokens, current, line_count)
+	current = skip["next_ind"]
+	line_count = skip["line_count"]
+
+	var token := tokens[current]
+	if token.type == _SYMBOLS.NAME:
+		func_decl_node.identifier = ScriptAST.IdentifierNode.new(token.value)
+		current += 1
+
+	skip = _skip_until([_SYMBOLS.PARENTHESIS], tokens, current, line_count)
+	current = skip["next_ind"]
+	line_count = skip["line_count"]
+
+	token = tokens[current]
+	if token.type == _SYMBOLS.PARENTHESIS and token.value == "(":
+		var params: Dictionary = _parse_params(tokens, current, line_count)
+		func_decl_node.params = params["node"]
+
+		current = params["next_ind"]
+		line_count = params["line_count"]
+
+	skip = _skip_until([_SYMBOLS.NEW_LINE, _SYMBOLS.COLON], tokens, current, line_count)
+	current = skip["next_ind"]
+	line_count = skip["line_count"]
+
+	token = tokens[current]
+	if token.type == _SYMBOLS.COLON:
+		current += 1
+		if tokens[current].type != _SYMBOLS.NEW_LINE:
+			var parsed: Dictionary = _parse_token(tokens, current, line_count, tab_count)
+			if parsed.has("node"):
+				func_decl_node.scope.body.append(parsed["node"])
+			return {
+				"node": func_decl_node,
+				"next_ind": parsed["next_ind"],
+				"line_count": parsed["line_count"]
+			}
+
+		var inner_tabulation: int = tab_count + 1
+		while current < tokens.size():
+			token = tokens[current]
+
+			if token.type != _SYMBOLS.NEW_LINE and token.type != _SYMBOLS.TABULATION:
+				if inner_tabulation <= tab_count:
+					break
+
+			var parsed: Dictionary = _parse_token(tokens, current, line_count, inner_tabulation)
+			if parsed.has("node"):
+				func_decl_node.scope.body.append(parsed["node"])
+
+			current = parsed["next_ind"]
+			line_count = parsed["line_count"]
+			inner_tabulation = parsed.get("tab_count", inner_tabulation)
+
 	return {
 		"node": func_decl_node,
 		"next_ind": current,

@@ -63,7 +63,11 @@ func print_child(child: AST.ASTNode) -> String:
 		c = "func %s(" % print_child(child.identifier)
 		for sub_c in child.params:
 			c += "%s, " % print_child(sub_c)
-		c += ")"
+		c += "):\n"
+		c += print_child(child.scope)
+	elif child is ScriptAST.ScopeNode:
+		for sub_c in child.body:
+			c += "\t%s\n" % print_child(sub_c)
 	else:
 		c = str(child.type)
 
@@ -86,9 +90,10 @@ func build_all_references(script_paths: Array) -> void:
 			continue
 
 		var tokens: Array[AST.Token] = script_tokenizer.tokenize(content)
-		print(path)
 		var ast_root: AST.ASTNode = script_parser.parse_script(tokens)
-		printAST(ast_root)
+		if i == 25:
+			print(path)
+			printAST(ast_root)
 		var parsed_script: ScriptProperty = script_property_builder.build_property(ast_root)
 		_script_properties.add_script_to_database(path, parsed_script)
 		i+=1
