@@ -65,6 +65,9 @@ func print_child(child: AST.ASTNode) -> String:
 			c += "%s, " % print_child(sub_c)
 		c += "):\n"
 		c += print_child(child.scope)
+	elif child is ScriptAST.FoorLoopNode:
+		c += "var = %s\n" % print_child(child.variable)
+		c += print_child(child.scope)
 	elif child is ScriptAST.ScopeNode:
 		c += "Scope ->\n"
 		for sub_c in child.body:

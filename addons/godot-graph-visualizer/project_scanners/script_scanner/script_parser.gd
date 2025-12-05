@@ -530,9 +530,31 @@ func _parse_conditional(tokens: Array[AST.Token], current: int, line_count: int,
 	}
 
 func _parse_for_loop(tokens: Array[AST.Token], current: int, line_count: int, tab_count: int) -> Dictionary:
-	current += 1
+	var for_loop_node := ScriptAST.FoorLoopNode.new(line_count, null, null)
+
+	var skip: Dictionary = _skip_until([_SYMBOLS.NEW_LINE, _SYMBOLS.NAME], tokens, current, line_count)
+	current = skip["next_ind"]
+	line_count = skip["line_count"]
+
+	var token := tokens[current]
+	if token.type == _SYMBOLS.NAME:
+		for_loop_node.variable = ScriptAST.IdentifierNode.new(token.value)
+		current += 1
+
+	# this is the best i can do without parsing the entire condition :/
+	skip = _skip_until([_SYMBOLS.NEW_LINE, _SYMBOLS.FOR_CONDITION], tokens, current, line_count)
+	skip = _skip_until([_SYMBOLS.NEW_LINE, _SYMBOLS.COLON], tokens, skip["next_ind"], skip["line_count"])
+
+	current = skip["next_ind"]
+	line_count = skip["line_count"]
+
+	var scope_node: Dictionary = _parse_scope(tokens, current, line_count, tab_count)
+	for_loop_node.scope = scope_node["node"]
+	current = scope_node["next_ind"]
+	line_count = scope_node["line_count"]
+
 	return {
-		"node": ScriptAST.ScopeNode.new(line_count, []),
+		"node": for_loop_node,
 		"next_ind": current,
 		"line_count": line_count
 	}

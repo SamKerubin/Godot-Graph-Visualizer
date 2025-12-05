@@ -21,6 +21,7 @@ enum SymbolType {
 	IGNORE,
 	CONDITIONAL,
 	FOR_LOOP,
+	FOR_CONDITION,
 	FUNCTION,
 	RETURNS,
 	NAME,
@@ -58,6 +59,7 @@ const _SYMBOL := {
 	"else": SymbolType.CONDITIONAL,
 	"while": SymbolType.CONDITIONAL,
 	"for": SymbolType.FOR_LOOP,
+	"in": SymbolType.FOR_CONDITION, # specifically made to parse a for loop
 	"func": SymbolType.FUNCTION,
 	"return": SymbolType.RETURNS
 }
