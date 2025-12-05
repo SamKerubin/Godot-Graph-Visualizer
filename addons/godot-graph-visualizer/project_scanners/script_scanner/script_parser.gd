@@ -559,6 +559,48 @@ func _parse_for_loop(tokens: Array[AST.Token], current: int, line_count: int, ta
 		"line_count": line_count
 	}
 
+func _parse_match(tokens: Array[AST.Token], current: int, line_count: int, tab_count: int) -> Dictionary:
+	var match_node := ScriptAST.MatchNode.new(line_count, [])
+	current += 1
+
+	var skip: Dictionary = _skip_until([_SYMBOLS.NEW_LINE], tokens, current, line_count)
+	current = skip["next_ind"]
+	line_count = skip["line_count"]
+
+	var inner_tabulation: int = tab_count + 1
+	while current < tokens.size():
+		var token := tokens[current]
+
+		if token.type != _SYMBOLS.NEW_LINE and token.type != _SYMBOLS.TABULATION:
+			if inner_tabulation <= tab_count:
+				break
+
+		if token.type == _SYMBOLS.NEW_LINE:
+			current += 1
+			line_count += 1
+			inner_tabulation = 0
+			continue
+
+		if token.type == _SYMBOLS.TABULATION:
+			current += 1
+			inner_tabulation += 1
+			continue
+
+		if token.type == _SYMBOLS.COLON:
+			var scope_node: Dictionary = _parse_scope(tokens, current, line_count, inner_tabulation)
+			match_node.scopes.append(scope_node["node"])
+			current = scope_node["next_ind"]
+			line_count = scope_node["line_count"]
+			continue
+
+		current += 1
+
+	return {
+		"node": match_node,
+		"next_ind": current,
+		"line_count": line_count
+	}
+
 func _parse_token(tokens: Array[AST.Token], current: int, line_count: int, tab_count: int) -> Dictionary:
 	var token := tokens[current]
 
@@ -569,6 +611,7 @@ func _parse_token(tokens: Array[AST.Token], current: int, line_count: int, tab_c
 		_SYMBOLS.FUNCTION: return _parse_function_decl(tokens, current, line_count, tab_count)
 		_SYMBOLS.CONDITIONAL: return _parse_conditional(tokens, current, line_count, tab_count)
 		_SYMBOLS.FOR_LOOP: return _parse_for_loop(tokens, current, line_count, tab_count)
+		_SYMBOLS.MATCH: return _parse_match(tokens, current, line_count, tab_count)
 		_SYMBOLS.NAME: return _parse_expression(tokens, current, line_count, true)
 		_SYMBOLS.RETURNS: return _parse_return_value(tokens, current, line_count)
 		#_SYMBOLS.ANNOTATION: return _ignore_annotation(tokens, current, line_count) # im changing this later on

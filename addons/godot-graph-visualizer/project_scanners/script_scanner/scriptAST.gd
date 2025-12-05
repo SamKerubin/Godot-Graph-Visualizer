@@ -16,6 +16,7 @@ enum NodeType {
 	DICTIONARY,
 	DICT_PAIR,
 	FOR_LOOP,
+	MATCH,
 	SCOPE
 }
 
@@ -129,3 +130,10 @@ class FoorLoopNode extends PropertyNode:
 		super._init(NodeType.FOR_LOOP, line)
 		self.variable = variable
 		self.scope = scope
+
+class MatchNode extends PropertyNode:
+	var scopes: Array[ScopeNode]
+
+	func _init(line: int, scopes: Array[ScopeNode]) -> void:
+		super._init(NodeType.MATCH, line)
+		self.scopes = scopes
